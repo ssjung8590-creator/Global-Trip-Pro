@@ -88,6 +88,7 @@ export default function App() {
   const [activeCategoryInput, setActiveCategoryInput] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
+  const [selectedChecklistCategory, setSelectedChecklistCategory] = useState<string>('필수');
 
   const filteredCountries = COUNTRIES.filter(c => {
     const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -103,6 +104,10 @@ export default function App() {
     { name: 'North America', icon: '🏔️', label: '북미' },
     { name: 'Oceania', icon: '🏝️', label: '대양주' }
   ];
+
+  const toggleCategory = (category: string) => {
+    setSelectedChecklistCategory(category);
+  };
 
   const handleCountrySelect = (country: CountryInfo) => {
     setSelectedCountry(country);
@@ -194,92 +199,180 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
+              className="space-y-10"
             >
-              <div className="mb-8">
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">출장 목적지 선택</span>
-                <h2 className="text-2xl font-bold mt-1 text-slate-800">곧 떠날 국가를<br />선택해주세요</h2>
-                
-                <div className="mt-6 relative">
-                  <input 
-                    type="text"
-                    placeholder="국가 이름 검색..."
-                    className="w-full bg-white border border-slate-100 rounded-2xl py-4 pl-12 pr-4 shadow-sm outline-none focus:border-blue-200 transition-all text-sm font-semibold"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
-                  {searchQuery && (
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500"
-                    >
-                      <X size={18} />
-                    </button>
-                  )}
+              {/* Destinations Section */}
+              <section>
+                <div className="flex items-center justify-between mb-4 px-2">
+                  <h2 className="text-xl font-black text-slate-800 tracking-tight">여행지 국가</h2>
+                  <Globe size={20} className="text-slate-300" />
                 </div>
-
-                {/* Region Selector */}
-                <div className="mt-6 flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                
+                {/* Region Icons Container */}
+                <div className="grid grid-cols-5 gap-2">
                   {regions.map((region) => (
                     <button
                       key={region.name}
-                      onClick={() => setSelectedRegion(region.name)}
-                      className={`flex flex-col items-center gap-2 px-5 py-4 rounded-2xl border transition-all shrink-0 ${
+                      type="button"
+                      onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
+                      className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
                         selectedRegion === region.name
-                          ? 'bg-slate-900 border-slate-900 shadow-lg shadow-slate-200 -translate-y-1'
-                          : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
+                          ? 'bg-slate-900 border-slate-900 shadow-lg -translate-y-1'
+                          : 'bg-white border-slate-50 text-slate-400'
                       }`}
                     >
-                      <span className="text-xl">{region.icon}</span>
-                      <span className={`text-[10px] font-black uppercase tracking-tight ${
-                        selectedRegion === region.name ? 'text-white' : 'text-slate-900/40'
+                      <span className="text-2xl">{region.icon}</span>
+                      <span className={`text-[9px] font-black uppercase tracking-tight ${
+                        selectedRegion === region.name ? 'text-white' : 'text-slate-900/30'
                       }`}>
                         {region.label}
                       </span>
                     </button>
                   ))}
                 </div>
-              </div>
 
-              <div className="grid gap-4">
-                {filteredCountries.map((country, idx) => (
-                  <button
-                    key={country.id}
-                    onClick={() => handleCountrySelect(country)}
-                    className={`glass p-5 rounded-[2.5rem] flex items-center gap-4 card-hover text-left shadow-sm ${
-                      idx % 4 === 0 ? 'bg-blue-50/50' : 
-                      idx % 4 === 1 ? 'bg-emerald-50/50' : 
-                      idx % 4 === 2 ? 'bg-amber-50/50' : 'bg-purple-50/50'
-                    }`}
-                    id={`country-${country.id}`}
-                  >
-                    <div className="w-16 h-16 rounded-[1.5rem] bg-white flex items-center justify-center text-3xl shadow-sm">
-                      {country.emoji}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-slate-800">{country.name}</h3>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm text-slate-400">{country.nameEn}</p>
-                        <span className="text-[10px] bg-white/60 px-2 py-0.5 rounded-full text-slate-400 font-bold border border-slate-100 italic">
-                          {country.currency.symbol}
-                        </span>
-                      </div>
-                    </div>
-                    <ChevronRight size={20} className="text-slate-200" />
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-12 glass p-6 rounded-[2rem] bg-amber-50/50 border-amber-100">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-amber-100 rounded-lg">
-                    <Info size={18} className="text-amber-600" />
-                  </div>
-                  <span className="font-bold text-sm text-amber-900">출장 준비 팁</span>
+                {/* Conditional Country Grid */}
+                <div className="mt-6 min-h-[100px]">
+                  <AnimatePresence mode="wait">
+                    {selectedRegion === 'All' ? (
+                      <motion.div
+                        key="region-prompt"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="bg-slate-50 rounded-[2rem] p-8 text-center border border-dashed border-slate-200"
+                      >
+                        <p className="text-xs font-bold text-slate-400 italic">위의 대륙 아이콘을 눌러<br />여행지를 선택해보세요</p>
+                      </motion.div>
+                    ) : (
+                      <motion.div 
+                        key={selectedRegion}
+                        initial={{ height: 0, opacity: 0, scale: 0.95 }}
+                        animate={{ height: 'auto', opacity: 1, scale: 1 }}
+                        exit={{ height: 0, opacity: 0, scale: 0.95 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="grid grid-cols-2 gap-3 pb-2 transition-all">
+                          {filteredCountries.map((country) => (
+                            <button
+                              key={country.id}
+                              type="button"
+                              onClick={() => handleCountrySelect(country)}
+                              className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-left hover:border-blue-200 transition-all active:scale-95 group"
+                            >
+                              <span className="text-3xl shrink-0 group-hover:scale-110 transition-transform">{country.emoji}</span>
+                              <div className="min-w-0">
+                                <p className="text-xs font-extra-bold text-slate-800 truncate">{country.name}</p>
+                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{country.nameEn}</p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <p className="text-sm text-amber-800/70 leading-relaxed">
-                  항공권 예약 시 출장 증명서를 지참하시면 추가 수하물 혜택을 받을 수 있는 항공사가 많습니다. 확인해 보세요!
+              </section>
+
+              {/* Checklist Section */}
+              <section className="pt-8 border-t border-slate-100">
+                <div className="flex items-center justify-between mb-4 px-2">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-black text-slate-800 tracking-tight">체크리스트</h2>
+                  </div>
+                  <div className="px-3 py-1 bg-emerald-50 rounded-full">
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">
+                      {checklist.filter(i => i.completed).length}/{checklist.length} DONE
+                    </span>
+                  </div>
+                </div>
+
+                {/* Sub-Category Icons */}
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { id: '필수', icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100' },
+                    { id: '전자기기', icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100' },
+                    { id: '세면/위생', icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100' },
+                    { id: '의류', icon: '👕', color: 'bg-slate-50 text-slate-500 border-slate-100' }
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setSelectedChecklistCategory(cat.id)}
+                      className={`flex flex-col items-center gap-2 py-5 rounded-[2rem] border transition-all ${
+                        selectedChecklistCategory === cat.id
+                          ? `${cat.color} border-2 shadow-lg -translate-y-1`
+                          : 'bg-white border-slate-50 text-slate-300'
+                      }`}
+                    >
+                      <span className="text-2xl">{cat.icon}</span>
+                      <span className={`text-[9px] font-black tracking-tight ${
+                        selectedChecklistCategory === cat.id ? 'opacity-100' : 'text-slate-400'
+                      }`}>
+                        {cat.id}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Checklist Items Items */}
+                <div className="mt-6 min-h-[120px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div 
+                      key={selectedChecklistCategory}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-2"
+                    >
+                      <div className="grid gap-2">
+                        {checklist.filter(i => i.category === selectedChecklistCategory).map(item => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => toggleCheck(item.id)}
+                            className={`w-full flex items-center gap-4 py-4 px-5 rounded-2xl transition-all border ${
+                              item.completed 
+                              ? 'bg-emerald-50/30 border-emerald-50 opacity-50' 
+                              : 'bg-white border-slate-100 shadow-sm hover:border-slate-300'
+                            }`}
+                          >
+                            <div className="shrink-0">
+                              {item.completed ? (
+                                <CheckCircle2 size={20} className="text-emerald-500" />
+                              ) : (
+                                <Circle size={20} className="text-slate-200" />
+                              )}
+                            </div>
+                            <span className={`text-sm flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
+                              {item.name}
+                            </span>
+                            {!item.completed && <span className="text-xl opacity-20">{item.icon}</span>}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <button 
+                  type="button"
+                  onClick={() => setView('checklist')}
+                  className="w-full mt-4 py-4 bg-slate-900 text-white font-bold rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all"
+                >
+                  메인 체크리스트 편집 <ChevronRight size={14} className="inline ml-1" />
+                </button>
+              </section>
+
+              {/* Tips Banner */}
+              <div className="glass p-6 rounded-[2.5rem] bg-indigo-50/50 border border-indigo-100">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-indigo-100 rounded-lg">
+                    <Info size={18} className="text-indigo-600" />
+                  </div>
+                  <span className="font-bold text-sm text-indigo-900">오늘의 준비 팁</span>
+                </div>
+                <p className="text-[11px] text-indigo-800/60 leading-relaxed font-medium">
+                  여권 사본을 스마트폰의 암호화된 폴더나 클라우드에 업로드해 두면 분실 시 매우 유용하게 쓰입니다.
                 </p>
               </div>
             </motion.div>
@@ -381,132 +474,136 @@ export default function App() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6 pb-12"
             >
-              <div className="flex items-end justify-between mb-2">
+              <div className="flex items-end justify-between mb-4 px-2">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">마이 리스트</span>
-                  <h2 className="text-2xl font-bold mt-1 text-slate-800">준비물 체크</h2>
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">전체 리스트</span>
+                  <h2 className="text-2xl font-black mt-1 text-slate-800">준비물 관리</h2>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm text-xs border border-slate-50">
-                  <span className="text-emerald-500 font-extrabold text-sm">
-                    {checklist.filter(i => i.completed).length}
-                  </span>
-                  <span className="text-slate-300 font-medium italic">/ {checklist.length}</span>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Total Progress</span>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm text-xs border border-slate-50">
+                    <span className="text-emerald-500 font-extrabold text-sm">
+                      {checklist.filter(i => i.completed).length}
+                    </span>
+                    <span className="text-slate-300 font-medium italic">/ {checklist.length}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Progress Summary Section */}
-              <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar -mx-6 px-6">
-                {['필수', '전자기기', '의류', '세면/위생', '식량/상비약'].map((cat, idx) => {
-                  const colors = [
-                    'bg-rose-50 text-rose-600',
-                    'bg-blue-50 text-blue-600',
-                    'bg-slate-50 text-slate-600',
-                    'bg-emerald-50 text-emerald-600',
-                    'bg-amber-50 text-amber-600'
-                  ];
-                  return (
-                    <div key={cat} className={`glass px-5 py-2.5 rounded-2xl whitespace-nowrap flex items-center gap-2 shadow-sm ${colors[idx % colors.length]}`}>
-                      <span className="text-[10px] font-bold uppercase opacity-60">{cat}</span>
-                      <span className="text-xs font-black">{currentCategoryCount(cat)}</span>
+              {/* Category Selection Icons */}
+              <div className="grid grid-cols-5 gap-2">
+                {[
+                  { id: '필수', icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100' },
+                  { id: '전자기기', icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100' },
+                  { id: '의류', icon: '👕', color: 'bg-slate-50 text-slate-500 border-slate-100' },
+                  { id: '세면/위생', icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100' },
+                  { id: '식량/상비약', icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100' }
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setSelectedChecklistCategory(cat.id)}
+                    className={`flex flex-col items-center gap-2 py-4 rounded-[1.8rem] border transition-all ${
+                      selectedChecklistCategory === cat.id
+                        ? `${cat.color} border-2 shadow-lg -translate-y-1`
+                        : 'bg-white border-slate-50 text-slate-300'
+                    }`}
+                  >
+                    <span className="text-xl">{cat.icon}</span>
+                    <span className={`text-[8px] font-black tracking-tight leading-none text-center ${
+                      selectedChecklistCategory === cat.id ? 'opacity-100' : 'text-slate-400'
+                    }`}>
+                      {cat.id.split('/').join('\n')}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="space-y-4">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedChecklistCategory}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-4"
+                  >
+                    <div className="flex items-center gap-3 px-2">
+                      <div className="w-1 h-4 bg-slate-900 rounded-full" />
+                      <h3 className="text-lg font-black text-slate-800">{selectedChecklistCategory} 내역</h3>
                     </div>
-                  );
-                })}
-              </div>
 
-              <div className="space-y-10">
-                {Array.from(new Set(checklist.map(i => i.category))).map((category: string) => {
-                  const categoryIcons: Record<string, string> = {
-                    '필수': '⭐',
-                    '전자기기': '🔌',
-                    '의류': '👕',
-                    '세면/위생': '🧼',
-                    '식량/상비약': '💊',
-                    '기타/가방': '🎒'
-                  };
-
-                  return (
-                    <div key={category} className="space-y-4">
-                      <div className="flex items-center gap-3 pl-2">
-                        <span className="text-2xl">{categoryIcons[category] || '📦'}</span>
-                        <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">
-                          {category}
-                        </h3>
-                      </div>
-                      <div className="grid gap-3">
-                        {checklist.filter(item => item.category === category).map(item => (
-                          <div key={item.id} className="group relative">
-                            <button
-                              onClick={() => toggleCheck(item.id)}
-                              className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
-                                item.completed 
-                                ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
-                                : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
-                              }`}
-                              id={`item-${item.id}`}
-                            >
-                              <div className={`shrink-0 transition-all ${item.completed ? 'scale-90 opacity-50' : 'scale-100'} flex items-center gap-3`}>
-                                {item.completed ? (
-                                  <CheckCircle2 size={24} className="text-emerald-500" />
-                                ) : (
-                                  <div className="flex items-center gap-3">
-                                    <Circle size={24} className="text-slate-200" />
-                                    <span className="text-xl">{item.icon}</span>
-                                  </div>
-                                )}
-                              </div>
-                              <span className={`text-[15px] flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
-                                {item.name}
-                              </span>
-                            </button>
-                            <button 
-                              onClick={(e) => removeItem(item.id, e)}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
-                            >
-                              <X size={18} />
-                            </button>
-                          </div>
-                        ))}
-                        
-                        {activeCategoryInput === category ? (
-                          <div className="flex gap-2 p-2 bg-white rounded-2xl border border-slate-100 shadow-sm animate-in slide-in-from-top-2">
-                            <input 
-                              autoFocus
-                              className="flex-1 bg-transparent px-3 py-2 text-sm outline-none font-medium"
-                              placeholder="새 준비물 입력..."
-                              value={newItemName}
-                              onChange={(e) => setNewItemName(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  addItem(newItemName, category);
-                                  setNewItemName('');
-                                  setActiveCategoryInput(null);
-                                }
-                                if (e.key === 'Escape') setActiveCategoryInput(null);
-                              }}
-                            />
-                            <button 
-                              onClick={() => {
-                                addItem(newItemName, category);
+                    <div className="grid gap-3">
+                      {checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
+                        <div key={item.id} className="group relative">
+                          <button
+                            onClick={() => toggleCheck(item.id)}
+                            className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
+                              item.completed 
+                              ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
+                              : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
+                            }`}
+                          >
+                            <div className={`shrink-0 flex items-center gap-3`}>
+                              {item.completed ? (
+                                <CheckCircle2 size={22} className="text-emerald-500" />
+                              ) : (
+                                <Circle size={22} className="text-slate-200" />
+                              )}
+                              {!item.completed && <span className="text-lg">{item.icon}</span>}
+                            </div>
+                            <span className={`text-[15px] flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
+                              {item.name}
+                            </span>
+                          </button>
+                          <button 
+                            onClick={(e) => removeItem(item.id, e)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                          >
+                            <X size={18} />
+                          </button>
+                        </div>
+                      ))}
+                      
+                      {activeCategoryInput === selectedChecklistCategory ? (
+                        <div className="flex gap-2 p-2 bg-white rounded-[1.5rem] border border-slate-100 shadow-sm animate-in slide-in-from-top-2">
+                          <input 
+                            autoFocus
+                            className="flex-1 bg-transparent px-4 py-2 text-sm outline-none font-medium"
+                            placeholder="새 준비물 입력..."
+                            value={newItemName}
+                            onChange={(e) => setNewItemName(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                addItem(newItemName, selectedChecklistCategory);
                                 setNewItemName('');
                                 setActiveCategoryInput(null);
-                              }}
-                              className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold"
-                            >
-                              추가
-                            </button>
-                          </div>
-                        ) : (
+                              }
+                              if (e.key === 'Escape') setActiveCategoryInput(null);
+                            }}
+                          />
                           <button 
-                            onClick={() => setActiveCategoryInput(category)}
-                            className="w-full py-3 border-2 border-dashed border-slate-100 rounded-[1.5rem] flex items-center justify-center gap-2 text-slate-300 hover:text-slate-400 hover:border-slate-200 transition-all text-xs font-bold"
+                            onClick={() => {
+                              addItem(newItemName, selectedChecklistCategory);
+                              setNewItemName('');
+                              setActiveCategoryInput(null);
+                            }}
+                            className="bg-slate-900 text-white px-5 py-2 rounded-2xl text-xs font-bold"
                           >
-                            + 항목 추가
+                            추가
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
+                          className="w-full py-4 border-2 border-dashed border-slate-100 rounded-[1.5rem] flex items-center justify-center gap-2 text-slate-300 hover:text-slate-400 hover:border-slate-200 transition-all text-xs font-bold"
+                        >
+                          + {selectedChecklistCategory} 항목 추가
+                        </button>
+                      )}
                     </div>
-                  );
-                })}
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
               <div className="pt-10 mb-12">
