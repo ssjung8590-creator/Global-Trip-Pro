@@ -4,7 +4,8 @@ import { ChecklistItem } from "../types";
 export async function analyzeChecklist(
   imageData: string,
   mimeType: string,
-  checklist: ChecklistItem[]
+  checklist: ChecklistItem[],
+  lang: 'ko' | 'en' = 'ko'
 ): Promise<{ missingItems: string[]; suggestions: string }> {
   // Use the API key from the environment
   const apiKey = process.env.GEMINI_API_KEY;
@@ -14,10 +15,13 @@ export async function analyzeChecklist(
 
   const ai = new GoogleGenAI({ apiKey });
   
-  // Format the checklist for the prompt
+  // Format the checklist for the prompt based on language
   const checklistStr = checklist
     .filter(item => !item.completed)
-    .map(item => `- ${item.name} (${item.category})`)
+    .map(item => {
+      const name = lang === 'en' ? (item.nameEn || item.name) : item.name;
+      return `- ${name} (${item.category})`;
+    })
     .join("\n");
 
   const prompt = `
@@ -28,10 +32,12 @@ export async function analyzeChecklist(
     ${checklistStr}
     
     Based on the image, identify which items from the list above appear to be MISSING.
-    Also, provide any helpful packing suggestions or safety tips for a business trip.
+    Also, provide any helpful packing suggestions or safety tips for a travel.
+    
+    IMPORTANT: Respond in ${lang === 'en' ? 'English' : 'Korean'}.
     
     Return the result in JSON format with two fields:
-    - "missingItems": An array of strings (the names of the missing items from the checklist)
+    - "missingItems": An array of strings (the names of the missing items exactly as provided in the list)
     - "suggestions": A string containing your overall observations and tips.
   `;
 

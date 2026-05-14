@@ -20,17 +20,141 @@ import {
   Settings,
   Info,
   Loader2,
+  RotateCcw,
   AlertCircle,
   X,
   Coins
 } from 'lucide-react';
 import { COUNTRIES, INITIAL_CHECKLIST } from './constants';
-import { AppView, CountryInfo, ChecklistItem } from './types';
+import { Language, AppView, CountryInfo, ChecklistItem } from './types';
 import { analyzeChecklist } from './services/geminiService';
+
+const translations = {
+  ko: {
+    destinations: '여행지 국가',
+    checklist: '체크리스트',
+    settings: '앱 설정',
+    info: '도움이 되는 정보',
+    done: '완료',
+    totalProgress: '전체 진행률',
+    resetChecklist: '모든 체크리스트 진행 상황을 초기화할까요?',
+    addPlaceholder: '새 준비물 입력...',
+    add: '추가',
+    resetRecovery: '초기화하여 전체 복구하기',
+    noItemsInCategory: '이 카테고리에 항목이 없습니다',
+    dailyTipHeader: '오늘의 준비 팁',
+    dailyTipContent: '여권 사본을 스마트폰의 암호화된 폴더나 클라우드에 업로드해 두면 분실 시 매우 유용하게 쓰입니다.',
+    openChecklist: '체크리스트 열기',
+    manageChecklist: '메인 체크리스트 편집',
+    analysisReport: 'AI 분석 리포트',
+    analyzing: '이미지를 꼼꼼하게 대조 중입니다...',
+    perfectPreparation: '완벽한 준비!',
+    perfectPrepSub: 'AI가 분석한 결과, 모든 품목이 잘 챙겨진 것 같습니다.',
+    missingItems: '! 누락 품목 의심 리스트',
+    expertAdvice: '전문가의 조언',
+    confirm: '확인',
+    emergencyInfo: '비상 연락망 & 정보',
+    emergencyPhone: '비상 연락처',
+    passportRef: '여권 번호 (참고용)',
+    dataManagement: '데이터 관리',
+    resetBtn: '초기화',
+    helpfulLinks: '해외 출장 필수 링크',
+    installGuide: '앱으로 사용하기 (설치 방법)',
+    localWeather: '현지 날씨',
+    voltage: '사용 전압',
+    currency: '현지 통화',
+    guide: '준비 가이드',
+    guideContent: '범용 멀티 어댑터와 현지 화폐 환전이 필요할 수 있습니다.',
+    all: '전체',
+    asia: '아시아',
+    europe: '유럽',
+    northAmerica: '북미',
+    oceania: '대양주',
+    regionPrompt: '위의 대륙 아이콘을 눌러\n여행지를 선택해보세요',
+    aiTitle: '최종 점검 & AI 조언',
+    aiDescription: '짐을 다 싸셨나요? 사진 한 장이면 AI 전문가가 빠진 물건과 현지 팁을 조언해드립니다.',
+    aiStart: 'AI 스마트 점검 시작',
+    analysisError: '분석 중 오류가 발생했습니다. 네트워크 상태를 확인 후 다시 시도해주세요.',
+    navDest: '여행지',
+    navInfo: '정보',
+    navCheck: '준비물',
+    catEssential: '필수',
+    catElectronics: '전자기기',
+    catClothes: '의류',
+    catToiletries: '세면/위생',
+    catFood: '식량/상비약',
+    catOthers: '기타/가방',
+    itemsIn: '내역',
+    addItem: '항목 추가'
+  },
+  en: {
+    destinations: 'Destinations',
+    checklist: 'Checklist',
+    settings: 'Settings',
+    info: 'Helpful Info',
+    done: 'Done',
+    totalProgress: 'Total Progress',
+    resetChecklist: 'Reset all checklist progress?',
+    addPlaceholder: 'New item...',
+    add: 'Add',
+    resetRecovery: 'Reset to recover all',
+    noItemsInCategory: 'No items in this category',
+    dailyTipHeader: 'Daily Tip',
+    dailyTipContent: 'Uploading a copy of your passport to an encrypted folder or cloud is very useful in case of loss.',
+    openChecklist: 'Open Checklist',
+    manageChecklist: 'Edit Main Checklist',
+    analysisReport: 'AI Analysis Report',
+    analyzing: 'Analyzing image carefully...',
+    perfectPreparation: 'Perfect Prep!',
+    perfectPrepSub: 'AI analysis suggests all items are well-packed.',
+    missingItems: '! Possible Missing Items',
+    expertAdvice: 'Expert Advice',
+    confirm: 'Confirm',
+    emergencyInfo: 'Emergency & Info',
+    emergencyPhone: 'Emergency Phone',
+    passportRef: 'Passport # (Ref)',
+    dataManagement: 'Data Management',
+    resetBtn: 'Reset',
+    helpfulLinks: 'Essential Travel Links',
+    installGuide: 'App Install Guide',
+    localWeather: 'Local Weather',
+    voltage: 'Voltage',
+    currency: 'Currency',
+    guide: 'Prep Guide',
+    guideContent: 'Universal adapter and local currency exchange may be required.',
+    all: 'All',
+    asia: 'Asia',
+    europe: 'Europe',
+    northAmerica: 'N. America',
+    oceania: 'Oceania',
+    regionPrompt: 'Select a region above\nto see destinations',
+    aiTitle: 'Final Check & AI Advice',
+    aiDescription: 'Packed everything? Take a photo and our AI will spot missing items and give local tips.',
+    aiStart: 'Start AI Smart Check',
+    analysisError: 'Analysis failed. Please check connection and try again.',
+    navDest: 'Dest',
+    navInfo: 'Info',
+    navCheck: 'List',
+    catEssential: 'Essential',
+    catElectronics: 'Electronics',
+    catClothes: 'Clothes',
+    catToiletries: 'Toiletries',
+    catFood: 'Food/Med',
+    catOthers: 'Others/Bag',
+    itemsIn: 'Items',
+    addItem: 'Add Item'
+  }
+};
 
 export default function App() {
   const [view, setView] = useState<AppView>('countries');
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo | null>(null);
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('appLang');
+    return (saved as Language) || 'ko';
+  });
+
+  const t = translations[lang];
   
   // Load checklist from localStorage if available
   const [checklist, setChecklist] = useState<ChecklistItem[]>(() => {
@@ -46,6 +170,17 @@ export default function App() {
   const [passportRef, setPassportRef] = useState(localStorage.getItem('passportRef') || '');
 
   useEffect(() => {
+    // Sync existing checklist with INITIAL_CHECKLIST to populate missing nameEn
+    setChecklist(prev => prev.map(item => {
+      const initialItem = INITIAL_CHECKLIST.find(i => i.id === item.id);
+      if (initialItem && !item.nameEn) {
+        return { ...item, nameEn: initialItem.nameEn };
+      }
+      return item;
+    }));
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('tripChecklist', JSON.stringify(checklist));
   }, [checklist]);
 
@@ -57,9 +192,13 @@ export default function App() {
     localStorage.setItem('passportRef', passportRef);
   }, [passportRef]);
 
+  useEffect(() => {
+    localStorage.setItem('appLang', lang);
+  }, [lang]);
+
   const resetChecklist = () => {
-    if (confirm('모든 체크리스트 진행 상황을 초기화할까요?')) {
-      setChecklist(INITIAL_CHECKLIST);
+    if (confirm(t.resetChecklist)) {
+      setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })));
     }
   };
 
@@ -72,6 +211,7 @@ export default function App() {
     const newItem: ChecklistItem = {
       id: Math.random().toString(36).substr(2, 9),
       name,
+      nameEn: name, 
       category,
       completed: false,
       icon: '📦'
@@ -97,27 +237,9 @@ export default function App() {
     return matchesSearch && matchesRegion;
   });
 
-  const regions = [
-    { name: 'All', icon: '🌎', label: '전체' },
-    { name: 'Asia', icon: '🌏', label: '아시아' },
-    { name: 'Europe', icon: '🌍', label: '유럽' },
-    { name: 'North America', icon: '🏔️', label: '북미' },
-    { name: 'Oceania', icon: '🏝️', label: '대양주' }
-  ];
-
-  const toggleCategory = (category: string) => {
-    setSelectedChecklistCategory(category);
-  };
-
   const handleCountrySelect = (country: CountryInfo) => {
     setSelectedCountry(country);
     setView('details');
-  };
-
-  const currentCategoryCount = (category: string) => {
-    const items = checklist.filter(i => i.category === category);
-    const completed = items.filter(i => i.completed).length;
-    return `${completed}/${items.length}`;
   };
 
   const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +255,7 @@ export default function App() {
       reader.onloadend = async () => {
         const base64Content = (reader.result as string).split(',')[1];
         try {
-          const result = await analyzeChecklist(base64Content, file.type, checklist);
+          const result = await analyzeChecklist(base64Content, file.type, checklist, lang);
           setAnalysisResult(result);
         } catch (error) {
           console.error("Analysis failed", error);
@@ -172,15 +294,12 @@ export default function App() {
           )}
         </div>
         <div className="flex gap-2">
-          {view === 'details' && (
-            <button 
-              onClick={() => setView('checklist')}
-              className="p-2 bg-white/40 rounded-full hover:bg-white/80 transition-all border border-slate-100 shadow-sm"
-              id="checklist-nav"
-            >
-              <ShieldCheck size={20} className="text-emerald-500" />
-            </button>
-          )}
+          <button 
+            onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+            className="px-3 bg-white/40 rounded-full hover:bg-white/80 transition-all border border-slate-100 shadow-sm text-[10px] font-black text-slate-600"
+          >
+            {lang === 'ko' ? 'EN' : 'KO'}
+          </button>
           <button 
             onClick={() => setView('settings')}
             className="p-2 bg-white/40 rounded-full border border-slate-100 shadow-sm" 
@@ -204,13 +323,19 @@ export default function App() {
               {/* Destinations Section */}
               <section>
                 <div className="flex items-center justify-between mb-4 px-2">
-                  <h2 className="text-xl font-black text-slate-800 tracking-tight">여행지 국가</h2>
+                  <h2 className="text-xl font-black text-slate-800 tracking-tight">{t.destinations}</h2>
                   <Globe size={20} className="text-slate-300" />
                 </div>
                 
                 {/* Region Icons Container */}
                 <div className="grid grid-cols-5 gap-2">
-                  {regions.map((region) => (
+                  {[
+                    { name: 'All', icon: '🌎', label: t.all },
+                    { name: 'Asia', icon: '🌏', label: t.asia },
+                    { name: 'Europe', icon: '🌍', label: t.europe },
+                    { name: 'North America', icon: '🏔️', label: t.northAmerica },
+                    { name: 'Oceania', icon: '🏝️', label: t.oceania }
+                  ].map((region) => (
                     <button
                       key={region.name}
                       type="button"
@@ -241,7 +366,7 @@ export default function App() {
                         animate={{ opacity: 1 }}
                         className="bg-slate-50 rounded-[2rem] p-8 text-center border border-dashed border-slate-200"
                       >
-                        <p className="text-xs font-bold text-slate-400 italic">위의 대륙 아이콘을 눌러<br />여행지를 선택해보세요</p>
+                        <p className="text-xs font-bold text-slate-400 italic whitespace-pre-line">{t.regionPrompt}</p>
                       </motion.div>
                     ) : (
                       <motion.div 
@@ -261,8 +386,8 @@ export default function App() {
                             >
                               <span className="text-3xl shrink-0 group-hover:scale-110 transition-transform">{country.emoji}</span>
                               <div className="min-w-0">
-                                <p className="text-xs font-extra-bold text-slate-800 truncate">{country.name}</p>
-                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{country.nameEn}</p>
+                                <p className="text-xs font-extra-bold text-slate-800 truncate">{lang === 'ko' ? country.name : country.nameEn}</p>
+                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{lang === 'ko' ? country.nameEn : country.name}</p>
                               </div>
                             </button>
                           ))}
@@ -273,48 +398,56 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Checklist Section */}
+              {/* Checklist Preview Section */}
               <section className="pt-8 border-t border-slate-100">
-                <div className="flex items-center justify-between mb-4 px-2">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-black text-slate-800 tracking-tight">체크리스트</h2>
+                <div className="flex items-center justify-between mb-6 px-2">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-2xl font-black text-slate-800 tracking-tight">📋 {t.checklist}</h2>
+                    <button 
+                      onClick={resetChecklist}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
+                    >
+                      <RotateCcw size={12} className="group-active:rotate-[-120deg] transition-transform duration-500" />
+                      <span className="text-[10px] font-bold">{t.resetBtn}</span>
+                    </button>
                   </div>
-                  <div className="px-3 py-1 bg-emerald-50 rounded-full">
-                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">
-                      {checklist.filter(i => i.completed).length}/{checklist.length} DONE
+                  <div className="px-3 py-1 bg-emerald-50 rounded-full border border-emerald-100">
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                      {checklist.filter(i => i.completed).length}/{checklist.length} {t.done}
                     </span>
                   </div>
                 </div>
 
-                {/* Sub-Category Icons */}
-                <div className="grid grid-cols-4 gap-2">
+                {/* Categories with Pastel Colors */}
+                <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: '필수', icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100' },
-                    { id: '전자기기', icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100' },
-                    { id: '세면/위생', icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100' },
-                    { id: '의류', icon: '👕', color: 'bg-slate-50 text-slate-500 border-slate-100' }
+                    { id: '필수', label: t.catEssential, icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100', active: 'bg-rose-100' },
+                    { id: '전자기기', label: t.catElectronics, icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100', active: 'bg-blue-100' },
+                    { id: '의류', label: t.catClothes, icon: '👕', color: 'bg-violet-50 text-violet-500 border-violet-100', active: 'bg-violet-100' },
+                    { id: '세면/위생', label: t.catToiletries, icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100', active: 'bg-emerald-100' },
+                    { id: '식량/상비약', label: t.catFood, icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100', active: 'bg-amber-100' },
+                    { id: '기타/가방', label: t.catOthers, icon: '🎒', color: 'bg-indigo-50 text-indigo-500 border-indigo-100', active: 'bg-indigo-100' }
                   ].map((cat) => (
                     <button
                       key={cat.id}
-                      type="button"
                       onClick={() => setSelectedChecklistCategory(cat.id)}
-                      className={`flex flex-col items-center gap-2 py-5 rounded-[2rem] border transition-all ${
+                      className={`flex flex-col items-center gap-2 py-3 rounded-2xl border transition-all ${
                         selectedChecklistCategory === cat.id
-                          ? `${cat.color} border-2 shadow-lg -translate-y-1`
-                          : 'bg-white border-slate-50 text-slate-300'
+                          ? `${cat.active} border-slate-300 shadow-sm scale-95`
+                          : `${cat.color} opacity-80`
                       }`}
                     >
-                      <span className="text-2xl">{cat.icon}</span>
-                      <span className={`text-[9px] font-black tracking-tight ${
-                        selectedChecklistCategory === cat.id ? 'opacity-100' : 'text-slate-400'
+                      <span className="text-xl">{cat.icon}</span>
+                      <span className={`text-[9px] font-black tracking-tight leading-none text-center ${
+                        selectedChecklistCategory === cat.id ? 'text-slate-900' : 'opacity-80'
                       }`}>
-                        {cat.id}
+                        {cat.label.split('/').join('\n')}
                       </span>
                     </button>
                   ))}
                 </div>
 
-                {/* Checklist Items Items */}
+                {/* Preview Items */}
                 <div className="mt-6 min-h-[120px]">
                   <AnimatePresence mode="wait">
                     <motion.div 
@@ -326,28 +459,36 @@ export default function App() {
                     >
                       <div className="grid gap-2">
                         {checklist.filter(i => i.category === selectedChecklistCategory).map(item => (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => toggleCheck(item.id)}
-                            className={`w-full flex items-center gap-4 py-4 px-5 rounded-2xl transition-all border ${
-                              item.completed 
-                              ? 'bg-emerald-50/30 border-emerald-50 opacity-50' 
-                              : 'bg-white border-slate-100 shadow-sm hover:border-slate-300'
-                            }`}
-                          >
-                            <div className="shrink-0">
-                              {item.completed ? (
-                                <CheckCircle2 size={20} className="text-emerald-500" />
-                              ) : (
-                                <Circle size={20} className="text-slate-200" />
-                              )}
-                            </div>
-                            <span className={`text-sm flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
-                              {item.name}
-                            </span>
-                            {!item.completed && <span className="text-xl opacity-20">{item.icon}</span>}
-                          </button>
+                          <div key={item.id} className="relative group/item">
+                            <button
+                              onClick={() => toggleCheck(item.id)}
+                              className={`w-full flex items-center gap-4 py-4 px-5 rounded-2xl transition-all border ${
+                                item.completed 
+                                ? 'bg-slate-50/50 border-slate-100 opacity-50' 
+                                : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
+                              }`}
+                            >
+                              <div className="shrink-0 flex items-center gap-3">
+                                {item.completed ? (
+                                  <CheckCircle2 size={18} className="text-emerald-500" />
+                                ) : (
+                                  <Circle size={18} className="text-slate-200" />
+                                )}
+                                <span className={`text-lg transition-all ${item.completed ? 'opacity-10 grayscale' : 'opacity-80'}`}>
+                                  {item.icon}
+                                </span>
+                              </div>
+                              <span className={`text-xs flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
+                                {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                              </span>
+                            </button>
+                            <button 
+                              onClick={(e) => removeItem(item.id, e)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
                         ))}
                       </div>
                     </motion.div>
@@ -355,24 +496,23 @@ export default function App() {
                 </div>
 
                 <button 
-                  type="button"
                   onClick={() => setView('checklist')}
-                  className="w-full mt-4 py-4 bg-slate-900 text-white font-bold rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all"
+                  className="w-full mt-4 py-4 bg-slate-900 text-white font-bold rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
-                  메인 체크리스트 편집 <ChevronRight size={14} className="inline ml-1" />
+                   {t.manageChecklist} <ChevronRight size={14} />
                 </button>
               </section>
 
               {/* Tips Banner */}
-              <div className="glass p-6 rounded-[2.5rem] bg-indigo-50/50 border border-indigo-100">
+              <div className="glass p-6 rounded-[2.5rem] bg-indigo-50/50 border border-indigo-100 mt-8">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-indigo-100 rounded-lg">
                     <Info size={18} className="text-indigo-600" />
                   </div>
-                  <span className="font-bold text-sm text-indigo-900">오늘의 준비 팁</span>
+                  <span className="font-bold text-sm text-indigo-900">{t.dailyTipHeader}</span>
                 </div>
                 <p className="text-[11px] text-indigo-800/60 leading-relaxed font-medium">
-                  여권 사본을 스마트폰의 암호화된 폴더나 클라우드에 업로드해 두면 분실 시 매우 유용하게 쓰입니다.
+                  {t.dailyTipContent}
                 </p>
               </div>
             </motion.div>
@@ -388,70 +528,71 @@ export default function App() {
             >
               <div className="text-center py-6">
                 <div className="text-7xl mb-4 drop-shadow-sm">{selectedCountry.emoji}</div>
-                <h2 className="text-3xl font-display font-bold text-slate-800">{selectedCountry.name}</h2>
-                <p className="text-slate-400">{selectedCountry.nameEn}</p>
+                <h2 className="text-3xl font-display font-bold text-slate-800">{lang === 'ko' ? selectedCountry.name : selectedCountry.nameEn}</h2>
+                <p className="text-slate-400">{lang === 'ko' ? selectedCountry.nameEn : selectedCountry.name}</p>
               </div>
 
               {/* Weather, Voltage & Info Cards */}
               <div className="space-y-4">
-                {/* Weather Forecast Card */}
-                <div className="glass bg-sky-50/60 p-6 rounded-[2.5rem] shadow-sm border border-sky-100">
+                {/* 1. Weather Card (Soft Blue) */}
+                <div className="bg-blue-50/70 p-6 rounded-[2.5rem] shadow-sm border border-blue-100/50">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <div className="p-3 bg-white rounded-2xl shadow-sm">
-                        <CloudSun size={28} className="text-sky-500" />
+                        <CloudSun size={28} className="text-blue-500" />
                       </div>
                       <div>
-                        <h4 className="text-[10px] uppercase tracking-widest text-sky-600/60 font-bold mb-0.5">현지 날씨</h4>
-                        <p className="text-sm font-bold text-sky-900 leading-snug">{selectedCountry.weatherSummary}</p>
+                        <h4 className="text-[10px] uppercase tracking-widest text-blue-600/60 font-bold mb-0.5">{t.localWeather}</h4>
+                        <p className="text-sm font-bold text-blue-900 leading-snug">{selectedCountry.weatherSummary}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-7 gap-1 bg-white/40 p-3 rounded-[1.5rem] border border-sky-100/50">
+                  <div className="grid grid-cols-7 gap-1 bg-white/50 p-3 rounded-[1.5rem] border border-blue-100/30">
                     {selectedCountry.forecast.map((day, idx) => (
                       <div key={idx} className="flex flex-col items-center gap-2 py-2">
-                        <span className="text-[10px] font-bold text-sky-400">{day.day}</span>
+                        <span className="text-[10px] font-bold text-blue-400">{day.day}</span>
                         <span className="text-xl">{day.condition}</span>
-                        <span className="text-[11px] font-black text-sky-900">{day.temp}</span>
+                        <span className="text-[11px] font-black text-blue-900">{day.temp}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="glass bg-amber-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-amber-100">
+                  {/* 2. Voltage Card (Soft Rose) */}
+                  <div className="bg-rose-50/70 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-rose-100/50">
                     <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
-                      <Zap size={28} className="text-amber-500" />
+                      <Zap size={28} className="text-rose-500" />
                     </div>
                     <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-amber-600/60 font-bold mb-1">사용 전압</h4>
-                      <p className="text-2xl font-bold text-amber-900">{selectedCountry.voltage}</p>
-                      <p className="text-[10px] text-amber-900/50 font-medium leading-tight mt-1">{selectedCountry.plugType}</p>
+                      <h4 className="text-[10px] uppercase tracking-widest text-rose-600/60 font-bold mb-1">{t.voltage}</h4>
+                      <p className="text-2xl font-bold text-rose-900">{selectedCountry.voltage}</p>
+                      <p className="text-[10px] text-rose-900/50 font-medium leading-tight mt-1">{selectedCountry.plugType}</p>
                     </div>
                   </div>
 
-                  <div className="glass bg-emerald-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-emerald-100">
+                  {/* 3. Currency Card (Soft Emerald) */}
+                  <div className="bg-emerald-50/70 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-emerald-100/50">
                     <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
                       <Coins size={28} className="text-emerald-500" />
                     </div>
                     <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-emerald-600/60 font-bold mb-1">현지 통화</h4>
+                      <h4 className="text-[10px] uppercase tracking-widest text-emerald-600/60 font-bold mb-1">{t.currency}</h4>
                       <p className="text-2xl font-bold text-emerald-900">{selectedCountry.currency.symbol}</p>
                       <p className="text-[10px] text-emerald-900/50 font-medium leading-tight mt-1">{selectedCountry.currency.code}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="glass bg-indigo-50/60 p-6 rounded-[2rem] flex items-center justify-between shadow-sm border border-indigo-100">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
-                      <ShieldCheck size={24} className="text-indigo-500" />
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-indigo-600/60 font-bold mb-0.5">준비 가이드</h4>
-                      <p className="text-[11px] font-bold text-indigo-900">범용 멀티 어댑터와 현지 화폐 환전이 필요할 수 있습니다.</p>
-                    </div>
+                {/* 4. Prep Guide Card (Soft Violet) */}
+                <div className="bg-violet-50/70 p-6 rounded-[2.5rem] flex items-center gap-4 shadow-sm border border-violet-100/50">
+                  <div className="p-3 bg-white rounded-2xl shadow-sm shrink-0">
+                    <ShieldCheck size={28} className="text-violet-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] uppercase tracking-widest text-violet-600/60 font-bold mb-1">{t.guide}</h4>
+                    <p className="text-xs font-bold text-violet-900 leading-relaxed">{t.guideContent}</p>
                   </div>
                 </div>
               </div>
@@ -459,9 +600,8 @@ export default function App() {
               <button 
                 onClick={() => setView('checklist')}
                 className="w-full py-5 bg-slate-900 text-white font-bold rounded-[2rem] flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95"
-                id="start-checklist"
               >
-                체크리스트 열기 <ChevronRight size={20} />
+                {t.openChecklist} <ChevronRight size={20} />
               </button>
             </motion.div>
           )}
@@ -474,46 +614,52 @@ export default function App() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6 pb-12"
             >
-              <div className="flex items-end justify-between mb-4 px-2">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">전체 리스트</span>
-                  <h2 className="text-2xl font-black mt-1 text-slate-800">준비물 관리</h2>
-                </div>
-                <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Total Progress</span>
-                  <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm text-xs border border-slate-50">
-                    <span className="text-emerald-500 font-extrabold text-sm">
+                <div className="flex items-center justify-between mb-8 px-2 bg-white/40 p-5 rounded-[2.5rem] border border-slate-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+                       📋 {t.checklist}
+                    </h2>
+                    <button 
+                      onClick={resetChecklist}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
+                      title={t.resetBtn}
+                    >
+                      <RotateCcw size={14} className="group-active:rotate-[-120deg] transition-transform duration-500" />
+                      <span className="text-[11px] font-bold">{t.resetBtn}</span>
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-inner">
+                    <span className="text-emerald-600 font-black text-xl leading-none">
                       {checklist.filter(i => i.completed).length}
                     </span>
-                    <span className="text-slate-300 font-medium italic">/ {checklist.length}</span>
+                    <span className="text-emerald-300 font-bold text-sm leading-none">/ {checklist.length}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* Category Selection Icons */}
-              <div className="grid grid-cols-5 gap-2">
+              {/* Category Selection Icons with Pastel Colors */}
+              <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: '필수', icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100' },
-                  { id: '전자기기', icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100' },
-                  { id: '의류', icon: '👕', color: 'bg-slate-50 text-slate-500 border-slate-100' },
-                  { id: '세면/위생', icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100' },
-                  { id: '식량/상비약', icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100' }
+                  { id: '필수', label: t.catEssential, icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100', active: 'bg-rose-100' },
+                  { id: '전자기기', label: t.catElectronics, icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100', active: 'bg-blue-100' },
+                  { id: '의류', label: t.catClothes, icon: '👕', color: 'bg-violet-50 text-violet-500 border-violet-100', active: 'bg-violet-100' },
+                  { id: '세면/위생', label: t.catToiletries, icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100', active: 'bg-emerald-100' },
+                  { id: '식량/상비약', label: t.catFood, icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100', active: 'bg-amber-100' },
+                  { id: '기타/가방', label: t.catOthers, icon: '🎒', color: 'bg-indigo-50 text-indigo-500 border-indigo-100', active: 'bg-indigo-100' }
                 ].map((cat) => (
                   <button
                     key={cat.id}
-                    type="button"
                     onClick={() => setSelectedChecklistCategory(cat.id)}
-                    className={`flex flex-col items-center gap-2 py-4 rounded-[1.8rem] border transition-all ${
+                    className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
                       selectedChecklistCategory === cat.id
-                        ? `${cat.color} border-2 shadow-lg -translate-y-1`
-                        : 'bg-white border-slate-50 text-slate-300'
+                        ? `${cat.active} border-slate-300 shadow-sm scale-95`
+                        : `${cat.color} opacity-80 shadow-sm`
                     }`}
                   >
-                    <span className="text-xl">{cat.icon}</span>
-                    <span className={`text-[8px] font-black tracking-tight leading-none text-center ${
-                      selectedChecklistCategory === cat.id ? 'opacity-100' : 'text-slate-400'
+                    <span className="text-3xl">{cat.icon}</span>
+                    <span className={`text-[10px] font-black tracking-tight leading-none text-center ${
+                      selectedChecklistCategory === cat.id ? 'text-slate-900' : 'opacity-80'
                     }`}>
-                      {cat.id.split('/').join('\n')}
+                      {cat.label.split('/').join('\n')}
                     </span>
                   </button>
                 ))}
@@ -530,47 +676,71 @@ export default function App() {
                   >
                     <div className="flex items-center gap-3 px-2">
                       <div className="w-1 h-4 bg-slate-900 rounded-full" />
-                      <h3 className="text-lg font-black text-slate-800">{selectedChecklistCategory} 내역</h3>
+                      <h3 className="text-lg font-black text-slate-800">
+                        {translations[lang][(Object.entries({
+                          '필수': 'catEssential',
+                          '전자기기': 'catElectronics',
+                          '의류': 'catClothes',
+                          '세면/위생': 'catToiletries',
+                          '식량/상비약': 'catFood',
+                          '기타/가방': 'catOthers'
+                        }) as [string, keyof typeof translations.ko][]).find(([k]) => k === selectedChecklistCategory)?.[1] || 'itemsIn']} {t.itemsIn}
+                      </h3>
                     </div>
 
                     <div className="grid gap-3">
-                      {checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
-                        <div key={item.id} className="group relative">
-                          <button
-                            onClick={() => toggleCheck(item.id)}
-                            className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
-                              item.completed 
-                              ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
-                              : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
-                            }`}
-                          >
-                            <div className={`shrink-0 flex items-center gap-3`}>
-                              {item.completed ? (
-                                <CheckCircle2 size={22} className="text-emerald-500" />
-                              ) : (
-                                <Circle size={22} className="text-slate-200" />
-                              )}
-                              {!item.completed && <span className="text-lg">{item.icon}</span>}
-                            </div>
-                            <span className={`text-[15px] flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
-                              {item.name}
-                            </span>
-                          </button>
+                      {checklist.filter(item => item.category === selectedChecklistCategory).length === 0 ? (
+                        <div className="py-12 flex flex-col items-center gap-4 bg-white rounded-[1.5rem] border border-dashed border-slate-100">
+                          <span className="text-4xl opacity-20">📭</span>
+                          <p className="text-xs font-bold text-slate-300">{t.noItemsInCategory}</p>
                           <button 
-                            onClick={(e) => removeItem(item.id, e)}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                            onClick={resetChecklist}
+                            className="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline"
                           >
-                            <X size={18} />
+                            {t.resetRecovery}
                           </button>
                         </div>
-                      ))}
+                      ) : (
+                        checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
+                          <div key={item.id} className="group relative">
+                            <button
+                              onClick={() => toggleCheck(item.id)}
+                              className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
+                                item.completed 
+                                ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
+                                : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
+                              }`}
+                            >
+                                <div className={`shrink-0 flex items-center gap-3`}>
+                                {item.completed ? (
+                                  <CheckCircle2 size={22} className="text-emerald-500" />
+                                ) : (
+                                  <Circle size={22} className="text-slate-200" />
+                                )}
+                                <span className={`text-lg transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                                  {item.icon}
+                                </span>
+                              </div>
+                              <span className={`text-[15px] flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
+                                {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                              </span>
+                            </button>
+                            <button 
+                              onClick={(e) => removeItem(item.id, e)}
+                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                            >
+                              <X size={18} />
+                            </button>
+                          </div>
+                        ))
+                      )}
                       
                       {activeCategoryInput === selectedChecklistCategory ? (
                         <div className="flex gap-2 p-2 bg-white rounded-[1.5rem] border border-slate-100 shadow-sm animate-in slide-in-from-top-2">
                           <input 
                             autoFocus
                             className="flex-1 bg-transparent px-4 py-2 text-sm outline-none font-medium"
-                            placeholder="새 준비물 입력..."
+                            placeholder={t.addPlaceholder}
                             value={newItemName}
                             onChange={(e) => setNewItemName(e.target.value)}
                             onKeyDown={(e) => {
@@ -590,7 +760,7 @@ export default function App() {
                             }}
                             className="bg-slate-900 text-white px-5 py-2 rounded-2xl text-xs font-bold"
                           >
-                            추가
+                            {t.add}
                           </button>
                         </div>
                       ) : (
@@ -598,7 +768,7 @@ export default function App() {
                           onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
                           className="w-full py-4 border-2 border-dashed border-slate-100 rounded-[1.5rem] flex items-center justify-center gap-2 text-slate-300 hover:text-slate-400 hover:border-slate-200 transition-all text-xs font-bold"
                         >
-                          + {selectedChecklistCategory} 항목 추가
+                          + {t.addItem}
                         </button>
                       )}
                     </div>
@@ -608,7 +778,6 @@ export default function App() {
 
               <div className="pt-10 mb-12">
                 <div className="relative glass bg-[#F3E5F5]/30 p-8 rounded-[3rem] border border-fuchsia-100 flex flex-col items-center gap-6 shadow-sm text-center overflow-hidden">
-                  {/* Decorative AI Sparkle */}
                   <div className="absolute -top-4 -right-4 w-32 h-32 bg-fuchsia-200/30 blur-2xl rounded-full" />
                   
                   <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center shadow-sm relative z-10">
@@ -616,17 +785,15 @@ export default function App() {
                   </div>
                   
                   <div className="relative z-10">
-                    <h4 className="text-xl font-black text-slate-800">최종 점검 & AI 조언</h4>
-                    <p className="text-[13px] text-slate-500 mt-2 leading-relaxed">
-                      짐을 다 싸셨나요? <br />
-                      사진 한 장이면 <span className="text-fuchsia-600 font-bold">AI 전문가</span>가 <br />
-                      빠진 물건과 현지 팁을 조언해드립니다.
+                    <h4 className="text-xl font-black text-slate-800">{t.aiTitle}</h4>
+                    <p className="text-[13px] text-slate-500 mt-2 leading-relaxed whitespace-pre-line">
+                      {t.aiDescription}
                     </p>
                   </div>
 
                   <label className="w-full relative z-10 py-5 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white rounded-[2rem] text-sm font-black cursor-pointer transition-all hover:opacity-90 active:scale-95 shadow-xl shadow-fuchsia-100/50 flex items-center justify-center gap-2 group">
                     <Zap size={18} className="group-hover:animate-pulse shrink-0" />
-                    AI 스마트 점검 시작
+                    {t.aiStart}
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -638,6 +805,7 @@ export default function App() {
               </div>
             </motion.div>
           )}
+
           {view === 'settings' && (
             <motion.div
               key="settings"
@@ -647,8 +815,8 @@ export default function App() {
               className="space-y-8"
             >
               <div className="mb-4">
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">앱 설정</span>
-                <h2 className="text-2xl font-bold mt-1 text-slate-800">도움이 되는 정보</h2>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">{t.settings}</span>
+                <h2 className="text-2xl font-bold mt-1 text-slate-800">{t.info}</h2>
               </div>
 
               <div className="space-y-6">
@@ -658,12 +826,12 @@ export default function App() {
                     <div className="p-2 bg-rose-100 rounded-lg">
                       <AlertCircle size={18} className="text-rose-600" />
                     </div>
-                    <span className="font-bold text-sm text-rose-900">비상 연락망 & 정보</span>
+                    <span className="font-bold text-sm text-rose-900">{t.emergencyInfo}</span>
                   </div>
                   
                   <div className="space-y-3">
                     <div>
-                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">비상 연락처</label>
+                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">{t.emergencyPhone}</label>
                       <input 
                         className="w-full bg-white/60 border border-rose-100 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:bg-white transition-all"
                         placeholder="예: 010-0000-0000"
@@ -672,7 +840,7 @@ export default function App() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">여권 번호 (참고용)</label>
+                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">{t.passportRef}</label>
                       <input 
                         className="w-full bg-white/60 border border-rose-100 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:bg-white transition-all"
                         placeholder="예: M12345678"
@@ -681,30 +849,27 @@ export default function App() {
                       />
                     </div>
                   </div>
-                  <p className="text-[10px] text-rose-400 mt-2 px-1">
-                    * 위 정보는 브라우저에만 안전하게 저장되며 서버로 전송되지 않습니다.
-                  </p>
                 </div>
 
                 {/* Checklist Control */}
                 <div className="glass bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50">
-                  <h4 className="text-sm font-bold text-slate-800 mb-4">데이터 관리</h4>
+                  <h4 className="text-sm font-bold text-slate-800 mb-4">{t.dataManagement}</h4>
                   <button 
                     onClick={resetChecklist}
                     className="w-full py-4 border border-slate-100 rounded-2xl text-sm font-bold text-slate-400 hover:text-rose-500 hover:border-rose-100 hover:bg-rose-50 transition-all flex items-center justify-center gap-2"
                   >
-                    체크리스트 초기화하기
+                    {t.resetBtn}
                   </button>
                 </div>
 
                 {/* Helpful Links/Info */}
                 <div className="glass bg-blue-50/50 p-6 rounded-[2.5rem] border border-blue-100">
-                  <h4 className="text-sm font-bold text-blue-900 mb-4">해외 출장 필수 링크</h4>
+                  <h4 className="text-sm font-bold text-blue-900 mb-4">{t.helpfulLinks}</h4>
                   <div className="grid gap-2">
                     {[
-                      { name: '외교부 해외안전여행', url: 'https://www.0404.go.kr' },
-                      { name: '인천공항 운항현황', url: 'https://www.airport.kr' },
-                      { name: '세계 기상 기구', url: 'https://worldweather.wmo.int' }
+                      { name: lang === 'ko' ? '외교부 해외안전여행' : 'Safe Travel (MOFA)', url: 'https://www.0404.go.kr' },
+                      { name: lang === 'ko' ? '인천공항 운항현황' : 'Incheon Airport Status', url: 'https://www.airport.kr' },
+                      { name: lang === 'ko' ? '세계 기상 기구' : 'World Weather Info', url: 'https://worldweather.wmo.int' }
                     ].map((link, idx) => (
                       <a 
                         key={idx}
@@ -724,21 +889,21 @@ export default function App() {
                 <div className="glass bg-slate-900/5 p-6 rounded-[2.5rem] border border-slate-200/50">
                   <h4 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <Globe size={16} className="text-slate-400" />
-                    앱으로 사용하기 (설치 방법)
+                    {t.installGuide}
                   </h4>
                   <div className="space-y-4">
                     <div className="bg-white/60 p-4 rounded-2xl text-[11px] leading-relaxed text-slate-600">
                       <p className="font-bold text-slate-800 mb-2">iPhone (Safari)</p>
                       <ol className="list-decimal pl-4 space-y-1">
-                        <li>하단 중앙의 [공유] 아이콘을 누르세요.</li>
-                        <li>스크롤을 내려 [홈 화면에 추가]를 선택하세요.</li>
+                        <li>{lang === 'ko' ? '하단 중앙의 [공유] 아이콘을 누르세요.' : 'Tap Share icon at the bottom.'}</li>
+                        <li>{lang === 'ko' ? '스크롤을 내려 [홈 화면에 추가]를 선택하세요.' : 'Tap Add to Home Screen.'}</li>
                       </ol>
                     </div>
                     <div className="bg-white/60 p-4 rounded-2xl text-[11px] leading-relaxed text-slate-600">
                       <p className="font-bold text-slate-800 mb-2">Android (Chrome)</p>
                       <ol className="list-decimal pl-4 space-y-1">
-                        <li>우측 상단의 점 3개 아이콘을 누르세요.</li>
-                        <li>[홈 화면에 추가] 또는 [앱 설치]를 선택하세요.</li>
+                        <li>{lang === 'ko' ? '우측 상단의 점 3개 아이콘을 누르세요.' : 'Tap 3-dots menu icon.'}</li>
+                        <li>{lang === 'ko' ? '[홈 화면에 추가] 또는 [앱 설치]를 선택하세요.' : 'Tap Add to Home Screen or Install App.'}</li>
                       </ol>
                     </div>
                   </div>
@@ -765,7 +930,7 @@ export default function App() {
               className="w-full max-w-md bg-white rounded-[2.5rem] p-8 max-h-[85vh] overflow-y-auto shadow-2xl border border-slate-100"
             >
               <div className="flex justify-between items-center mb-8">
-                <h3 className="text-xl font-bold font-display text-slate-800">AI 분석 리포트</h3>
+                <h3 className="text-xl font-bold font-display text-slate-800">{t.analysisReport}</h3>
                 <button 
                   onClick={() => setAnalysisModalOpen(false)}
                   className="p-2 bg-slate-50 rounded-full text-slate-400"
@@ -780,7 +945,7 @@ export default function App() {
                     <div className="absolute inset-0 bg-blue-100 blur-xl animate-pulse rounded-full" />
                     <Loader2 size={48} className="text-blue-500 animate-spin relative" />
                   </div>
-                  <p className="text-sm font-bold text-slate-500 animate-pulse">이미지를 꼼꼼하게 대조 중입니다...</p>
+                  <p className="text-sm font-bold text-slate-500 animate-pulse">{t.analyzing}</p>
                 </div>
               ) : analysisResult ? (
                 <div className="space-y-8">
@@ -788,7 +953,7 @@ export default function App() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 text-amber-500 bg-amber-50 p-4 rounded-2xl">
                         <AlertCircle size={22} className="shrink-0" />
-                        <span className="text-sm font-black italic">! 누락 품목 의심 리스트</span>
+                        <span className="text-sm font-black italic">{t.missingItems}</span>
                       </div>
                       <div className="grid gap-2">
                         {analysisResult.missingItems.map((item, idx) => (
@@ -805,14 +970,14 @@ export default function App() {
                         <CheckCircle2 size={32} className="text-emerald-500" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold text-emerald-900">완벽한 준비!</p>
-                        <p className="text-xs text-emerald-700/60 mt-1">AI가 분석한 결과, 모든 품목이 잘 챙겨진 것 같습니다.</p>
+                        <p className="text-lg font-bold text-emerald-900">{t.perfectPreparation}</p>
+                        <p className="text-xs text-emerald-700/60 mt-1">{t.perfectPrepSub}</p>
                       </div>
                     </div>
                   )}
 
                   <div className="space-y-3">
-                    <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">전문가의 조언</h4>
+                    <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">{t.expertAdvice}</h4>
                     <div className="bg-slate-50/50 p-5 rounded-2xl text-[14px] leading-relaxed text-slate-600 font-medium">
                       {analysisResult.suggestions}
                     </div>
@@ -822,13 +987,13 @@ export default function App() {
                     onClick={() => setAnalysisModalOpen(false)}
                     className="w-full py-5 bg-slate-900 text-white font-bold rounded-2xl mt-4 shadow-xl shadow-slate-100 transition-all hover:bg-slate-800"
                   >
-                    확인
+                    {t.confirm}
                   </button>
                 </div>
               ) : (
                 <div className="py-20 text-center text-slate-300">
                   <Info size={40} className="mx-auto mb-4 opacity-20" />
-                  <p className="font-bold">분석 중 오류가 발생했습니다.<br /><span className="text-xs font-medium">네트워크 상태를 확인 후 다시 시도해주세요.</span></p>
+                  <p className="font-bold">{t.analysisError}</p>
                 </div>
               )}
             </motion.div>
@@ -844,7 +1009,7 @@ export default function App() {
           id="nav-countries"
         >
           <Globe size={22} strokeWidth={view === 'countries' ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Dest</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t.navDest}</span>
         </button>
         <button 
           onClick={() => selectedCountry && setView('details')}
@@ -853,7 +1018,7 @@ export default function App() {
           id="nav-details"
         >
           <Briefcase size={22} strokeWidth={view === 'details' ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Info</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t.navInfo}</span>
         </button>
         <button 
           onClick={() => setView('checklist')}
@@ -861,11 +1026,10 @@ export default function App() {
           id="nav-checklist"
         >
           <ShieldCheck size={22} strokeWidth={view === 'checklist' ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">List</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t.navCheck}</span>
         </button>
       </nav>
 
-      {/* Styles for scrollbar */}
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

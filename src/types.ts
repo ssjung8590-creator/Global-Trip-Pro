@@ -1,6 +1,9 @@
+export type Language = 'ko' | 'en';
+
 export interface ChecklistItem {
   id: string;
   name: string;
+  nameEn: string;
   category: string;
   completed: boolean;
   icon?: string;
