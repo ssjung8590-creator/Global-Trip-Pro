@@ -21,6 +21,7 @@ export interface CountryInfo {
   plugType: string;
   weatherSummary: string;
   forecast: WeatherForecast[];
+  region: 'Asia' | 'Europe' | 'North America' | 'Oceania' | 'Other';
 }
 
 export type AppView = 'countries' | 'details' | 'checklist' | 'settings';

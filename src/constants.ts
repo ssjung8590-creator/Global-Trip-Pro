@@ -17,7 +17,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "20°", condition: "⛅" },
       { day: "토", temp: "23°", condition: "☀️" },
       { day: "일", temp: "22°", condition: "☀️" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "us",
@@ -35,7 +36,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "21°", condition: "☀️" },
       { day: "토", temp: "22°", condition: "☀️" },
       { day: "일", temp: "20°", condition: "☁️" },
-    ]
+    ],
+    region: 'North America'
   },
   {
     id: "cn",
@@ -53,7 +55,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "21°", condition: "☀️" },
       { day: "토", temp: "24°", condition: "☀️" },
       { day: "일", temp: "26°", condition: "☀️" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "sg",
@@ -71,7 +74,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "32°", condition: "☀️" },
       { day: "토", temp: "33°", condition: "🌦️" },
       { day: "일", temp: "31°", condition: "⛈️" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "uk",
@@ -89,7 +93,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "18°", condition: "⛅" },
       { day: "토", temp: "16°", condition: "🌧️" },
       { day: "일", temp: "15°", condition: "☁️" },
-    ]
+    ],
+    region: 'Europe'
   },
   {
     id: "de",
@@ -107,7 +112,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "15°", condition: "☀️" },
       { day: "토", temp: "14°", condition: "☁️" },
       { day: "일", temp: "13°", condition: "🌧️" },
-    ]
+    ],
+    region: 'Europe'
   },
   {
     id: "fr",
@@ -125,7 +131,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "18°", condition: "☁️" },
       { day: "토", temp: "19°", condition: "☀️" },
       { day: "일", temp: "21°", condition: "☀️" },
-    ]
+    ],
+    region: 'Europe'
   },
   {
     id: "vn",
@@ -143,7 +150,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "29°", condition: "⛈️" },
       { day: "토", temp: "31°", condition: "☀️" },
       { day: "일", temp: "32°", condition: "☀️" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "th",
@@ -161,7 +169,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "32°", condition: "🌦️" },
       { day: "토", temp: "34°", condition: "☀️" },
       { day: "일", temp: "35°", condition: "☀️" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "tw",
@@ -179,7 +188,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "24°", condition: "⛅" },
       { day: "토", temp: "26°", condition: "☀️" },
       { day: "일", temp: "25°", condition: "⛅" },
-    ]
+    ],
+    region: 'Asia'
   },
   {
     id: "hk",
@@ -197,7 +207,274 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "금", temp: "25°", condition: "🌧️" },
       { day: "토", temp: "27°", condition: "⛅" },
       { day: "일", temp: "28°", condition: "☀️" },
-    ]
+    ],
+    region: 'Asia'
+  },
+  {
+    id: "ca",
+    name: "캐나다",
+    nameEn: "Canada",
+    emoji: "🇨🇦",
+    voltage: "120V",
+    plugType: "Type A / B",
+    weatherSummary: "토론토 기준 맑고 쾌적함. 기온 15-22도 예상.",
+    forecast: [
+      { day: "월", temp: "18°", condition: "☀️" },
+      { day: "화", temp: "20°", condition: "☀️" },
+      { day: "수", temp: "21°", condition: "⛅" },
+      { day: "목", temp: "19°", condition: "☁️" },
+      { day: "금", temp: "17°", condition: "🌧️" },
+      { day: "토", temp: "19°", condition: "☀️" },
+      { day: "일", temp: "21°", condition: "☀️" },
+    ],
+    region: 'North America'
+  },
+  {
+    id: "au",
+    name: "호주",
+    nameEn: "Australia",
+    emoji: "🇦🇺",
+    voltage: "230V",
+    plugType: "Type I",
+    weatherSummary: "시드니 기준 화창함. 기온 18-24도. 일교차 주의.",
+    forecast: [
+      { day: "월", temp: "22°", condition: "☀️" },
+      { day: "화", temp: "23°", condition: "☀️" },
+      { day: "수", temp: "21°", condition: "⛅" },
+      { day: "목", temp: "20°", condition: "☁️" },
+      { day: "금", temp: "22°", condition: "☀️" },
+      { day: "토", temp: "24°", condition: "☀️" },
+      { day: "일", temp: "23°", condition: "☀️" },
+    ],
+    region: 'Oceania'
+  },
+  {
+    id: "ph",
+    name: "필리핀",
+    nameEn: "Philippines",
+    emoji: "🇵🇭",
+    voltage: "220V",
+    plugType: "Type A / B / C",
+    weatherSummary: "마닐라 기준 무덥고 습함. 기온 28-33도. 소나기 잦음.",
+    forecast: [
+      { day: "월", temp: "31°", condition: "⛈️" },
+      { day: "화", temp: "32°", condition: "🌦️" },
+      { day: "수", temp: "33°", condition: "☀️" },
+      { day: "목", temp: "31°", condition: "⛈️" },
+      { day: "금", temp: "30°", condition: "🌧️" },
+      { day: "토", temp: "32°", condition: "☀️" },
+      { day: "일", temp: "33°", condition: "☀️" },
+    ],
+    region: 'Asia'
+  },
+  {
+    id: "id",
+    name: "인도네시아",
+    nameEn: "Indonesia",
+    emoji: "🇮🇩",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "자카르타 기준 고온다습. 기온 27-32도.",
+    forecast: [
+      { day: "월", temp: "30°", condition: "🌦️" },
+      { day: "화", temp: "31°", condition: "☀️" },
+      { day: "수", temp: "32°", condition: "☀️" },
+      { day: "목", temp: "30°", condition: "⛈️" },
+      { day: "금", temp: "29°", condition: "🌧️" },
+      { day: "토", temp: "31°", condition: "☀️" },
+      { day: "일", temp: "32°", condition: "☀️" },
+    ],
+    region: 'Asia'
+  },
+  {
+    id: "it",
+    name: "이탈리아",
+    nameEn: "Italy",
+    emoji: "🇮🇹",
+    voltage: "230V",
+    plugType: "Type C / F / L",
+    weatherSummary: "로마 기준 맑고 따뜻함. 기온 18-26도.",
+    forecast: [
+      { day: "월", temp: "22°", condition: "☀️" },
+      { day: "화", temp: "24°", condition: "☀️" },
+      { day: "수", temp: "25°", condition: "☀️" },
+      { day: "목", temp: "23°", condition: "⛅" },
+      { day: "금", temp: "21°", condition: "☁️" },
+      { day: "토", temp: "23°", condition: "☀️" },
+      { day: "일", temp: "24°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "es",
+    name: "스페인",
+    nameEn: "Spain",
+    emoji: "🇪🇸",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "마드리드 기준 화창함. 기온 20-28도. 건조함.",
+    forecast: [
+      { day: "월", temp: "25°", condition: "☀️" },
+      { day: "화", temp: "27°", condition: "☀️" },
+      { day: "수", temp: "28°", condition: "☀️" },
+      { day: "목", temp: "26°", condition: "⛅" },
+      { day: "금", temp: "24°", condition: "☀️" },
+      { day: "토", temp: "26°", condition: "☀️" },
+      { day: "일", temp: "27°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "my",
+    name: "말레이시아",
+    nameEn: "Malaysia",
+    emoji: "🇲🇾",
+    voltage: "230V",
+    plugType: "Type G (3-pin)",
+    weatherSummary: "쿠알라룸푸르 기준 덥고 습함. 기온 27-33도.",
+    forecast: [
+      { day: "월", temp: "31°", condition: "⛈️" },
+      { day: "화", temp: "32°", condition: "🌦️" },
+      { day: "수", temp: "33°", condition: "☀️" },
+      { day: "목", temp: "32°", condition: "⛈️" },
+      { day: "금", temp: "31°", condition: "🌧️" },
+      { day: "토", temp: "32°", condition: "☀️" },
+      { day: "일", temp: "33°", condition: "☀️" },
+    ],
+    region: 'Asia'
+  },
+  {
+    id: "mx",
+    name: "멕시코",
+    nameEn: "Mexico",
+    emoji: "🇲🇽",
+    voltage: "127V",
+    plugType: "Type A / B",
+    weatherSummary: "멕시코시티 기준 맑음. 기온 15-26도. 일교차 및 고산지대 주의.",
+    forecast: [
+      { day: "월", temp: "22°", condition: "☀️" },
+      { day: "화", temp: "24°", condition: "☀️" },
+      { day: "수", temp: "25°", condition: "☀️" },
+      { day: "목", temp: "23°", condition: "🌤️" },
+      { day: "금", temp: "21°", condition: "⛈️" },
+      { day: "토", temp: "23°", condition: "☀️" },
+      { day: "일", temp: "24°", condition: "☀️" },
+    ],
+    region: 'North America'
+  },
+  {
+    id: "ch",
+    name: "스위스",
+    nameEn: "Switzerland",
+    emoji: "🇨🇭",
+    voltage: "230V",
+    plugType: "Type J",
+    weatherSummary: "취리히 기준 구름 조금. 기온 8-18도. 산악지대 추위 대비 필수.",
+    forecast: [
+      { day: "월", temp: "14°", condition: "🌤️" },
+      { day: "화", temp: "15°", condition: "☀️" },
+      { day: "수", temp: "12°", condition: "☁️" },
+      { day: "목", temp: "10°", condition: "🌧️" },
+      { day: "금", temp: "13°", condition: "🌤️" },
+      { day: "토", temp: "16°", condition: "☀️" },
+      { day: "일", temp: "17°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "nl",
+    name: "네덜란드",
+    nameEn: "Netherlands",
+    emoji: "🇳🇱",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "암스테르담 기준 바람이 강하고 흐림. 기온 10-16도.",
+    forecast: [
+      { day: "월", temp: "13°", condition: "☁️" },
+      { day: "화", temp: "12°", condition: "🌧️" },
+      { day: "수", temp: "14°", condition: "🌦️" },
+      { day: "목", temp: "15°", condition: "☁️" },
+      { day: "금", temp: "14°", condition: "🌤️" },
+      { day: "토", temp: "16°", condition: "☀️" },
+      { day: "일", temp: "15°", condition: "☁️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "at",
+    name: "오스트리아",
+    nameEn: "Austria",
+    emoji: "🇦🇹",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "비엔나 기준 맑고 쾌적. 기온 10-20도.",
+    forecast: [
+      { day: "월", temp: "18°", condition: "☀️" },
+      { day: "화", temp: "19°", condition: "☀️" },
+      { day: "수", temp: "17°", condition: "🌤️" },
+      { day: "목", temp: "15°", condition: "☁️" },
+      { day: "금", temp: "16°", condition: "🌦️" },
+      { day: "토", temp: "19°", condition: "☀️" },
+      { day: "일", temp: "20°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "se",
+    name: "스웨덴",
+    nameEn: "Sweden",
+    emoji: "🇸🇪",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "스톡홀름 기준 쌀쌀하고 맑음. 기온 5-14도.",
+    forecast: [
+      { day: "월", temp: "10°", condition: "☀️" },
+      { day: "화", temp: "11°", condition: "🌤️" },
+      { day: "수", temp: "9°", condition: "☁️" },
+      { day: "목", temp: "8°", condition: "🌧️" },
+      { day: "금", temp: "12°", condition: "🌤️" },
+      { day: "토", temp: "13°", condition: "☀️" },
+      { day: "일", temp: "14°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "cz",
+    name: "체코",
+    nameEn: "Czech Republic",
+    emoji: "🇨🇿",
+    voltage: "230V",
+    plugType: "Type E",
+    weatherSummary: "프라하 기준 흐리고 가끔 해. 기온 9-18도.",
+    forecast: [
+      { day: "월", temp: "16°", condition: "🌤️" },
+      { day: "화", temp: "17°", condition: "☀️" },
+      { day: "수", temp: "15°", condition: "☁️" },
+      { day: "목", temp: "13°", condition: "🌧️" },
+      { day: "금", temp: "14°", condition: "☁️" },
+      { day: "토", temp: "17°", condition: "☀️" },
+      { day: "일", temp: "18°", condition: "☀️" },
+    ],
+    region: 'Europe'
+  },
+  {
+    id: "pt",
+    name: "포르투갈",
+    nameEn: "Portugal",
+    emoji: "🇵🇹",
+    voltage: "230V",
+    plugType: "Type C / F",
+    weatherSummary: "리스본 기준 화창하고 온화함. 기온 16-24도.",
+    forecast: [
+      { day: "월", temp: "22°", condition: "☀️" },
+      { day: "화", temp: "23°", condition: "☀️" },
+      { day: "수", temp: "24°", condition: "☀️" },
+      { day: "목", temp: "21°", condition: "🌤️" },
+      { day: "금", temp: "20°", condition: "☁️" },
+      { day: "토", temp: "22°", condition: "☀️" },
+      { day: "일", temp: "24°", condition: "☀️" },
+    ],
+    region: 'Europe'
   }
 ];
 

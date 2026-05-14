@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Globe, 
   CloudSun, 
@@ -86,11 +86,22 @@ export default function App() {
   const [newItemName, setNewItemName] = useState('');
   const [activeCategoryInput, setActiveCategoryInput] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState<string>('All');
 
-  const filteredCountries = COUNTRIES.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    c.nameEn.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredCountries = COUNTRIES.filter(c => {
+    const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         c.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
+    return matchesSearch && matchesRegion;
+  });
+
+  const regions = [
+    { name: 'All', icon: '🌎', label: '전체' },
+    { name: 'Asia', icon: '🌏', label: '아시아' },
+    { name: 'Europe', icon: '🌍', label: '유럽' },
+    { name: 'North America', icon: '🏔️', label: '북미' },
+    { name: 'Oceania', icon: '🏝️', label: '대양주' }
+  ];
 
   const handleCountrySelect = (country: CountryInfo) => {
     setSelectedCountry(country);
@@ -205,6 +216,28 @@ export default function App() {
                       <X size={18} />
                     </button>
                   )}
+                </div>
+
+                {/* Region Selector */}
+                <div className="mt-6 flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                  {regions.map((region) => (
+                    <button
+                      key={region.name}
+                      onClick={() => setSelectedRegion(region.name)}
+                      className={`flex flex-col items-center gap-2 px-5 py-4 rounded-2xl border transition-all shrink-0 ${
+                        selectedRegion === region.name
+                          ? 'bg-slate-900 border-slate-900 shadow-lg shadow-slate-200 -translate-y-1'
+                          : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
+                      }`}
+                    >
+                      <span className="text-xl">{region.icon}</span>
+                      <span className={`text-[10px] font-black uppercase tracking-tight ${
+                        selectedRegion === region.name ? 'text-white' : 'text-slate-900/40'
+                      }`}>
+                        {region.label}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
 

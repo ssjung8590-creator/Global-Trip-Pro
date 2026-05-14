@@ -1,59 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", serif;
+}
 
 :root {
-    --bg: #FDFCFB;
-    --card-bg: #FFFFFF;
-    --accent: #FFD700;
-    --text: #2D3436;
-
+  --bg: #FDFCFB;
+  --card-bg: #FFFFFF;
+  --accent: #FFD700;
+  --text: #2D3436;
+  
   /* Pastel Palette */
   --pastel-blue: #E3F2FD;
-    --pastel-green: #E8F5E9;
-    --pastel-yellow: #FFF9C4;
-    --pastel-purple: #F3E5F5;
-    --pastel-red: #FFEBEE;
-    --pastel-orange: #FFF3E0;
+  --pastel-green: #E8F5E9;
+  --pastel-yellow: #FFF9C4;
+  --pastel-purple: #F3E5F5;
+  --pastel-red: #FFEBEE;
+  --pastel-orange: #FFF3E0;
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: var(--font-sans);
-  
-    color: var(--text);
-    font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
 }
 
-.font-display {
-    font-family: var(--font-display);
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.bg-pastel-blue { background-color: var(--pastel-blue); }
-.bg-pastel-green { background-color: var(--pastel-green); }
-.bg-pastel-yellow { background-color: var(--pastel-yellow); }
-.bg-pastel-purple { background-color: var(--pastel-purple); }
-.bg-pastel-red { background-color: var(--pastel-red); }
-.bg-pastel-orange { background-color: var(--pastel-orange); }
-
-.card {
-    background-color: var(--card-bg);
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-primary {
-    background-color: var(--accent);
-    color: var(--text);
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
+.card-hover:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
 }
 
-.btn-primary:hover {
-    filter: brightness(0.95);
-    transform: translateY(-1px);
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
