@@ -21,7 +21,8 @@ import {
   Info,
   Loader2,
   AlertCircle,
-  X
+  X,
+  Coins
 } from 'lucide-react';
 import { COUNTRIES, INITIAL_CHECKLIST } from './constants';
 import { AppView, CountryInfo, ChecklistItem } from './types';
@@ -258,7 +259,12 @@ export default function App() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-slate-800">{country.name}</h3>
-                      <p className="text-sm text-slate-400">{country.nameEn}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm text-slate-400">{country.nameEn}</p>
+                        <span className="text-[10px] bg-white/60 px-2 py-0.5 rounded-full text-slate-400 font-bold border border-slate-100 italic">
+                          {country.currency.symbol}
+                        </span>
+                      </div>
                     </div>
                     <ChevronRight size={20} className="text-slate-200" />
                   </button>
@@ -332,13 +338,26 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="glass bg-indigo-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-indigo-100">
+                  <div className="glass bg-emerald-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-emerald-100">
                     <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
-                      <ShieldCheck size={28} className="text-indigo-500" />
+                      <Coins size={28} className="text-emerald-500" />
                     </div>
                     <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-indigo-600/60 font-bold mb-1">준비 가이드</h4>
-                      <p className="text-[11px] font-bold text-indigo-900 leading-relaxed">범용 멀티 어댑터가 필수입니다.</p>
+                      <h4 className="text-[10px] uppercase tracking-widest text-emerald-600/60 font-bold mb-1">현지 통화</h4>
+                      <p className="text-2xl font-bold text-emerald-900">{selectedCountry.currency.symbol}</p>
+                      <p className="text-[10px] text-emerald-900/50 font-medium leading-tight mt-1">{selectedCountry.currency.code}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="glass bg-indigo-50/60 p-6 rounded-[2rem] flex items-center justify-between shadow-sm border border-indigo-100">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
+                      <ShieldCheck size={24} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-widest text-indigo-600/60 font-bold mb-0.5">준비 가이드</h4>
+                      <p className="text-[11px] font-bold text-indigo-900">범용 멀티 어댑터와 현지 화폐 환전이 필요할 수 있습니다.</p>
                     </div>
                   </div>
                 </div>
@@ -395,7 +414,7 @@ export default function App() {
               </div>
 
               <div className="space-y-10">
-                {Array.from(new Set(checklist.map(i => i.category))).map(category => {
+                {Array.from(new Set(checklist.map(i => i.category))).map((category: string) => {
                   const categoryIcons: Record<string, string> = {
                     '필수': '⭐',
                     '전자기기': '🔌',

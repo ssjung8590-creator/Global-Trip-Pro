@@ -1,4 +1,4 @@
-import { CountryInfo } from "./types";
+import { CountryInfo, ChecklistItem } from "./types";
 
 export const COUNTRIES: CountryInfo[] = [
   {
@@ -18,7 +18,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "23°", condition: "☀️" },
       { day: "일", temp: "22°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "¥", code: "JPY" }
   },
   {
     id: "us",
@@ -37,7 +38,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "22°", condition: "☀️" },
       { day: "일", temp: "20°", condition: "☁️" },
     ],
-    region: 'North America'
+    region: 'North America',
+    currency: { symbol: "$", code: "USD" }
   },
   {
     id: "cn",
@@ -56,7 +58,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "24°", condition: "☀️" },
       { day: "일", temp: "26°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "¥", code: "CNY" }
   },
   {
     id: "sg",
@@ -75,7 +78,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "33°", condition: "🌦️" },
       { day: "일", temp: "31°", condition: "⛈️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "$", code: "SGD" }
   },
   {
     id: "uk",
@@ -94,7 +98,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "16°", condition: "🌧️" },
       { day: "일", temp: "15°", condition: "☁️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "£", code: "GBP" }
   },
   {
     id: "de",
@@ -113,7 +118,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "14°", condition: "☁️" },
       { day: "일", temp: "13°", condition: "🌧️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "fr",
@@ -132,7 +138,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "19°", condition: "☀️" },
       { day: "일", temp: "21°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "vn",
@@ -151,7 +158,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "31°", condition: "☀️" },
       { day: "일", temp: "32°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "₫", code: "VND" }
   },
   {
     id: "th",
@@ -170,7 +178,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "34°", condition: "☀️" },
       { day: "일", temp: "35°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "฿", code: "THB" }
   },
   {
     id: "tw",
@@ -189,7 +198,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "26°", condition: "☀️" },
       { day: "일", temp: "25°", condition: "⛅" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "NT$", code: "TWD" }
   },
   {
     id: "hk",
@@ -208,7 +218,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "27°", condition: "⛅" },
       { day: "일", temp: "28°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "$", code: "HKD" }
   },
   {
     id: "ca",
@@ -227,7 +238,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "19°", condition: "☀️" },
       { day: "일", temp: "21°", condition: "☀️" },
     ],
-    region: 'North America'
+    region: 'North America',
+    currency: { symbol: "$", code: "CAD" }
   },
   {
     id: "au",
@@ -246,7 +258,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "24°", condition: "☀️" },
       { day: "일", temp: "23°", condition: "☀️" },
     ],
-    region: 'Oceania'
+    region: 'Oceania',
+    currency: { symbol: "$", code: "AUD" }
   },
   {
     id: "ph",
@@ -265,7 +278,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "32°", condition: "☀️" },
       { day: "일", temp: "33°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "₱", code: "PHP" }
   },
   {
     id: "id",
@@ -284,7 +298,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "31°", condition: "☀️" },
       { day: "일", temp: "32°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "Rp", code: "IDR" }
   },
   {
     id: "it",
@@ -303,7 +318,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "23°", condition: "☀️" },
       { day: "일", temp: "24°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "es",
@@ -322,7 +338,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "26°", condition: "☀️" },
       { day: "일", temp: "27°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "my",
@@ -341,7 +358,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "32°", condition: "☀️" },
       { day: "일", temp: "33°", condition: "☀️" },
     ],
-    region: 'Asia'
+    region: 'Asia',
+    currency: { symbol: "RM", code: "MYR" }
   },
   {
     id: "mx",
@@ -360,7 +378,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "23°", condition: "☀️" },
       { day: "일", temp: "24°", condition: "☀️" },
     ],
-    region: 'North America'
+    region: 'North America',
+    currency: { symbol: "$", code: "MXN" }
   },
   {
     id: "ch",
@@ -379,7 +398,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "16°", condition: "☀️" },
       { day: "일", temp: "17°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "Fr.", code: "CHF" }
   },
   {
     id: "nl",
@@ -398,7 +418,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "16°", condition: "☀️" },
       { day: "일", temp: "15°", condition: "☁️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "at",
@@ -417,7 +438,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "19°", condition: "☀️" },
       { day: "일", temp: "20°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   },
   {
     id: "se",
@@ -436,7 +458,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "13°", condition: "☀️" },
       { day: "일", temp: "14°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "kr", code: "SEK" }
   },
   {
     id: "cz",
@@ -455,7 +478,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "17°", condition: "☀️" },
       { day: "일", temp: "18°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "Kč", code: "CZK" }
   },
   {
     id: "pt",
@@ -474,7 +498,8 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "토", temp: "22°", condition: "☀️" },
       { day: "일", temp: "24°", condition: "☀️" },
     ],
-    region: 'Europe'
+    region: 'Europe',
+    currency: { symbol: "€", code: "EUR" }
   }
 ];
 

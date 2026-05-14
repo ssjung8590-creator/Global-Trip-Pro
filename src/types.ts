@@ -22,6 +22,10 @@ export interface CountryInfo {
   weatherSummary: string;
   forecast: WeatherForecast[];
   region: 'Asia' | 'Europe' | 'North America' | 'Oceania' | 'Other';
+  currency: {
+    symbol: string;
+    code: string;
+  };
 }
 
 export type AppView = 'countries' | 'details' | 'checklist' | 'settings';
