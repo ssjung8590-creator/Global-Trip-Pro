@@ -6,6 +6,12 @@ export interface ChecklistItem {
   icon?: string;
 }
 
+export interface WeatherForecast {
+  day: string;
+  temp: string;
+  condition: string;
+}
+
 export interface CountryInfo {
   id: string;
   name: string;
@@ -14,6 +20,7 @@ export interface CountryInfo {
   voltage: string;
   plugType: string;
   weatherSummary: string;
+  forecast: WeatherForecast[];
 }
 
-export type AppView = 'countries' | 'details' | 'checklist';
+export type AppView = 'countries' | 'details' | 'checklist' | 'settings';

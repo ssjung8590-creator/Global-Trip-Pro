@@ -8,7 +8,16 @@ export const COUNTRIES: CountryInfo[] = [
     emoji: "🇯🇵",
     voltage: "100V",
     plugType: "Type A (2-pin)",
-    weatherSummary: "현재 대부분 맑음, 낮 기온 18-22도 예상."
+    weatherSummary: "현재 대부분 맑음, 낮 기온 18-22도 예상. 야외 활동하기 좋은 날씨입니다.",
+    forecast: [
+      { day: "월", temp: "21°", condition: "☀️" },
+      { day: "화", temp: "22°", condition: "☀️" },
+      { day: "수", temp: "19°", condition: "☁️" },
+      { day: "목", temp: "18°", condition: "🌧️" },
+      { day: "금", temp: "20°", condition: "⛅" },
+      { day: "토", temp: "23°", condition: "☀️" },
+      { day: "일", temp: "22°", condition: "☀️" },
+    ]
   },
   {
     id: "us",
@@ -17,7 +26,70 @@ export const COUNTRIES: CountryInfo[] = [
     emoji: "🇺🇸",
     voltage: "120V",
     plugType: "Type A / B",
-    weatherSummary: "지역별 편차 큼. 뉴욕 기준 흐림, 기온 15-20도."
+    weatherSummary: "뉴욕 기준 흐림, 기온 15-20도. 일교차가 크니 가벼운 겉옷을 챙기세요.",
+    forecast: [
+      { day: "월", temp: "18°", condition: "☁️" },
+      { day: "화", temp: "17°", condition: "🌧️" },
+      { day: "수", temp: "16°", condition: "🌧️" },
+      { day: "목", temp: "19°", condition: "⛅" },
+      { day: "금", temp: "21°", condition: "☀️" },
+      { day: "토", temp: "22°", condition: "☀️" },
+      { day: "일", temp: "20°", condition: "☁️" },
+    ]
+  },
+  {
+    id: "cn",
+    name: "중국",
+    nameEn: "China",
+    emoji: "🇨🇳",
+    voltage: "220V",
+    plugType: "Type A / C / I",
+    weatherSummary: "베이징 기준 맑음, 기온 20-25도. 대기질 보통. 야외 활동 시 마스크 착용 권장.",
+    forecast: [
+      { day: "월", temp: "23°", condition: "☀️" },
+      { day: "화", temp: "25°", condition: "☀️" },
+      { day: "수", temp: "24°", condition: "⛅" },
+      { day: "목", temp: "22°", condition: "☁️" },
+      { day: "금", temp: "21°", condition: "☀️" },
+      { day: "토", temp: "24°", condition: "☀️" },
+      { day: "일", temp: "26°", condition: "☀️" },
+    ]
+  },
+  {
+    id: "sg",
+    name: "싱가포르",
+    nameEn: "Singapore",
+    emoji: "🇸🇬",
+    voltage: "230V",
+    plugType: "Type G (3-pin)",
+    weatherSummary: "열대 기후. 스콜(갑작스런 비) 주의, 기온 28-32도 습도 높음. 항상 우산을 휴대하세요.",
+    forecast: [
+      { day: "월", temp: "31°", condition: "⛈️" },
+      { day: "화", temp: "30°", condition: "⛈️" },
+      { day: "수", temp: "32°", condition: "🌦️" },
+      { day: "목", temp: "31°", condition: "☀️" },
+      { day: "금", temp: "32°", condition: "☀️" },
+      { day: "토", temp: "33°", condition: "🌦️" },
+      { day: "일", temp: "31°", condition: "⛈️" },
+    ]
+  },
+  {
+    id: "uk",
+    name: "영국",
+    nameEn: "United Kingdom",
+    emoji: "🇬🇧",
+    voltage: "230V",
+    plugType: "Type G (3-pin)",
+    weatherSummary: "런던 기준 흐리고 가끔 비. 기온 12-18도. 변덕스러운 날씨에 대비해 우비나 우산을 준비하세요.",
+    forecast: [
+      { day: "월", temp: "15°", condition: "☁️" },
+      { day: "화", temp: "14°", condition: "🌧️" },
+      { day: "수", temp: "16°", condition: "🌦️" },
+      { day: "목", temp: "17°", condition: "☁️" },
+      { day: "금", temp: "18°", condition: "⛅" },
+      { day: "토", temp: "16°", condition: "🌧️" },
+      { day: "일", temp: "15°", condition: "☁️" },
+    ]
   },
   {
     id: "de",
@@ -26,7 +98,34 @@ export const COUNTRIES: CountryInfo[] = [
     emoji: "🇩🇪",
     voltage: "230V",
     plugType: "Type C / F",
-    weatherSummary: "대체로 흐리고 비 가능성 있음. 기온 10-15도."
+    weatherSummary: "대체로 흐리고 비 가능성 있음. 기온 10-15도. 쌀쌀한 날씨이니 따뜻한 옷차림이 필요합니다.",
+    forecast: [
+      { day: "월", temp: "12°", condition: "☁️" },
+      { day: "화", temp: "11°", condition: "🌧️" },
+      { day: "수", temp: "13°", condition: "🌧️" },
+      { day: "목", temp: "14°", condition: "⛅" },
+      { day: "금", temp: "15°", condition: "☀️" },
+      { day: "토", temp: "14°", condition: "☁️" },
+      { day: "일", temp: "13°", condition: "🌧️" },
+    ]
+  },
+  {
+    id: "fr",
+    name: "프랑스",
+    nameEn: "France",
+    emoji: "🇫🇷",
+    voltage: "230V",
+    plugType: "Type C / E",
+    weatherSummary: "파리 기준 맑음. 기온 15-22도 일교차 주의. 낮에는 따뜻하지만 저녁엔 쌀쌀할 수 있습니다.",
+    forecast: [
+      { day: "월", temp: "19°", condition: "☀️" },
+      { day: "화", temp: "21°", condition: "☀️" },
+      { day: "수", temp: "22°", condition: "☀️" },
+      { day: "목", temp: "20°", condition: "⛅" },
+      { day: "금", temp: "18°", condition: "☁️" },
+      { day: "토", temp: "19°", condition: "☀️" },
+      { day: "일", temp: "21°", condition: "☀️" },
+    ]
   },
   {
     id: "vn",
@@ -35,7 +134,70 @@ export const COUNTRIES: CountryInfo[] = [
     emoji: "🇻🇳",
     voltage: "220V",
     plugType: "Type A / C / G",
-    weatherSummary: "고온 다습. 하노이 기준 28-32도 습도 높음."
+    weatherSummary: "고온 다습. 하노이 기준 28-32도 습도 높음. 통풍이 잘 되는 옷을 준비하세요.",
+    forecast: [
+      { day: "월", temp: "30°", condition: "⛅" },
+      { day: "화", temp: "31°", condition: "☀️" },
+      { day: "수", temp: "32°", condition: "☀️" },
+      { day: "목", temp: "30°", condition: "🌦️" },
+      { day: "금", temp: "29°", condition: "⛈️" },
+      { day: "토", temp: "31°", condition: "☀️" },
+      { day: "일", temp: "32°", condition: "☀️" },
+    ]
+  },
+  {
+    id: "th",
+    name: "태국",
+    nameEn: "Thailand",
+    emoji: "🇹🇭",
+    voltage: "220V",
+    plugType: "Type A / B / C / O",
+    weatherSummary: "방콕 기준 무더운 날씨. 기온 30-35도 예상. 자외선이 강하니 선크림과 모자를 챙기세요.",
+    forecast: [
+      { day: "월", temp: "33°", condition: "☀️" },
+      { day: "화", temp: "34°", condition: "☀️" },
+      { day: "수", temp: "35°", condition: "☀️" },
+      { day: "목", temp: "33°", condition: "⛅" },
+      { day: "금", temp: "32°", condition: "🌦️" },
+      { day: "토", temp: "34°", condition: "☀️" },
+      { day: "일", temp: "35°", condition: "☀️" },
+    ]
+  },
+  {
+    id: "tw",
+    name: "대만",
+    nameEn: "Taiwan",
+    emoji: "🇹🇼",
+    voltage: "110V",
+    plugType: "Type A / B",
+    weatherSummary: "타이베이 기준 흐림. 기온 22-26도. 실내 에어컨이 강할 수 있으니 가벼운 가디건을 추천합니다.",
+    forecast: [
+      { day: "월", temp: "24°", condition: "☁️" },
+      { day: "화", temp: "25°", condition: "☁️" },
+      { day: "수", temp: "23°", condition: "🌧️" },
+      { day: "목", temp: "22°", condition: "🌧️" },
+      { day: "금", temp: "24°", condition: "⛅" },
+      { day: "토", temp: "26°", condition: "☀️" },
+      { day: "일", temp: "25°", condition: "⛅" },
+    ]
+  },
+  {
+    id: "hk",
+    name: "홍콩",
+    nameEn: "Hong Kong",
+    emoji: "🇭🇰",
+    voltage: "220V",
+    plugType: "Type G (3-pin)",
+    weatherSummary: "흐리고 습함. 기온 24-28도. 소나기 가능성이 있으니 우산을 챙기세요.",
+    forecast: [
+      { day: "월", temp: "26°", condition: "☁️" },
+      { day: "화", temp: "27°", condition: "🌦️" },
+      { day: "수", temp: "28°", condition: "☀️" },
+      { day: "목", temp: "26°", condition: "⛈️" },
+      { day: "금", temp: "25°", condition: "🌧️" },
+      { day: "토", temp: "27°", condition: "⛅" },
+      { day: "일", temp: "28°", condition: "☀️" },
+    ]
   }
 ];
 

@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Globe, 
   CloudSun, 
@@ -30,10 +30,37 @@ import { analyzeChecklist } from './services/geminiService';
 export default function App() {
   const [view, setView] = useState<AppView>('countries');
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo | null>(null);
-  const [checklist, setChecklist] = useState<ChecklistItem[]>(INITIAL_CHECKLIST);
+  
+  // Load checklist from localStorage if available
+  const [checklist, setChecklist] = useState<ChecklistItem[]>(() => {
+    const saved = localStorage.getItem('tripChecklist');
+    return saved ? JSON.parse(saved) : INITIAL_CHECKLIST;
+  });
+
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<{ missingItems: string[]; suggestions: string } | null>(null);
   const [analysisModalOpen, setAnalysisModalOpen] = useState(false);
+
+  const [emergencyPhone, setEmergencyPhone] = useState(localStorage.getItem('emergencyPhone') || '');
+  const [passportRef, setPassportRef] = useState(localStorage.getItem('passportRef') || '');
+
+  useEffect(() => {
+    localStorage.setItem('tripChecklist', JSON.stringify(checklist));
+  }, [checklist]);
+
+  useEffect(() => {
+    localStorage.setItem('emergencyPhone', emergencyPhone);
+  }, [emergencyPhone]);
+
+  useEffect(() => {
+    localStorage.setItem('passportRef', passportRef);
+  }, [passportRef]);
+
+  const resetChecklist = () => {
+    if (confirm('모든 체크리스트 진행 상황을 초기화할까요?')) {
+      setChecklist(INITIAL_CHECKLIST);
+    }
+  };
 
   const toggleCheck = (id: string) => {
     setChecklist(prev => prev.map(item => item.id === id ? { ...item, completed: !item.completed } : item));
@@ -58,6 +85,12 @@ export default function App() {
 
   const [newItemName, setNewItemName] = useState('');
   const [activeCategoryInput, setActiveCategoryInput] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredCountries = COUNTRIES.filter(c => 
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    c.nameEn.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleCountrySelect = (country: CountryInfo) => {
     setSelectedCountry(country);
@@ -131,7 +164,11 @@ export default function App() {
               <ShieldCheck size={20} className="text-emerald-500" />
             </button>
           )}
-          <button className="p-2 bg-white/40 rounded-full border border-slate-100 shadow-sm" id="settings">
+          <button 
+            onClick={() => setView('settings')}
+            className="p-2 bg-white/40 rounded-full border border-slate-100 shadow-sm" 
+            id="settings"
+          >
             <Settings size={20} />
           </button>
         </div>
@@ -150,10 +187,29 @@ export default function App() {
               <div className="mb-8">
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">출장 목적지 선택</span>
                 <h2 className="text-2xl font-bold mt-1 text-slate-800">곧 떠날 국가를<br />선택해주세요</h2>
+                
+                <div className="mt-6 relative">
+                  <input 
+                    type="text"
+                    placeholder="국가 이름 검색..."
+                    className="w-full bg-white border border-slate-100 rounded-2xl py-4 pl-12 pr-4 shadow-sm outline-none focus:border-blue-200 transition-all text-sm font-semibold"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500"
+                    >
+                      <X size={18} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid gap-4">
-                {COUNTRIES.map((country, idx) => (
+                {filteredCountries.map((country, idx) => (
                   <button
                     key={country.id}
                     onClick={() => handleCountrySelect(country)}
@@ -204,42 +260,54 @@ export default function App() {
                 <p className="text-slate-400">{selectedCountry.nameEn}</p>
               </div>
 
-              {/* Weather & Voltage Cards */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="glass bg-sky-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm">
-                  <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
-                    <CloudSun size={28} className="text-sky-500" />
+              {/* Weather, Voltage & Info Cards */}
+              <div className="space-y-4">
+                {/* Weather Forecast Card */}
+                <div className="glass bg-sky-50/60 p-6 rounded-[2.5rem] shadow-sm border border-sky-100">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-white rounded-2xl shadow-sm">
+                        <CloudSun size={28} className="text-sky-500" />
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] uppercase tracking-widest text-sky-600/60 font-bold mb-0.5">현지 날씨</h4>
+                        <p className="text-sm font-bold text-sky-900 leading-snug">{selectedCountry.weatherSummary}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-[10px] uppercase tracking-widest text-sky-600/60 font-bold mb-1">현지 날씨</h4>
-                    <p className="text-sm font-bold text-sky-900 line-clamp-2">{selectedCountry.weatherSummary}</p>
+
+                  <div className="grid grid-cols-7 gap-1 bg-white/40 p-3 rounded-[1.5rem] border border-sky-100/50">
+                    {selectedCountry.forecast.map((day, idx) => (
+                      <div key={idx} className="flex flex-col items-center gap-2 py-2">
+                        <span className="text-[10px] font-bold text-sky-400">{day.day}</span>
+                        <span className="text-xl">{day.condition}</span>
+                        <span className="text-[11px] font-black text-sky-900">{day.temp}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div className="glass bg-amber-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm">
-                  <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
-                    <Zap size={28} className="text-amber-500" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="glass bg-amber-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-amber-100">
+                    <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
+                      <Zap size={28} className="text-amber-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-widest text-amber-600/60 font-bold mb-1">사용 전압</h4>
+                      <p className="text-2xl font-bold text-amber-900">{selectedCountry.voltage}</p>
+                      <p className="text-[10px] text-amber-900/50 font-medium leading-tight mt-1">{selectedCountry.plugType}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-[10px] uppercase tracking-widest text-amber-600/60 font-bold mb-1">사용 전압</h4>
-                    <p className="text-2xl font-bold text-amber-900">{selectedCountry.voltage}</p>
-                    <p className="text-[9px] text-amber-900/40 uppercase tracking-tighter mt-1">{selectedCountry.plugType}</p>
-                  </div>
-                </div>
-              </div>
 
-              <div className="glass bg-white/70 p-6 rounded-[2.5rem] overflow-hidden relative shadow-sm border-slate-50">
-                <div className="absolute right-[-10%] top-[-10%] p-4 opacity-[0.03] text-slate-900">
-                  <Globe size={180} />
-                </div>
-                <h4 className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-4">준비물 가이드</h4>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center shrink-0">
-                    <Zap size={28} className="text-indigo-400" />
+                  <div className="glass bg-indigo-50/60 p-6 rounded-[2.5rem] aspect-square flex flex-col justify-between shadow-sm border border-indigo-100">
+                    <div className="p-3 bg-white rounded-2xl w-fit shadow-sm">
+                      <ShieldCheck size={28} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-widest text-indigo-600/60 font-bold mb-1">준비 가이드</h4>
+                      <p className="text-[11px] font-bold text-indigo-900 leading-relaxed">범용 멀티 어댑터가 필수입니다.</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    <span className="font-bold text-indigo-600">{selectedCountry.voltage}</span>와 <span className="font-bold text-indigo-600">{selectedCountry.plugType}</span>를 지원하는 범용 변환 어댑터가 필수입니다.
-                  </p>
                 </div>
               </div>
 
@@ -417,6 +485,114 @@ export default function App() {
                       onChange={handlePhotoUpload} 
                     />
                   </label>
+                </div>
+              </div>
+            </motion.div>
+          )}
+          {view === 'settings' && (
+            <motion.div
+              key="settings"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              className="space-y-8"
+            >
+              <div className="mb-4">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">앱 설정</span>
+                <h2 className="text-2xl font-bold mt-1 text-slate-800">도움이 되는 정보</h2>
+              </div>
+
+              <div className="space-y-6">
+                {/* Emergency Info section */}
+                <div className="glass bg-rose-50/50 p-6 rounded-[2.5rem] border border-rose-100 space-y-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-rose-100 rounded-lg">
+                      <AlertCircle size={18} className="text-rose-600" />
+                    </div>
+                    <span className="font-bold text-sm text-rose-900">비상 연락망 & 정보</span>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">비상 연락처</label>
+                      <input 
+                        className="w-full bg-white/60 border border-rose-100 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:bg-white transition-all"
+                        placeholder="예: 010-0000-0000"
+                        value={emergencyPhone}
+                        onChange={(e) => setEmergencyPhone(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-black text-rose-300 uppercase tracking-widest pl-1">여권 번호 (참고용)</label>
+                      <input 
+                        className="w-full bg-white/60 border border-rose-100 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:bg-white transition-all"
+                        placeholder="예: M12345678"
+                        value={passportRef}
+                        onChange={(e) => setPassportRef(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-rose-400 mt-2 px-1">
+                    * 위 정보는 브라우저에만 안전하게 저장되며 서버로 전송되지 않습니다.
+                  </p>
+                </div>
+
+                {/* Checklist Control */}
+                <div className="glass bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50">
+                  <h4 className="text-sm font-bold text-slate-800 mb-4">데이터 관리</h4>
+                  <button 
+                    onClick={resetChecklist}
+                    className="w-full py-4 border border-slate-100 rounded-2xl text-sm font-bold text-slate-400 hover:text-rose-500 hover:border-rose-100 hover:bg-rose-50 transition-all flex items-center justify-center gap-2"
+                  >
+                    체크리스트 초기화하기
+                  </button>
+                </div>
+
+                {/* Helpful Links/Info */}
+                <div className="glass bg-blue-50/50 p-6 rounded-[2.5rem] border border-blue-100">
+                  <h4 className="text-sm font-bold text-blue-900 mb-4">해외 출장 필수 링크</h4>
+                  <div className="grid gap-2">
+                    {[
+                      { name: '외교부 해외안전여행', url: 'https://www.0404.go.kr' },
+                      { name: '인천공항 운항현황', url: 'https://www.airport.kr' },
+                      { name: '세계 기상 기구', url: 'https://worldweather.wmo.int' }
+                    ].map((link, idx) => (
+                      <a 
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-4 bg-white/60 rounded-2xl text-sm font-semibold text-blue-800 hover:bg-white transition-all shadow-sm"
+                      >
+                        {link.name}
+                        <ChevronRight size={16} className="opacity-40" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mobile Installation Guide */}
+                <div className="glass bg-slate-900/5 p-6 rounded-[2.5rem] border border-slate-200/50">
+                  <h4 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <Globe size={16} className="text-slate-400" />
+                    앱으로 사용하기 (설치 방법)
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="bg-white/60 p-4 rounded-2xl text-[11px] leading-relaxed text-slate-600">
+                      <p className="font-bold text-slate-800 mb-2">iPhone (Safari)</p>
+                      <ol className="list-decimal pl-4 space-y-1">
+                        <li>하단 중앙의 [공유] 아이콘을 누르세요.</li>
+                        <li>스크롤을 내려 [홈 화면에 추가]를 선택하세요.</li>
+                      </ol>
+                    </div>
+                    <div className="bg-white/60 p-4 rounded-2xl text-[11px] leading-relaxed text-slate-600">
+                      <p className="font-bold text-slate-800 mb-2">Android (Chrome)</p>
+                      <ol className="list-decimal pl-4 space-y-1">
+                        <li>우측 상단의 점 3개 아이콘을 누르세요.</li>
+                        <li>[홈 화면에 추가] 또는 [앱 설치]를 선택하세요.</li>
+                      </ol>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
