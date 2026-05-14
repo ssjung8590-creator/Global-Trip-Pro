@@ -1,0 +1,22 @@
+{
+    "short_name": "GlobalTrip",
+    "name": "Global Trip Pro",
+    "icons": [
+          {
+                  "src": "/icon-192.png",
+                  "type": "image/png",
+                  "sizes": "192x192"
+          },
+          {
+                  "src": "/icon-512.png",
+                  "type": "image/png",
+                  "sizes": "512x512"
+          }
+    ],
+    "start_url": "/",
+    "background_color": "#FDFCFB",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#FDFCFB",
+    "description": "AI-powered travel checklist and planning app."
+}
