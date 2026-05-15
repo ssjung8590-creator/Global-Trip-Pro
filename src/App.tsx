@@ -475,12 +475,12 @@ export default function App() {
                                 ) : (
                                   <Circle size={18} className="text-indigo-500" />
                                 )}
-                                <span className={`text-lg transition-all ${item.completed ? 'opacity-10 grayscale' : 'opacity-80'}`}>
+                                <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : 'opacity-80'}`}>
                                   {item.icon}
                                 </span>
                               </div>
                               <div className="flex-1 flex flex-col items-start justify-center">
-                                <span className={`text-xs text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
+                                <span className={`text-[15px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
                                   {lang === 'ko' ? item.name : (item.nameEn || item.name)}
                                 </span>
                               </div>
@@ -729,12 +729,12 @@ export default function App() {
                                 ) : (
                                   <Circle size={22} className="text-indigo-500" />
                                 )}
-                                <span className={`text-xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                                <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
                                   {item.icon}
                                 </span>
                               </div>
                               <div className="flex-1 flex flex-col items-start justify-center">
-                                <span className={`text-[15px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
+                                <span className={`text-[17px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
                                   {lang === 'ko' ? item.name : (item.nameEn || item.name)}
                                 </span>
                               </div>
