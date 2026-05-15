@@ -268,13 +268,26 @@ export default function App() {
     }
   };
 
+  const checklistCategories = [
+    { id: '필수', labelSize: 'text-[14px]', label: t.catEssential, icon: '⭐', bg: 'bg-pink-50', text: 'text-pink-500', border: 'border-pink-100', active: 'bg-pink-400 text-white border-pink-400', shadow: 'shadow-pink-100' },
+    { id: '전자기기', labelSize: 'text-[13px]', label: t.catElectronics, icon: '🔌', bg: 'bg-sky-50', text: 'text-sky-500', border: 'border-sky-100', active: 'bg-sky-300 text-white border-sky-300', shadow: 'shadow-sky-100' },
+    { id: '의류', labelSize: 'text-[14px]', label: t.catClothes, icon: '👕', bg: 'bg-indigo-50', text: 'text-indigo-500', border: 'border-indigo-100', active: 'bg-indigo-300 text-white border-indigo-300', shadow: 'shadow-indigo-100' },
+    { id: '세면/위생', labelSize: 'text-[12px]', label: t.catToiletries, icon: '🧼', bg: 'bg-emerald-50', text: 'text-emerald-500', border: 'border-emerald-100', active: 'bg-emerald-300 text-white border-emerald-300', shadow: 'shadow-emerald-100' },
+    { id: '식량/상비약', labelSize: 'text-[12px]', label: t.catFood, icon: '💊', bg: 'bg-orange-50', text: 'text-orange-500', border: 'border-orange-100', active: 'bg-orange-300 text-white border-orange-300', shadow: 'shadow-orange-100' },
+    { id: '기타/가방', labelSize: 'text-[12px]', label: t.catOthers, icon: '🎒', bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-100', active: 'bg-slate-400 text-white border-slate-400', shadow: 'shadow-slate-100' }
+  ];
+
+  const regionData = [
+    { name: 'All', icon: '🌎', label: t.all, color: 'bg-slate-900', pastel: 'bg-slate-100', border: 'border-slate-200' },
+    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-amber-500', pastel: 'bg-amber-50', border: 'border-amber-200' },
+    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', pastel: 'bg-blue-50', border: 'border-blue-200' },
+    { name: 'North America', icon: '🏔️', label: t.northAmerica, color: 'bg-rose-500', pastel: 'bg-rose-50', border: 'border-rose-200' },
+    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-teal-500', pastel: 'bg-teal-50', border: 'border-teal-200' }
+  ];
+
   return (
     <div className="min-h-screen max-w-md mx-auto relative overflow-hidden flex flex-col bg-[#FDFCFB]">
-      {/* Background Decor */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-5%] right-[-5%] w-80 h-80 bg-blue-100/50 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-5%] left-[-5%] w-80 h-80 bg-rose-100/50 blur-[120px] rounded-full" />
-      </div>
+      {/* Removed background decor circles */}
 
       {/* Header */}
       <header className="relative z-10 px-6 py-8 flex justify-between items-center text-slate-800">
@@ -294,9 +307,9 @@ export default function App() {
         <div className="flex gap-2">
           <button 
             onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
-            className="px-3 bg-white/40 rounded-full hover:bg-white/80 transition-all border border-slate-100 shadow-sm text-[10px] font-black text-slate-600"
+            className="w-10 h-10 flex items-center justify-center bg-indigo-400 text-white rounded-full hover:bg-indigo-500 transition-all shadow-md shadow-indigo-100 active:scale-95 border-2 border-white"
           >
-            {lang === 'ko' ? 'EN' : 'KO'}
+            <span className="text-[11px] font-black">{lang === 'ko' ? 'EN' : 'KO'}</span>
           </button>
           <button 
             onClick={() => setView('settings')}
@@ -327,26 +340,20 @@ export default function App() {
                 
                 {/* Region Icons Container */}
                 <div className="grid grid-cols-5 gap-2">
-                  {[
-                    { name: 'All', icon: '🌎', label: t.all },
-                    { name: 'Asia', icon: '🌏', label: t.asia },
-                    { name: 'Europe', icon: '🌍', label: t.europe },
-                    { name: 'North America', icon: '🏔️', label: t.northAmerica },
-                    { name: 'Oceania', icon: '🏝️', label: t.oceania }
-                  ].map((region) => (
+                  {regionData.map((region) => (
                     <button
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
+                      className={`flex flex-col items-center gap-3 py-5 rounded-3xl border-2 transition-all active:scale-95 ${
                         selectedRegion === region.name
-                          ? 'bg-slate-900 border-slate-900 shadow-lg -translate-y-1'
+                          ? `${region.pastel} ${region.border} shadow-sm -translate-y-1`
                           : 'bg-white border-slate-50 text-slate-400'
                       }`}
                     >
-                      <span className="text-2xl">{region.icon}</span>
-                      <span className={`text-[9px] font-black uppercase tracking-tight ${
-                        selectedRegion === region.name ? 'text-white' : 'text-slate-900'
+                      <span className="text-3xl">{region.icon}</span>
+                      <span className={`text-[13px] font-black uppercase tracking-tight ${
+                        selectedRegion === region.name ? 'text-slate-900' : 'text-slate-400'
                       }`}>
                         {region.label}
                       </span>
@@ -375,20 +382,23 @@ export default function App() {
                         className="overflow-hidden"
                       >
                         <div className="grid grid-cols-2 gap-3 pb-2 transition-all">
-                          {filteredCountries.map((country) => (
-                            <button
-                              key={country.id}
-                              type="button"
-                              onClick={() => handleCountrySelect(country)}
-                              className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-left hover:border-blue-200 transition-all active:scale-95 group"
-                            >
-                              <span className="text-3xl shrink-0 group-hover:scale-110 transition-transform">{country.emoji}</span>
-                              <div className="min-w-0">
-                                <p className="text-xs font-extra-bold text-slate-800 truncate">{lang === 'ko' ? country.name : country.nameEn}</p>
-                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{lang === 'ko' ? country.nameEn : country.name}</p>
-                              </div>
-                            </button>
-                          ))}
+                          {filteredCountries.map((country) => {
+                            const regionInfo = regionData.find(r => r.name === country.region) || regionData[0];
+                            
+                            return (
+                              <button
+                                key={country.id}
+                                type="button"
+                                onClick={() => handleCountrySelect(country)}
+                                className={`flex items-center gap-4 p-4 ${regionInfo.pastel} border-2 ${regionInfo.border} rounded-2xl shadow-sm text-left hover:brightness-95 transition-all active:scale-95 group`}
+                              >
+                                <span className="text-3xl shrink-0 group-hover:scale-110 transition-transform">{country.emoji}</span>
+                                <div className="min-w-0">
+                                  <p className="text-[15px] font-black text-slate-800 truncate">{lang === 'ko' ? country.name : country.nameEn}</p>
+                                </div>
+                              </button>
+                            );
+                          })}
                         </div>
                       </motion.div>
                     )}
@@ -418,26 +428,19 @@ export default function App() {
 
                 {/* Categories with Pastel Colors */}
                 <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { id: '필수', label: t.catEssential, icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100', active: 'bg-rose-100' },
-                    { id: '전자기기', label: t.catElectronics, icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100', active: 'bg-blue-100' },
-                    { id: '의류', label: t.catClothes, icon: '👕', color: 'bg-violet-50 text-violet-500 border-violet-100', active: 'bg-violet-100' },
-                    { id: '세면/위생', label: t.catToiletries, icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100', active: 'bg-emerald-100' },
-                    { id: '식량/상비약', label: t.catFood, icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100', active: 'bg-amber-100' },
-                    { id: '기타/가방', label: t.catOthers, icon: '🎒', color: 'bg-indigo-50 text-indigo-500 border-indigo-100', active: 'bg-indigo-100' }
-                  ].map((cat) => (
+                  {checklistCategories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => setSelectedChecklistCategory(cat.id)}
                       className={`flex flex-col items-center gap-2 py-3 rounded-2xl border transition-all ${
                         selectedChecklistCategory === cat.id
-                          ? `${cat.active} border-slate-300 shadow-sm scale-95`
-                          : `${cat.color} opacity-80`
+                          ? `${cat.active} shadow-sm scale-95`
+                          : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm`
                       }`}
                     >
                       <span className="text-xl">{cat.icon}</span>
-                      <span className={`text-[9px] font-black tracking-tight leading-none text-center ${
-                        selectedChecklistCategory === cat.id ? 'text-slate-900' : 'opacity-80'
+                      <span className={`${cat.labelSize || 'text-[13px]'} font-black tracking-tight leading-none text-center ${
+                        selectedChecklistCategory === cat.id ? 'text-white' : ''
                       }`}>
                         {cat.label.split('/').join('\n')}
                       </span>
@@ -470,19 +473,21 @@ export default function App() {
                                 {item.completed ? (
                                   <CheckCircle2 size={18} className="text-emerald-500" />
                                 ) : (
-                                  <Circle size={18} className="text-slate-200" />
+                                  <Circle size={18} className="text-indigo-500" />
                                 )}
                                 <span className={`text-lg transition-all ${item.completed ? 'opacity-10 grayscale' : 'opacity-80'}`}>
                                   {item.icon}
                                 </span>
                               </div>
-                              <span className={`text-xs flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
-                                {lang === 'ko' ? item.name : (item.nameEn || item.name)}
-                              </span>
+                              <div className="flex-1 flex flex-col items-start justify-center">
+                                <span className={`text-xs text-left ${item.completed ? 'line-through text-slate-400' : 'font-bold text-slate-700'}`}>
+                                  {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                                </span>
+                              </div>
                             </button>
                             <button 
                               onClick={(e) => removeItem(item.id, e)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
                             >
                               <X size={14} />
                             </button>
@@ -495,9 +500,9 @@ export default function App() {
 
                 <button 
                   onClick={() => setView('checklist')}
-                  className="w-full mt-4 py-4 bg-slate-900 text-white font-bold rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2"
+                  className="w-full mt-6 py-5 bg-indigo-500 text-white font-black rounded-[1.5rem] text-[15px] shadow-xl shadow-indigo-100 hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
-                   {t.manageChecklist} <ChevronRight size={14} />
+                  <span className="text-2xl font-light">+</span> {t.addItem}
                 </button>
               </section>
 
@@ -593,8 +598,8 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-[10px] uppercase tracking-widest text-emerald-600/60 font-bold mb-1">{t.currency}</h4>
-                      <p className="text-2xl font-bold text-emerald-900">{selectedCountry.currency.symbol}</p>
-                      <p className="text-[10px] text-emerald-900/50 font-medium leading-tight mt-1">{selectedCountry.currency.code}</p>
+                      <p className="text-xl font-black text-emerald-900">{lang === 'ko' ? selectedCountry.currency.name : selectedCountry.currency.nameEn}</p>
+                      <p className="text-[11px] text-emerald-900/60 font-bold leading-tight mt-1">{selectedCountry.currency.symbol} · {selectedCountry.currency.code}</p>
                     </div>
                   </div>
                 </div>
@@ -652,26 +657,19 @@ export default function App() {
 
               {/* Category Selection Icons with Pastel Colors */}
               <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: '필수', label: t.catEssential, icon: '⭐', color: 'bg-rose-50 text-rose-500 border-rose-100', active: 'bg-rose-100' },
-                  { id: '전자기기', label: t.catElectronics, icon: '🔌', color: 'bg-blue-50 text-blue-500 border-blue-100', active: 'bg-blue-100' },
-                  { id: '의류', label: t.catClothes, icon: '👕', color: 'bg-violet-50 text-violet-500 border-violet-100', active: 'bg-violet-100' },
-                  { id: '세면/위생', label: t.catToiletries, icon: '🧼', color: 'bg-emerald-50 text-emerald-500 border-emerald-100', active: 'bg-emerald-100' },
-                  { id: '식량/상비약', label: t.catFood, icon: '💊', color: 'bg-amber-50 text-amber-500 border-amber-100', active: 'bg-amber-100' },
-                  { id: '기타/가방', label: t.catOthers, icon: '🎒', color: 'bg-indigo-50 text-indigo-500 border-indigo-100', active: 'bg-indigo-100' }
-                ].map((cat) => (
+                {checklistCategories.map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => setSelectedChecklistCategory(cat.id)}
                     className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
                       selectedChecklistCategory === cat.id
-                        ? `${cat.active} border-slate-300 shadow-sm scale-95`
-                        : `${cat.color} opacity-80 shadow-sm`
+                        ? `${cat.active} shadow-sm scale-95`
+                        : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm shadow-sm`
                     }`}
                   >
                     <span className="text-3xl">{cat.icon}</span>
-                    <span className={`text-[10px] font-black tracking-tight leading-none text-center ${
-                      selectedChecklistCategory === cat.id ? 'text-slate-900' : 'opacity-80'
+                    <span className={`${cat.labelSize ? cat.labelSize.replace('[', '[14').replace('px]', 'px]') : 'text-[14px]'} font-black tracking-tight leading-none text-center ${
+                      selectedChecklistCategory === cat.id ? 'text-white' : ''
                     }`}>
                       {cat.label.split('/').join('\n')}
                     </span>
@@ -729,19 +727,21 @@ export default function App() {
                                 {item.completed ? (
                                   <CheckCircle2 size={22} className="text-emerald-500" />
                                 ) : (
-                                  <Circle size={22} className="text-slate-200" />
+                                  <Circle size={22} className="text-indigo-500" />
                                 )}
-                                <span className={`text-lg transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                                <span className={`text-xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
                                   {item.icon}
                                 </span>
                               </div>
-                              <span className={`text-[15px] flex-1 text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
-                                {lang === 'ko' ? item.name : (item.nameEn || item.name)}
-                              </span>
+                              <div className="flex-1 flex flex-col items-start justify-center">
+                                <span className={`text-[15px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-semibold text-slate-700'}`}>
+                                  {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                                </span>
+                              </div>
                             </button>
                             <button 
                               onClick={(e) => removeItem(item.id, e)}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
                             >
                               <X size={18} />
                             </button>
@@ -750,10 +750,10 @@ export default function App() {
                       )}
                       
                       {activeCategoryInput === selectedChecklistCategory ? (
-                        <div className="flex gap-2 p-2 bg-white rounded-[1.5rem] border border-slate-100 shadow-sm animate-in slide-in-from-top-2">
+                        <div className="flex gap-2 p-2.5 bg-indigo-50 rounded-[1.5rem] border-2 border-indigo-200 shadow-md animate-in slide-in-from-top-2 relative z-10 scale-105 transition-transform">
                           <input 
                             autoFocus
-                            className="flex-1 bg-transparent px-4 py-2 text-sm outline-none font-medium"
+                            className="flex-1 bg-white px-5 py-3 text-[14px] outline-none font-bold text-slate-800 rounded-xl shadow-inner"
                             placeholder={t.addPlaceholder}
                             value={newItemName}
                             onChange={(e) => setNewItemName(e.target.value)}
@@ -772,7 +772,7 @@ export default function App() {
                               setNewItemName('');
                               setActiveCategoryInput(null);
                             }}
-                            className="bg-slate-900 text-white px-5 py-2 rounded-2xl text-xs font-bold"
+                            className="bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-black shadow-lg shadow-indigo-200 active:scale-95 transition-all"
                           >
                             {t.add}
                           </button>
@@ -780,9 +780,9 @@ export default function App() {
                       ) : (
                         <button 
                           onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
-                          className="w-full py-4 border-2 border-dashed border-slate-100 rounded-[1.5rem] flex items-center justify-center gap-2 text-slate-300 hover:text-slate-400 hover:border-slate-200 transition-all text-xs font-bold"
+                          className="w-full py-5 border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-[1.5rem] flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 transition-all text-sm font-black"
                         >
-                          + {t.addItem}
+                          <span className="text-xl">+</span> {t.addItem}
                         </button>
                       )}
                     </div>

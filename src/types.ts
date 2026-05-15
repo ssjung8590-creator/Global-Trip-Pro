@@ -28,6 +28,8 @@ export interface CountryInfo {
   currency: {
     symbol: string;
     code: string;
+    name: string;
+    nameEn: string;
   };
 }
 
