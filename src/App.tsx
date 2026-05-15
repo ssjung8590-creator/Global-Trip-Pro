@@ -82,7 +82,7 @@ const translations = {
     catClothes: '의류',
     catToiletries: '세면/위생',
     catFood: '식량/상비약',
-    catOthers: '기타/가방',
+    catOthers: '기타',
     itemsIn: '내역',
     addItem: '항목 추가'
   },
@@ -138,7 +138,7 @@ const translations = {
     catClothes: 'Clothes',
     catToiletries: 'Toiletries',
     catFood: 'Food/Med',
-    catOthers: 'Others/Bag',
+    catOthers: 'Others',
     itemsIn: 'Items',
     addItem: 'Add Item'
   }
@@ -274,7 +274,7 @@ export default function App() {
     { id: '의류', labelSize: 'text-[14px]', label: t.catClothes, icon: '👕', bg: 'bg-indigo-50', text: 'text-indigo-500', border: 'border-indigo-100', active: 'bg-indigo-300 text-white border-indigo-300', shadow: 'shadow-indigo-100' },
     { id: '세면/위생', labelSize: 'text-[12px]', label: t.catToiletries, icon: '🧼', bg: 'bg-emerald-50', text: 'text-emerald-500', border: 'border-emerald-100', active: 'bg-emerald-300 text-white border-emerald-300', shadow: 'shadow-emerald-100' },
     { id: '식량/상비약', labelSize: 'text-[12px]', label: t.catFood, icon: '💊', bg: 'bg-orange-50', text: 'text-orange-500', border: 'border-orange-100', active: 'bg-orange-300 text-white border-orange-300', shadow: 'shadow-orange-100' },
-    { id: '기타/가방', labelSize: 'text-[12px]', label: t.catOthers, icon: '🎒', bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-100', active: 'bg-slate-400 text-white border-slate-400', shadow: 'shadow-slate-100' }
+    { id: '기타', labelSize: 'text-[14px]', label: t.catOthers, icon: '🎒', bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-100', active: 'bg-slate-400 text-white border-slate-400', shadow: 'shadow-slate-100' }
   ];
 
   const regionData = [
@@ -695,7 +695,7 @@ export default function App() {
                           '의류': 'catClothes',
                           '세면/위생': 'catToiletries',
                           '식량/상비약': 'catFood',
-                          '기타/가방': 'catOthers'
+                          '기타': 'catOthers'
                         }) as [string, keyof typeof translations.ko][]).find(([k]) => k === selectedChecklistCategory)?.[1] || 'itemsIn']} {t.itemsIn}
                       </h3>
                     </div>
