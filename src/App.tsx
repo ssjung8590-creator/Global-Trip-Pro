@@ -422,11 +422,11 @@ export default function App() {
                               <CheckCircle2 size={16} className="text-white" />
                             </div>
                           ) : (
-                            <div className="w-6 h-6 rounded-full border-2 border-indigo-200 bg-white" />
+                            <div className="w-6 h-6 rounded-full border-2 border-violet-600 bg-white" />
                           )}
                         </div>
-                        <div className={`p-2 rounded-xl flex items-center justify-center bg-indigo-50/50`}>
-                          <span className={`text-xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                        <div className="flex items-center justify-center min-w-[2.5rem]">
+                          <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
                             {item.icon}
                           </span>
                         </div>
