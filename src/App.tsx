@@ -321,6 +321,191 @@ export default function App() {
     { id: '기타', labelSize: 'text-[14px]', label: t.catOthers, icon: '🎒', bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-100', active: 'bg-slate-400 text-white border-slate-400', shadow: 'shadow-slate-100' }
   ];
 
+  const renderChecklistUI = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between mb-8 px-2 bg-white/40 p-5 rounded-[2.5rem] border border-slate-100 shadow-sm mt-8">
+        <div className="flex items-center gap-3">
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight">
+            {t.checklist}
+          </h2>
+          <button 
+            onClick={resetChecklist}
+            className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
+            title={t.resetBtn}
+          >
+            <RotateCcw size={14} className="group-active:rotate-[-120deg] transition-transform duration-500" />
+            <span className="text-[11px] font-bold">{t.resetBtn}</span>
+          </button>
+        </div>
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-inner">
+          <span className="text-emerald-600 font-black text-xl leading-none">
+            {checklist.filter(i => i.completed).length}
+          </span>
+          <span className="text-emerald-300 font-bold text-sm leading-none">/ {checklist.length}</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {checklistCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedChecklistCategory(cat.id)}
+            className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
+              selectedChecklistCategory === cat.id
+                ? `${cat.active} shadow-sm scale-95`
+                : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm shadow-sm`
+            }`}
+          >
+            <span className="text-3xl">{cat.icon}</span>
+            <span className={`${cat.labelSize ? cat.labelSize.replace('[', '[14').replace('px]', 'px]') : 'text-[14px]'} font-black tracking-tight leading-none text-center ${
+              selectedChecklistCategory === cat.id ? 'text-white' : ''
+            }`}>
+              {cat.label}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div className="space-y-4">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedChecklistCategory}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="space-y-4"
+          >
+            <div className="flex items-center gap-3 px-2">
+              <div className="w-1 h-4 bg-slate-900 rounded-full" />
+              <h3 className="text-lg font-black text-slate-800">
+                {translations[lang][(Object.entries({
+                  '필수': 'catEssential',
+                  '전자기기': 'catElectronics',
+                  '의류': 'catClothes',
+                  '세면/위생': 'catToiletries',
+                  '식량/상비약': 'catFood',
+                  '기타': 'catOthers'
+                }) as [string, keyof typeof translations.ko][]).find(([k]) => k === selectedChecklistCategory)?.[1] || 'itemsIn']} {t.itemsIn}
+              </h3>
+            </div>
+
+            <div className="grid gap-3">
+              {checklist.filter(item => item.category === selectedChecklistCategory).length === 0 ? (
+                <div className="py-12 flex flex-col items-center gap-4 bg-white rounded-[1.5rem] border border-dashed border-slate-100">
+                  <span className="text-4xl opacity-20">📭</span>
+                  <p className="text-xs font-bold text-slate-300">{t.noItemsInCategory}</p>
+                  <button 
+                    onClick={resetChecklist}
+                    className="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline"
+                  >
+                    {lang === 'ko' ? '기본 목록으로 복구' : 'Recover Default List'}
+                  </button>
+                </div>
+              ) : (
+                checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
+                  <div key={item.id} className="group relative">
+                    <button
+                      onClick={() => toggleCheck(item.id)}
+                      className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
+                        item.completed 
+                        ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
+                        : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
+                      }`}
+                    >
+                      <div className={`shrink-0 flex items-center gap-3`}>
+                        {item.completed ? (
+                          <CheckCircle2 size={22} className="text-emerald-500" />
+                        ) : (
+                          <Circle size={22} className="text-indigo-500" />
+                        )}
+                        <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                          {item.icon}
+                        </span>
+                      </div>
+                      <div className="flex-1 flex flex-col items-start justify-center">
+                        <span className={`text-[17px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
+                          {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                        </span>
+                      </div>
+                    </button>
+                    <button 
+                      onClick={(e) => removeItem(item.id, e)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                ))
+              )}
+              
+              {activeCategoryInput === selectedChecklistCategory ? (
+                <div className="flex gap-2 p-2.5 bg-indigo-50 rounded-[1.5rem] border-2 border-indigo-200 shadow-md animate-in slide-in-from-top-2 relative z-10 scale-105 transition-transform">
+                  <input 
+                    autoFocus
+                    className="flex-1 bg-white px-5 py-3 text-[14px] outline-none font-bold text-slate-800 rounded-xl shadow-inner"
+                    placeholder={t.addPlaceholder}
+                    value={newItemName}
+                    onChange={(e) => setNewItemName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem(newItemName, selectedChecklistCategory);
+                        setNewItemName('');
+                        setActiveCategoryInput(null);
+                      }
+                      if (e.key === 'Escape') setActiveCategoryInput(null);
+                    }}
+                  />
+                  <button 
+                    onClick={() => {
+                      addItem(newItemName, selectedChecklistCategory);
+                      setNewItemName('');
+                      setActiveCategoryInput(null);
+                    }}
+                    className="bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-black shadow-lg shadow-indigo-200 active:scale-95 transition-all"
+                  >
+                    {t.add}
+                  </button>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
+                  className="w-full py-5 border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-[1.5rem] flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 transition-all text-sm font-black"
+                >
+                  <span className="text-xl">+</span> {t.addItem}
+                </button>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="pt-10 mb-12">
+        <div className="relative glass bg-[#F3E5F5]/30 p-8 rounded-[3rem] border border-fuchsia-100 flex flex-col items-center gap-6 shadow-sm text-center overflow-hidden">
+          <div className="absolute -top-4 -right-4 w-32 h-32 bg-fuchsia-200/30 blur-2xl rounded-full" />
+          <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center shadow-sm relative z-10">
+            <Camera size={36} className="text-fuchsia-400" />
+          </div>
+          <div className="relative z-10">
+            <h4 className="text-xl font-black text-slate-800">{t.aiTitle}</h4>
+            <p className="text-[13px] text-slate-500 mt-2 leading-relaxed whitespace-pre-line">
+              {t.aiDescription}
+            </p>
+          </div>
+          <label className="w-full relative z-10 py-5 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white rounded-[2rem] text-sm font-black cursor-pointer transition-all hover:opacity-90 active:scale-95 shadow-xl shadow-fuchsia-100/50 flex items-center justify-center gap-2 group">
+            <Zap size={18} className="group-hover:animate-pulse shrink-0" />
+            {t.aiStart}
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              onChange={handlePhotoUpload} 
+            />
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+
   const regionData = [
     { name: 'All', icon: '🌎', label: t.all, color: 'bg-slate-900', textColor: 'text-slate-900', pastel: 'bg-slate-100', border: 'border-slate-200' },
     { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-amber-500', textColor: 'text-amber-700', pastel: 'bg-amber-50', border: 'border-amber-200' },
@@ -701,12 +886,10 @@ export default function App() {
                 </div>
               </div>
 
-              <button 
-                onClick={() => setView('checklist')}
-                className="w-full py-5 bg-slate-900 text-white font-bold rounded-[2rem] flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95"
-              >
-                {t.openChecklist} <ChevronRight size={20} />
-              </button>
+              {/* Integrated Checklist Section */}
+              <div className="mt-6">
+                {renderChecklistUI()}
+              </div>
             </motion.div>
           )}
 
@@ -718,190 +901,7 @@ export default function App() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6 pb-12"
             >
-                <div className="flex items-center justify-between mb-8 px-2 bg-white/40 p-5 rounded-[2.5rem] border border-slate-100 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                       📋 {t.checklist}
-                    </h2>
-                    <button 
-                      onClick={resetChecklist}
-                      className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
-                      title={t.resetBtn}
-                    >
-                      <RotateCcw size={14} className="group-active:rotate-[-120deg] transition-transform duration-500" />
-                      <span className="text-[11px] font-bold">{t.resetBtn}</span>
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-inner">
-                    <span className="text-emerald-600 font-black text-xl leading-none">
-                      {checklist.filter(i => i.completed).length}
-                    </span>
-                    <span className="text-emerald-300 font-bold text-sm leading-none">/ {checklist.length}</span>
-                  </div>
-                </div>
-
-              {/* Category Selection Icons with Pastel Colors */}
-              <div className="grid grid-cols-3 gap-2">
-                {checklistCategories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedChecklistCategory(cat.id)}
-                    className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
-                      selectedChecklistCategory === cat.id
-                        ? `${cat.active} shadow-sm scale-95`
-                        : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm shadow-sm`
-                    }`}
-                  >
-                    <span className="text-3xl">{cat.icon}</span>
-                    <span className={`${cat.labelSize ? cat.labelSize.replace('[', '[14').replace('px]', 'px]') : 'text-[14px]'} font-black tracking-tight leading-none text-center ${
-                      selectedChecklistCategory === cat.id ? 'text-white' : ''
-                    }`}>
-                      {cat.label.split('/').join('\n')}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="space-y-4">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={selectedChecklistCategory}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center gap-3 px-2">
-                      <div className="w-1 h-4 bg-slate-900 rounded-full" />
-                      <h3 className="text-lg font-black text-slate-800">
-                        {translations[lang][(Object.entries({
-                          '필수': 'catEssential',
-                          '전자기기': 'catElectronics',
-                          '의류': 'catClothes',
-                          '세면/위생': 'catToiletries',
-                          '식량/상비약': 'catFood',
-                          '기타': 'catOthers'
-                        }) as [string, keyof typeof translations.ko][]).find(([k]) => k === selectedChecklistCategory)?.[1] || 'itemsIn']} {t.itemsIn}
-                      </h3>
-                    </div>
-
-                    <div className="grid gap-3">
-                      {checklist.filter(item => item.category === selectedChecklistCategory).length === 0 ? (
-                        <div className="py-12 flex flex-col items-center gap-4 bg-white rounded-[1.5rem] border border-dashed border-slate-100">
-                          <span className="text-4xl opacity-20">📭</span>
-                          <p className="text-xs font-bold text-slate-300">{t.noItemsInCategory}</p>
-                          <button 
-                            onClick={resetChecklist}
-                            className="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline"
-                          >
-                            {t.resetRecovery}
-                          </button>
-                        </div>
-                      ) : (
-                        checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
-                          <div key={item.id} className="group relative">
-                            <button
-                              onClick={() => toggleCheck(item.id)}
-                              className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
-                                item.completed 
-                                ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
-                                : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
-                              }`}
-                            >
-                                <div className={`shrink-0 flex items-center gap-3`}>
-                                {item.completed ? (
-                                  <CheckCircle2 size={22} className="text-emerald-500" />
-                                ) : (
-                                  <Circle size={22} className="text-indigo-500" />
-                                )}
-                                <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
-                                  {item.icon}
-                                </span>
-                              </div>
-                              <div className="flex-1 flex flex-col items-start justify-center">
-                                <span className={`text-[17px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
-                                  {lang === 'ko' ? item.name : (item.nameEn || item.name)}
-                                </span>
-                              </div>
-                            </button>
-                            <button 
-                              onClick={(e) => removeItem(item.id, e)}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
-                            >
-                              <X size={18} />
-                            </button>
-                          </div>
-                        ))
-                      )}
-                      
-                      {activeCategoryInput === selectedChecklistCategory ? (
-                        <div className="flex gap-2 p-2.5 bg-indigo-50 rounded-[1.5rem] border-2 border-indigo-200 shadow-md animate-in slide-in-from-top-2 relative z-10 scale-105 transition-transform">
-                          <input 
-                            autoFocus
-                            className="flex-1 bg-white px-5 py-3 text-[14px] outline-none font-bold text-slate-800 rounded-xl shadow-inner"
-                            placeholder={t.addPlaceholder}
-                            value={newItemName}
-                            onChange={(e) => setNewItemName(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                addItem(newItemName, selectedChecklistCategory);
-                                setNewItemName('');
-                                setActiveCategoryInput(null);
-                              }
-                              if (e.key === 'Escape') setActiveCategoryInput(null);
-                            }}
-                          />
-                          <button 
-                            onClick={() => {
-                              addItem(newItemName, selectedChecklistCategory);
-                              setNewItemName('');
-                              setActiveCategoryInput(null);
-                            }}
-                            className="bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-black shadow-lg shadow-indigo-200 active:scale-95 transition-all"
-                          >
-                            {t.add}
-                          </button>
-                        </div>
-                      ) : (
-                        <button 
-                          onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
-                          className="w-full py-5 border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-[1.5rem] flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 transition-all text-sm font-black"
-                        >
-                          <span className="text-xl">+</span> {t.addItem}
-                        </button>
-                      )}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <div className="pt-10 mb-12">
-                <div className="relative glass bg-[#F3E5F5]/30 p-8 rounded-[3rem] border border-fuchsia-100 flex flex-col items-center gap-6 shadow-sm text-center overflow-hidden">
-                  <div className="absolute -top-4 -right-4 w-32 h-32 bg-fuchsia-200/30 blur-2xl rounded-full" />
-                  
-                  <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center shadow-sm relative z-10">
-                    <Camera size={36} className="text-fuchsia-400" />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <h4 className="text-xl font-black text-slate-800">{t.aiTitle}</h4>
-                    <p className="text-[13px] text-slate-500 mt-2 leading-relaxed whitespace-pre-line">
-                      {t.aiDescription}
-                    </p>
-                  </div>
-
-                  <label className="w-full relative z-10 py-5 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white rounded-[2rem] text-sm font-black cursor-pointer transition-all hover:opacity-90 active:scale-95 shadow-xl shadow-fuchsia-100/50 flex items-center justify-center gap-2 group">
-                    <Zap size={18} className="group-hover:animate-pulse shrink-0" />
-                    {t.aiStart}
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      className="hidden" 
-                      onChange={handlePhotoUpload} 
-                    />
-                  </label>
-                </div>
-              </div>
+              {renderChecklistUI()}
             </motion.div>
           )}
 
