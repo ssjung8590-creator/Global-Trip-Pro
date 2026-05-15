@@ -23,6 +23,7 @@ import {
   RotateCcw,
   AlertCircle,
   X,
+  Plus,
   Coins
 } from 'lucide-react';
 import { COUNTRIES, INITIAL_CHECKLIST } from './constants';
@@ -323,41 +324,42 @@ export default function App() {
 
   const renderChecklistUI = () => (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-8 px-2 bg-white/40 p-5 rounded-[2.5rem] border border-slate-100 shadow-sm mt-8">
+      <div className="bg-white px-5 py-4 rounded-[2rem] border border-slate-100 shadow-sm mt-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight">
-            {t.checklist}
+          <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+            📋 {t.checklist}
           </h2>
           <button 
             onClick={resetChecklist}
-            className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
+            className="flex items-center gap-1 px-2.5 py-1 bg-slate-50 text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
             title={t.resetBtn}
           >
-            <RotateCcw size={14} className="group-active:rotate-[-120deg] transition-transform duration-500" />
-            <span className="text-[11px] font-bold">{t.resetBtn}</span>
+            <RotateCcw size={12} className="group-active:rotate-[-120deg] transition-transform duration-500" />
+            <span className="text-[10px] font-bold">{t.resetBtn}</span>
           </button>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-inner">
-          <span className="text-emerald-600 font-black text-xl leading-none">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50/80 rounded-full border border-emerald-100">
+          <span className="text-emerald-600 font-extrabold text-sm">
             {checklist.filter(i => i.completed).length}
           </span>
-          <span className="text-emerald-300 font-bold text-sm leading-none">/ {checklist.length}</span>
+          <span className="text-emerald-300 font-bold text-[10px]">/ {checklist.length}</span>
+          <span className="text-emerald-600 font-black text-[10px] ml-0.5">{t.done}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2 px-1">
         {checklistCategories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setSelectedChecklistCategory(cat.id)}
             className={`flex flex-col items-center gap-2 py-4 rounded-3xl border transition-all ${
               selectedChecklistCategory === cat.id
-                ? `${cat.active} shadow-sm scale-95`
-                : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm shadow-sm`
+                ? `${cat.active} shadow-lg scale-95`
+                : `${cat.bg} ${cat.text} ${cat.border} shadow-sm active:scale-95`
             }`}
           >
             <span className="text-3xl">{cat.icon}</span>
-            <span className={`${cat.labelSize ? cat.labelSize.replace('[', '[14').replace('px]', 'px]') : 'text-[14px]'} font-black tracking-tight leading-none text-center ${
+            <span className={`${cat.labelSize ? cat.labelSize.replace('text-[', 'text-[').replace('px]', 'px]') : 'text-[14px]'} font-black tracking-tight leading-none text-center ${
               selectedChecklistCategory === cat.id ? 'text-white' : ''
             }`}>
               {cat.label}
@@ -375,8 +377,8 @@ export default function App() {
             exit={{ opacity: 0, y: -10 }}
             className="space-y-4"
           >
-            <div className="flex items-center gap-3 px-2">
-              <div className="w-1 h-4 bg-slate-900 rounded-full" />
+            <div className="flex items-center gap-3 px-2 pt-4">
+              <div className="w-1.5 h-5 bg-slate-900 rounded-full" />
               <h3 className="text-lg font-black text-slate-800">
                 {translations[lang][(Object.entries({
                   '필수': 'catEssential',
@@ -406,73 +408,90 @@ export default function App() {
                   <div key={item.id} className="group relative">
                     <button
                       onClick={() => toggleCheck(item.id)}
-                      className={`w-full flex items-center gap-4 py-4.5 px-5 rounded-[1.5rem] transition-all border ${
+                      className={`w-full flex items-center gap-4 py-4 px-5 rounded-3xl transition-all border ${
                         item.completed 
                         ? 'bg-slate-50 border-slate-100 opacity-40 shadow-none' 
-                        : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
+                        : 'bg-white border-slate-50 shadow-sm hover:border-slate-200 active:scale-[0.98]'
                       }`}
                     >
-                      <div className={`shrink-0 flex items-center gap-3`}>
-                        {item.completed ? (
-                          <CheckCircle2 size={22} className="text-emerald-500" />
-                        ) : (
-                          <Circle size={22} className="text-indigo-500" />
-                        )}
-                        <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
-                          {item.icon}
-                        </span>
+                      <div className="shrink-0 flex items-center gap-4">
+                        <div className="relative">
+                          {item.completed ? (
+                            <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-100 animate-in zoom-in duration-300">
+                              <CheckCircle2 size={16} className="text-white" />
+                            </div>
+                          ) : (
+                            <div className="w-6 h-6 rounded-full border-2 border-indigo-200 bg-white" />
+                          )}
+                        </div>
+                        <div className={`p-2 rounded-xl flex items-center justify-center bg-indigo-50/50`}>
+                          <span className={`text-xl transition-all ${item.completed ? 'opacity-10 grayscale' : ''}`}>
+                            {item.icon}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex-1 flex flex-col items-start justify-center">
-                        <span className={`text-[17px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
+                      <div className="flex-1 flex flex-col items-start justify-center overflow-hidden">
+                        <span className={`text-[16px] text-left truncate w-full ${item.completed ? 'line-through text-slate-400 font-medium' : 'font-bold text-slate-800'}`}>
                           {lang === 'ko' ? item.name : (item.nameEn || item.name)}
                         </span>
                       </div>
                     </button>
                     <button 
                       onClick={(e) => removeItem(item.id, e)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all active:scale-90"
                     >
                       <X size={18} />
                     </button>
                   </div>
                 ))
               )}
+
               
-              {activeCategoryInput === selectedChecklistCategory ? (
-                <div className="flex gap-2 p-2.5 bg-indigo-50 rounded-[1.5rem] border-2 border-indigo-200 shadow-md animate-in slide-in-from-top-2 relative z-10 scale-105 transition-transform">
-                  <input 
-                    autoFocus
-                    className="flex-1 bg-white px-5 py-3 text-[14px] outline-none font-bold text-slate-800 rounded-xl shadow-inner"
-                    placeholder={t.addPlaceholder}
-                    value={newItemName}
-                    onChange={(e) => setNewItemName(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        addItem(newItemName, selectedChecklistCategory);
-                        setNewItemName('');
-                        setActiveCategoryInput(null);
-                      }
-                      if (e.key === 'Escape') setActiveCategoryInput(null);
-                    }}
-                  />
-                  <button 
-                    onClick={() => {
-                      addItem(newItemName, selectedChecklistCategory);
-                      setNewItemName('');
-                      setActiveCategoryInput(null);
-                    }}
-                    className="bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-black shadow-lg shadow-indigo-200 active:scale-95 transition-all"
+              <button 
+                onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
+                className="w-full py-5 bg-blue-400 text-white rounded-[2rem] flex items-center justify-center gap-2 shadow-lg shadow-blue-100 hover:bg-blue-500 transition-all active:scale-95 mt-2"
+              >
+                <Plus size={20} /> <span className="font-bold">{t.addItem}</span>
+              </button>
+
+              {activeCategoryInput === selectedChecklistCategory && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                  <motion.div 
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white w-full max-w-xs p-8 rounded-[3rem] shadow-2xl space-y-6"
                   >
-                    {t.add}
-                  </button>
+                    <div className="text-center space-y-2">
+                      <h3 className="text-xl font-black text-slate-800">{t.addItem}</h3>
+                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{selectedChecklistCategory}</p>
+                    </div>
+                    <input 
+                      autoFocus
+                      className="w-full bg-slate-50 px-6 py-4 text-[15px] outline-none font-bold text-slate-800 rounded-2xl border border-slate-100 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
+                      placeholder={t.addPlaceholder}
+                      value={newItemName}
+                      onChange={(e) => setNewItemName(e.target.value)}
+                    />
+                    <div className="flex gap-3">
+                      <button 
+                        onClick={() => setActiveCategoryInput(null)}
+                        className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-2xl text-sm font-bold active:scale-95 transition-all"
+                      >
+                        {lang === 'ko' ? '취소' : 'Cancel'}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          addItem(newItemName, selectedChecklistCategory);
+                          setNewItemName('');
+                          setActiveCategoryInput(null);
+                        }}
+                        className="flex-1 py-4 bg-blue-400 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
+                      >
+                        {t.add}
+                      </button>
+                    </div>
+                  </motion.div>
                 </div>
-              ) : (
-                <button 
-                  onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
-                  className="w-full py-5 border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-[1.5rem] flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 transition-all text-sm font-black"
-                >
-                  <span className="text-xl">+</span> {t.addItem}
-                </button>
               )}
             </div>
           </motion.div>
@@ -633,105 +652,10 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Checklist Preview Section */}
-              <section className="pt-8 border-t border-slate-100">
-                <div className="flex items-center justify-between mb-6 px-2">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-2xl font-black text-slate-800 tracking-tight">📋 {t.checklist}</h2>
-                    <button 
-                      onClick={resetChecklist}
-                      className="flex items-center gap-1.5 px-3 py-1 bg-white text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
-                    >
-                      <RotateCcw size={12} className="group-active:rotate-[-120deg] transition-transform duration-500" />
-                      <span className="text-[10px] font-bold">{t.resetBtn}</span>
-                    </button>
-                  </div>
-                  <div className="px-3 py-1 bg-emerald-50 rounded-full border border-emerald-100">
-                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                      {checklist.filter(i => i.completed).length}/{checklist.length} {t.done}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Categories with Pastel Colors */}
-                <div className="grid grid-cols-3 gap-2">
-                  {checklistCategories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setSelectedChecklistCategory(cat.id)}
-                      className={`flex flex-col items-center gap-2 py-3 rounded-2xl border transition-all ${
-                        selectedChecklistCategory === cat.id
-                          ? `${cat.active} shadow-sm scale-95`
-                          : `${cat.bg} ${cat.text} ${cat.border} opacity-80 backdrop-blur-sm`
-                      }`}
-                    >
-                      <span className="text-xl">{cat.icon}</span>
-                      <span className={`${cat.labelSize || 'text-[13px]'} font-black tracking-tight leading-none text-center ${
-                        selectedChecklistCategory === cat.id ? 'text-white' : ''
-                      }`}>
-                        {cat.label.split('/').join('\n')}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Preview Items */}
-                <div className="mt-6 min-h-[120px]">
-                  <AnimatePresence mode="wait">
-                    <motion.div 
-                      key={selectedChecklistCategory}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="space-y-2"
-                    >
-                      <div className="grid gap-2">
-                        {checklist.filter(i => i.category === selectedChecklistCategory).map(item => (
-                          <div key={item.id} className="relative group/item">
-                            <button
-                              onClick={() => toggleCheck(item.id)}
-                              className={`w-full flex items-center gap-4 py-4 px-5 rounded-2xl transition-all border ${
-                                item.completed 
-                                ? 'bg-slate-50/50 border-slate-100 opacity-50' 
-                                : 'bg-white border-slate-50 shadow-sm hover:border-slate-200'
-                              }`}
-                            >
-                              <div className="shrink-0 flex items-center gap-3">
-                                {item.completed ? (
-                                  <CheckCircle2 size={18} className="text-emerald-500" />
-                                ) : (
-                                  <Circle size={18} className="text-indigo-500" />
-                                )}
-                                <span className={`text-2xl transition-all ${item.completed ? 'opacity-10 grayscale' : 'opacity-80'}`}>
-                                  {item.icon}
-                                </span>
-                              </div>
-                              <div className="flex-1 flex flex-col items-start justify-center">
-                                <span className={`text-[15px] text-left ${item.completed ? 'line-through text-slate-400' : 'font-black text-slate-800'}`}>
-                                  {lang === 'ko' ? item.name : (item.nameEn || item.name)}
-                                </span>
-                              </div>
-                            </button>
-                            <button 
-                              onClick={(e) => removeItem(item.id, e)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-rose-400 hover:text-rose-600 transition-colors"
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                <button 
-                  onClick={() => setView('checklist')}
-                  className="w-full mt-6 py-5 bg-indigo-500 text-white font-black rounded-[1.5rem] text-[15px] shadow-xl shadow-indigo-100 hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2"
-                >
-                  <span className="text-2xl font-light">+</span> {t.addItem}
-                </button>
-              </section>
+              {/* Checklist Section */}
+              <div className="pt-4">
+                {renderChecklistUI()}
+              </div>
 
               {/* AI Check Promo Card */}
               <div className="pt-8 mt-8 border-t border-slate-100">
