@@ -389,15 +389,15 @@ export default function App() {
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-3 py-5 rounded-3xl border-2 transition-all active:scale-95 ${
+                      className={`flex flex-col items-center gap-3 py-5 rounded-3xl border-2 transition-all active:scale-95 ${region.pastel} ${region.border} ${
                         selectedRegion === region.name
-                          ? `${region.pastel} ${region.border} shadow-sm -translate-y-1`
-                          : 'bg-white border-slate-50 text-slate-400'
+                          ? 'shadow-md -translate-y-1.5 border-slate-800'
+                          : 'shadow-sm opacity-60'
                       }`}
                     >
                       <span className="text-3xl">{region.icon}</span>
-                      <span className={`text-[13px] font-black uppercase tracking-tight ${
-                        selectedRegion === region.name ? 'text-slate-900' : 'text-slate-400'
+                      <span className={`text-[13px] font-black uppercase tracking-tight ${region.color.replace('bg-', 'text-')} ${
+                        selectedRegion === region.name ? 'opacity-100' : 'opacity-70'
                       }`}>
                         {region.label}
                       </span>
