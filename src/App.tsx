@@ -319,27 +319,29 @@ export default function App() {
 
   const renderChecklistUI = () => (
     <div className="space-y-6">
-      <div className="bg-white px-5 py-4 rounded-[2rem] border border-slate-100 shadow-sm mt-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+      <div className="bg-white px-5 py-4 rounded-[2rem] border border-slate-100 shadow-sm mt-8 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-3 shrink-0">
+          <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2 whitespace-nowrap">
             <Luggage size={24} className="text-amber-900" /> {t.checklist}
           </h2>
-          <button 
-            onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-pink-50/50 text-pink-300 rounded-full hover:bg-pink-100/50 transition-all border border-pink-50 group active:scale-95"
-            title={t.resetBtn}
-          >
-            <RotateCcw size={12} className="group-active:rotate-[360deg] transition-transform duration-700" />
-            <span className="text-[11px] font-bold">{t.resetBtn}</span>
-          </button>
+
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 shrink-0 whitespace-nowrap">
+            <span className="text-emerald-700 font-black text-[13px]">
+              {checklist.filter(i => i.completed).length}
+            </span>
+            <span className="text-emerald-300 font-bold text-[11px]">/ {checklist.length}</span>
+            <span className="text-emerald-700 font-black text-[11px] ml-0.5">{t.done}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50/80 rounded-full border border-emerald-100">
-          <span className="text-emerald-600 font-extrabold text-sm">
-            {checklist.filter(i => i.completed).length}
-          </span>
-          <span className="text-emerald-300 font-bold text-[10px]">/ {checklist.length}</span>
-          <span className="text-emerald-600 font-black text-[10px] ml-0.5">{t.done}</span>
-        </div>
+
+        <button 
+          onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-pink-50 text-pink-500 rounded-full hover:bg-pink-100 transition-all border border-pink-100 group active:scale-95 shrink-0 whitespace-nowrap"
+          title={t.resetBtn}
+        >
+          <RotateCcw size={12} className="group-active:rotate-[360deg] transition-transform duration-700" />
+          <span className="text-[11px] font-black">{t.resetBtn}</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-3 gap-2 px-1">
