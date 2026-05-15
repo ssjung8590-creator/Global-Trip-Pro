@@ -69,7 +69,7 @@ const translations = {
     europe: '유럽',
     northAmerica: '북미',
     oceania: '대양주',
-    regionPrompt: '🌍 국가를 선택하면\n실시간 날씨 · 전압 · 통화를 알 수 있습니다',
+    regionPrompt: '🌍 국가를 선택하면\n실시간 날씨 · 환율 · 전압을 알 수 있습니다',
     aiTitle: '최종 점검 & AI 조언',
     aiDescription: '짐을 다 싸셨나요? 사진 한 장이면 AI 전문가가 빠진 물건과 현지 팁을 조언해드립니다.',
     aiStart: 'AI 스마트 점검 시작',
@@ -125,7 +125,7 @@ const translations = {
     europe: 'Europe',
     northAmerica: 'N. America',
     oceania: 'Oceania',
-    regionPrompt: '🌍 Select a country to see\nreal-time weather, voltage, and currency',
+    regionPrompt: '🌍 Select a country to see\nreal-time weather, rate, and voltage',
     aiTitle: 'Final Check & AI Advice',
     aiDescription: 'Packed everything? Take a photo and our AI will spot missing items and give local tips.',
     aiStart: 'Start AI Smart Check',
@@ -166,6 +166,29 @@ export default function App() {
 
   const [emergencyPhone, setEmergencyPhone] = useState(localStorage.getItem('emergencyPhone') || '');
   const [passportRef, setPassportRef] = useState(localStorage.getItem('passportRef') || '');
+
+  const [exchangeRates, setExchangeRates] = useState<Record<string, number>>({});
+  const [lastRateUpdate, setLastRateUpdate] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchExchangeRates = async () => {
+      try {
+        const response = await fetch('https://open.er-api.com/v6/latest/KRW');
+        const data = await response.json();
+        if (data && data.rates) {
+          setExchangeRates(data.rates);
+          setLastRateUpdate(new Date().toLocaleTimeString(lang === 'ko' ? 'ko-KR' : 'en-US', { hour: '2-digit', minute: '2-digit' }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch exchange rates:', error);
+      }
+    };
+
+    fetchExchangeRates();
+    // Fetch every hour
+    const interval = setInterval(fetchExchangeRates, 3600000);
+    return () => clearInterval(interval);
+  }, [lang]);
 
   useEffect(() => {
     // Sync existing checklist with INITIAL_CHECKLIST and migrate old categories
@@ -620,7 +643,26 @@ export default function App() {
                     <div>
                       <h4 className="text-[10px] uppercase tracking-widest text-emerald-600/60 font-bold mb-1">{t.currency}</h4>
                       <p className="text-xl font-black text-emerald-900">{lang === 'ko' ? selectedCountry.currency.name : selectedCountry.currency.nameEn}</p>
-                      <p className="text-[11px] text-emerald-900/60 font-bold leading-tight mt-1">{selectedCountry.currency.symbol} · {selectedCountry.currency.code}</p>
+                      <div className="mt-1">
+                        <p className="text-[11px] text-emerald-900/60 font-bold leading-tight">
+                          {selectedCountry.currency.symbol} · {selectedCountry.currency.code}
+                        </p>
+                        {exchangeRates[selectedCountry.currency.code] && (
+                          <div className="mt-2 pt-2 border-t border-emerald-100/50">
+                            <p className="text-[10px] font-black text-emerald-600 leading-none mb-1">
+                              {lang === 'ko' ? '현지 환율 (1단위 기준)' : 'Exchange Rate (per 1 unit)'}
+                            </p>
+                            <p className="text-sm font-black text-emerald-900 flex items-center gap-1">
+                              {selectedCountry.currency.symbol} 1 = {(1 / exchangeRates[selectedCountry.currency.code]).toLocaleString(undefined, { maximumFractionDigits: 1 })}{lang === 'ko' ? '원' : ' KRW'}
+                            </p>
+                            {lastRateUpdate && (
+                              <p className="text-[9px] text-emerald-400 font-medium mt-1">
+                                {lang === 'ko' ? `갱신: ${lastRateUpdate}` : `Updated: ${lastRateUpdate}`}
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
