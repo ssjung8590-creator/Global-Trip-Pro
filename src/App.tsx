@@ -656,35 +656,6 @@ export default function App() {
               <div className="pt-4">
                 {renderChecklistUI()}
               </div>
-
-              {/* AI Check Promo Card */}
-              <div className="pt-8 mt-8 border-t border-slate-100">
-                <div className="relative glass bg-[#F3E5F5]/30 p-8 rounded-[3rem] border border-fuchsia-100 flex flex-col items-center gap-6 shadow-sm text-center overflow-hidden">
-                  <div className="absolute -top-4 -right-4 w-32 h-32 bg-fuchsia-200/30 blur-2xl rounded-full" />
-                  
-                  <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center shadow-sm relative z-10">
-                    <Camera size={36} className="text-fuchsia-400" />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <h4 className="text-xl font-black text-slate-800">{t.aiTitle}</h4>
-                    <p className="text-[13px] text-slate-500 mt-2 leading-relaxed whitespace-pre-line">
-                      {t.aiDescription}
-                    </p>
-                  </div>
-
-                  <label className="w-full relative z-10 py-5 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white rounded-[2rem] text-sm font-black cursor-pointer transition-all hover:opacity-90 active:scale-95 shadow-xl shadow-fuchsia-100/50 flex items-center justify-center gap-2 group">
-                    <Zap size={18} className="group-hover:animate-pulse shrink-0" />
-                    {t.aiStart}
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      className="hidden" 
-                      onChange={handlePhotoUpload} 
-                    />
-                  </label>
-                </div>
-              </div>
             </motion.div>
           )}
 
@@ -1027,12 +998,11 @@ export default function App() {
           <span className="text-[9px] font-black uppercase tracking-widest">{t.navDest}</span>
         </button>
         <button 
-          onClick={() => selectedCountry && setView('details')}
-          disabled={!selectedCountry}
-          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'details' ? 'text-slate-900 scale-110' : 'text-slate-300'} ${!selectedCountry ? 'opacity-20' : ''}`}
-          id="nav-details"
+          onClick={() => setView(selectedCountry ? 'details' : 'settings')}
+          className={`flex flex-col items-center gap-1.5 transition-all ${(view === 'details' || view === 'settings') ? 'text-slate-900 scale-110' : 'text-slate-300'}`}
+          id="nav-info"
         >
-          <Briefcase size={22} strokeWidth={view === 'details' ? 2.5 : 2} />
+          <Briefcase size={22} strokeWidth={(view === 'details' || view === 'settings') ? 2.5 : 2} />
           <span className="text-[9px] font-black uppercase tracking-widest">{t.navInfo}</span>
         </button>
         <button 
