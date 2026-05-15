@@ -42,8 +42,6 @@ const translations = {
     add: '추가',
     resetRecovery: '초기화하여 전체 복구하기',
     noItemsInCategory: '이 카테고리에 항목이 없습니다',
-    dailyTipHeader: '오늘의 준비 팁',
-    dailyTipContent: '여권 사본을 스마트폰의 암호화된 폴더나 클라우드에 업로드해 두면 분실 시 매우 유용하게 쓰입니다.',
     openChecklist: '체크리스트 열기',
     manageChecklist: '메인 체크리스트 편집',
     analysisReport: 'AI 분석 리포트',
@@ -56,6 +54,7 @@ const translations = {
     emergencyInfo: '비상 연락망 & 정보',
     emergencyPhone: '비상 연락처',
     passportRef: '여권 번호 (참고용)',
+    passportTip: '💡 여권 사본을 스마트폰의 암호화된 폴더나 클라우드에 업로드해 두면 분실 시 매우 유용하게 쓰입니다.',
     dataManagement: '데이터 관리',
     resetBtn: '초기화',
     helpfulLinks: '해외 출장 필수 링크',
@@ -99,8 +98,6 @@ const translations = {
     add: 'Add',
     resetRecovery: 'Reset to recover all',
     noItemsInCategory: 'No items in this category',
-    dailyTipHeader: 'Daily Tip',
-    dailyTipContent: 'Uploading a copy of your passport to an encrypted folder or cloud is very useful in case of loss.',
     openChecklist: 'Open Checklist',
     manageChecklist: 'Edit Main Checklist',
     analysisReport: 'AI Analysis Report',
@@ -113,6 +110,7 @@ const translations = {
     emergencyInfo: 'Emergency & Info',
     emergencyPhone: 'Emergency Phone',
     passportRef: 'Passport # (Ref)',
+    passportTip: '💡 Uploading a copy of your passport to an encrypted folder or cloud is very useful in case of loss.',
     dataManagement: 'Data Management',
     resetBtn: 'Reset',
     helpfulLinks: 'Essential Travel Links',
@@ -863,6 +861,9 @@ export default function App() {
                         value={passportRef}
                         onChange={(e) => setPassportRef(e.target.value)}
                       />
+                      <p className="mt-2 text-[10px] text-rose-500/70 font-bold leading-relaxed px-1 whitespace-pre-line">
+                        {t.passportTip}
+                      </p>
                     </div>
                   </div>
                 </div>
