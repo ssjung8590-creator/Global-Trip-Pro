@@ -438,7 +438,7 @@ export default function App() {
                     </button>
                     <button 
                       onClick={(e) => removeItem(item.id, e)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all active:scale-90"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-300 hover:text-rose-500 active:scale-90"
                     >
                       <X size={18} />
                     </button>
