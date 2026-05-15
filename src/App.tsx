@@ -23,6 +23,7 @@ import {
   Loader2,
   RotateCcw,
   AlertCircle,
+  Trash2,
   X,
   Plus,
   Coins
@@ -435,9 +436,9 @@ export default function App() {
                     </button>
                     <button 
                       onClick={(e) => removeItem(item.id, e)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-300 hover:text-rose-500 active:scale-90"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-rose-600 active:scale-90 transition-colors"
                     >
-                      <X size={18} />
+                      <Trash2 size={18} strokeWidth={2.5} />
                     </button>
                   </div>
                 ))
