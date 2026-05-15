@@ -647,7 +647,7 @@ export default function App() {
                         <p className="text-[11px] text-emerald-900/60 font-bold leading-tight">
                           {selectedCountry.currency.symbol} · {selectedCountry.currency.code}
                         </p>
-                        {exchangeRates[selectedCountry.currency.code] && (
+                        {exchangeRates[selectedCountry.currency.code] ? (
                           <div className="mt-2 pt-2 border-t border-emerald-100/50">
                             <p className="text-[10px] font-black text-emerald-600 leading-none mb-1">
                               {lang === 'ko' ? '현지 환율 (1단위 기준)' : 'Exchange Rate (per 1 unit)'}
@@ -660,6 +660,12 @@ export default function App() {
                                 {lang === 'ko' ? `갱신: ${lastRateUpdate}` : `Updated: ${lastRateUpdate}`}
                               </p>
                             )}
+                          </div>
+                        ) : (
+                          <div className="mt-2 pt-2 border-t border-emerald-100/50 animate-pulse">
+                            <p className="text-[10px] font-black text-emerald-600/40 leading-none mb-1">
+                              {lang === 'ko' ? '환율 정보 로딩 중...' : 'Loading exchange rates...'}
+                            </p>
                           </div>
                         )}
                       </div>
