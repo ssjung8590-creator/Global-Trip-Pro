@@ -322,11 +322,11 @@ export default function App() {
   ];
 
   const regionData = [
-    { name: 'All', icon: '🌎', label: t.all, color: 'bg-slate-900', pastel: 'bg-slate-100', border: 'border-slate-200' },
-    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-amber-500', pastel: 'bg-amber-50', border: 'border-amber-200' },
-    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', pastel: 'bg-blue-50', border: 'border-blue-200' },
-    { name: 'North America', icon: '🏔️', label: t.northAmerica, color: 'bg-rose-500', pastel: 'bg-rose-50', border: 'border-rose-200' },
-    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-teal-500', pastel: 'bg-teal-50', border: 'border-teal-200' }
+    { name: 'All', icon: '🌎', label: t.all, color: 'bg-slate-900', textColor: 'text-slate-900', pastel: 'bg-slate-100', border: 'border-slate-200' },
+    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-amber-500', textColor: 'text-amber-700', pastel: 'bg-amber-50', border: 'border-amber-200' },
+    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', textColor: 'text-blue-700', pastel: 'bg-blue-50', border: 'border-blue-200' },
+    { name: 'North America', icon: '🏔️', label: t.northAmerica, color: 'bg-rose-500', textColor: 'text-rose-700', pastel: 'bg-rose-50', border: 'border-rose-200' },
+    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-teal-500', textColor: 'text-teal-700', pastel: 'bg-teal-50', border: 'border-teal-200' }
   ];
 
   return (
@@ -389,16 +389,14 @@ export default function App() {
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-3 py-5 rounded-3xl border-2 transition-all active:scale-95 ${region.pastel} ${region.border} ${
+                      className={`flex flex-col items-center gap-3 py-5 rounded-3xl border-2 transition-all active:scale-95 ${region.pastel} ${
                         selectedRegion === region.name
-                          ? 'shadow-md -translate-y-1.5 border-slate-800'
-                          : 'shadow-sm opacity-60'
+                          ? 'shadow-lg -translate-y-1.5 border-slate-800'
+                          : `${region.border} shadow-sm`
                       }`}
                     >
                       <span className="text-3xl">{region.icon}</span>
-                      <span className={`text-[13px] font-black uppercase tracking-tight ${region.color.replace('bg-', 'text-')} ${
-                        selectedRegion === region.name ? 'opacity-100' : 'opacity-70'
-                      }`}>
+                      <span className={`text-[13px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
                         {region.label}
                       </span>
                     </button>
