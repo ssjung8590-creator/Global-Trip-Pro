@@ -503,17 +503,33 @@ export default function App() {
                 </button>
               </section>
 
-              {/* Tips Banner */}
-              <div className="glass p-6 rounded-[2.5rem] bg-indigo-50/50 border border-indigo-100 mt-8">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-indigo-100 rounded-lg">
-                    <Info size={18} className="text-indigo-600" />
+              {/* AI Check Promo Card */}
+              <div className="pt-8 mt-8 border-t border-slate-100">
+                <div className="relative glass bg-[#F3E5F5]/30 p-8 rounded-[3rem] border border-fuchsia-100 flex flex-col items-center gap-6 shadow-sm text-center overflow-hidden">
+                  <div className="absolute -top-4 -right-4 w-32 h-32 bg-fuchsia-200/30 blur-2xl rounded-full" />
+                  
+                  <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center shadow-sm relative z-10">
+                    <Camera size={36} className="text-fuchsia-400" />
                   </div>
-                  <span className="font-bold text-sm text-indigo-900">{t.dailyTipHeader}</span>
+                  
+                  <div className="relative z-10">
+                    <h4 className="text-xl font-black text-slate-800">{t.aiTitle}</h4>
+                    <p className="text-[13px] text-slate-500 mt-2 leading-relaxed whitespace-pre-line">
+                      {t.aiDescription}
+                    </p>
+                  </div>
+
+                  <label className="w-full relative z-10 py-5 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white rounded-[2rem] text-sm font-black cursor-pointer transition-all hover:opacity-90 active:scale-95 shadow-xl shadow-fuchsia-100/50 flex items-center justify-center gap-2 group">
+                    <Zap size={18} className="group-hover:animate-pulse shrink-0" />
+                    {t.aiStart}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handlePhotoUpload} 
+                    />
+                  </label>
                 </div>
-                <p className="text-[11px] text-indigo-800/60 leading-relaxed font-medium">
-                  {t.dailyTipContent}
-                </p>
               </div>
             </motion.div>
           )}
