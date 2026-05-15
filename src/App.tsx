@@ -240,12 +240,6 @@ export default function App() {
     localStorage.setItem('appLang', lang);
   }, [lang]);
 
-  const resetChecklist = () => {
-    if (confirm(t.resetChecklist)) {
-      setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })));
-    }
-  };
-
   const toggleCheck = (id: string) => {
     setChecklist(prev => prev.map(item => item.id === id ? { ...item, completed: !item.completed } : item));
   };
@@ -331,12 +325,12 @@ export default function App() {
             <Luggage size={24} className="text-amber-900" /> {t.checklist}
           </h2>
           <button 
-            onClick={resetChecklist}
-            className="flex items-center gap-1 px-2.5 py-1 bg-slate-50 text-slate-400 rounded-full hover:text-rose-500 transition-all border border-slate-100 group active:scale-95"
+            onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-pink-50/50 text-pink-300 rounded-full hover:bg-pink-100/50 transition-all border border-pink-50 group active:scale-95"
             title={t.resetBtn}
           >
-            <RotateCcw size={12} className="group-active:rotate-[-120deg] transition-transform duration-500" />
-            <span className="text-[10px] font-bold">{t.resetBtn}</span>
+            <RotateCcw size={12} className="group-active:rotate-[360deg] transition-transform duration-700" />
+            <span className="text-[11px] font-bold">{t.resetBtn}</span>
           </button>
         </div>
         <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50/80 rounded-full border border-emerald-100">
@@ -398,7 +392,7 @@ export default function App() {
                   <span className="text-4xl opacity-20">📭</span>
                   <p className="text-xs font-bold text-slate-300">{t.noItemsInCategory}</p>
                   <button 
-                    onClick={resetChecklist}
+                    onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
                     className="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline"
                   >
                     {lang === 'ko' ? '기본 목록으로 복구' : 'Recover Default List'}
