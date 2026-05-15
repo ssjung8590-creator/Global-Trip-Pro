@@ -953,17 +953,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Checklist Control */}
-                <div className="glass bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50">
-                  <h4 className="text-sm font-bold text-slate-800 mb-4">{t.dataManagement}</h4>
-                  <button 
-                    onClick={resetChecklist}
-                    className="w-full py-4 border border-slate-100 rounded-2xl text-sm font-bold text-slate-400 hover:text-rose-500 hover:border-rose-100 hover:bg-rose-50 transition-all flex items-center justify-center gap-2"
-                  >
-                    {t.resetBtn}
-                  </button>
-                </div>
-
                 {/* Helpful Links/Info */}
                 <div className="glass bg-blue-50/50 p-6 rounded-[2.5rem] border border-blue-100">
                   <h4 className="text-sm font-bold text-blue-900 mb-4">{t.helpfulLinks}</h4>
