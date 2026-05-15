@@ -15,6 +15,7 @@ import {
   CheckCircle2, 
   Circle,
   Briefcase,
+  Luggage,
   Camera,
   ArrowLeft,
   Settings,
@@ -327,7 +328,7 @@ export default function App() {
       <div className="bg-white px-5 py-4 rounded-[2rem] border border-slate-100 shadow-sm mt-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-            📋 {t.checklist}
+            <Luggage size={24} className="text-amber-900" /> {t.checklist}
           </h2>
           <button 
             onClick={resetChecklist}
