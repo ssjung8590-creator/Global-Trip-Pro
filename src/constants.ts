@@ -806,11 +806,11 @@ export const INITIAL_CHECKLIST: ChecklistItem[] = [
   
   // 의류 (Clothes)
   { id: '19', name: '정장 (자켓/바지/셔츠)', nameEn: 'Suit (Jacket/Pants/Shirt)', category: '의류', completed: false, icon: '👔' },
-  { id: '20', name: '코트 / 스웨터', nameEn: 'Coat / Sweater', category: '의류', completed: false, icon: '🧥' },
+  { id: '20', name: '코트 / 스웨터 / 가디건', nameEn: 'Coat / Sweater / Cardigan', category: '의류', completed: false, icon: '🧥' },
   { id: '21', name: '얇은패딩 / 바람막이', nameEn: 'Down Jacket / Windbreaker', category: '의류', completed: false, icon: '🧥' },
-  { id: '22', name: '내복 / 잠옷 / 실내복', nameEn: 'Underwear / Pajamas', category: '의류', completed: false, icon: '👕' },
+  { id: '22', name: '내복 / 잠옷 / 실내복', nameEn: 'Thermal / Pajamas / Loungewear', category: '의류', completed: false, icon: '👚' },
   { id: '23', name: '속옷 / 양말 / 손수건', nameEn: 'Underwear / Socks / Handkerchief', category: '의류', completed: false, icon: '🧦' },
-  { id: '24', name: '장갑', nameEn: 'Gloves', category: '의류', completed: false, icon: '🧤' },
+  { id: '35', name: '장갑 / 목도리 / 귀도리', nameEn: 'Gloves / Scarf / Earmuffs', category: '의류', completed: false, icon: '🧤' },
   
   // 식량/상비약 (Food/Medicine)
   { id: '25', name: '영양제 / 상비약 (타이레놀 등)', nameEn: 'Vitamins / Medicine', category: '식량/상비약', completed: false, icon: '💊' },
@@ -823,6 +823,4 @@ export const INITIAL_CHECKLIST: ChecklistItem[] = [
   { id: '30', name: '세탁물 봉지 / 키친타올', nameEn: 'Laundry Bags / Kitchen Towel', category: '기타', completed: false, icon: '🧺' },
   { id: '31', name: '에코백 / 여유 가방', nameEn: 'Eco Bag / Extra Bag', category: '기타', completed: false, icon: '👜' },
   { id: '32', name: '캐리어 내부 사진 찍기', nameEn: 'Take luggage photos', category: '기타', completed: false, icon: '📸' },
-  { id: '33', name: '목베개 / 안대', nameEn: 'Neck Pillow / Eye Mask', category: '기타', completed: false, icon: '💤' },
-  { id: '34', name: '셀카봉 / 삼각대', nameEn: 'Selfie Stick / Tripod', category: '기타', completed: false, icon: '📸' },
 ];

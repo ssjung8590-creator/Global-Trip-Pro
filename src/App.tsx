@@ -205,16 +205,28 @@ export default function App() {
       });
 
       // Also ensure all INITIAL_CHECKLIST items exist (if not already deleted or if they are new)
-      const merged = [...migrated];
+      const initialIds = INITIAL_CHECKLIST.map(i => i.id);
+      
+      // Filter out items that are numeric IDs (system items) but no longer in INITIAL_CHECKLIST
+      const filtered = migrated.filter(item => {
+        const isSystemItem = /^\d+$/.test(item.id);
+        if (isSystemItem) {
+          return initialIds.includes(item.id);
+        }
+        return true; // Keep user-added items
+      });
+
+      const merged = [...filtered];
       INITIAL_CHECKLIST.forEach(initialItem => {
-        const existing = merged.find(i => i.id === initialItem.id);
-        if (!existing) {
+        const existingIdx = merged.findIndex(i => i.id === initialItem.id);
+        if (existingIdx === -1) {
           merged.push({ ...initialItem });
         } else {
-          // Sync missing fields like nameEn
-          if (!existing.nameEn) {
-            existing.nameEn = initialItem.nameEn;
-          }
+          // Sync fields to reflect visual and structural improvements from constants.ts
+          const existing = merged[existingIdx];
+          existing.name = initialItem.name;
+          existing.nameEn = initialItem.nameEn;
+          existing.icon = initialItem.icon;
         }
       });
 
