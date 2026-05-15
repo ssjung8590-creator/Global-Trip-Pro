@@ -168,14 +168,35 @@ export default function App() {
   const [passportRef, setPassportRef] = useState(localStorage.getItem('passportRef') || '');
 
   useEffect(() => {
-    // Sync existing checklist with INITIAL_CHECKLIST to populate missing nameEn
-    setChecklist(prev => prev.map(item => {
-      const initialItem = INITIAL_CHECKLIST.find(i => i.id === item.id);
-      if (initialItem && !item.nameEn) {
-        return { ...item, nameEn: initialItem.nameEn };
-      }
-      return item;
-    }));
+    // Sync existing checklist with INITIAL_CHECKLIST and migrate old categories
+    setChecklist(prev => {
+      const migrated = prev.map(item => {
+        // Migrate old category name
+        if (item.category === '기타/가방') {
+          return { ...item, category: '기타' };
+        }
+        return item;
+      });
+
+      // Also ensure all INITIAL_CHECKLIST items exist (if not already deleted or if they are new)
+      const merged = [...migrated];
+      INITIAL_CHECKLIST.forEach(initialItem => {
+        const existing = merged.find(i => i.id === initialItem.id);
+        if (!existing) {
+          merged.push({ ...initialItem });
+        } else {
+          // Sync missing fields like nameEn
+          if (!existing.nameEn) {
+            existing.nameEn = initialItem.nameEn;
+          }
+        }
+      });
+
+      return merged;
+    });
+
+    // Migrate the active category state if it's pointing to the old name
+    setSelectedChecklistCategory(prev => prev === '기타/가방' ? '기타' : prev);
   }, []);
 
   useEffect(() => {

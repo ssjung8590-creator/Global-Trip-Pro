@@ -787,4 +787,6 @@ export const INITIAL_CHECKLIST: ChecklistItem[] = [
   { id: '30', name: '세탁물 봉지 / 키친타올', nameEn: 'Laundry Bags / Kitchen Towel', category: '기타', completed: false, icon: '🧺' },
   { id: '31', name: '에코백 / 여유 가방', nameEn: 'Eco Bag / Extra Bag', category: '기타', completed: false, icon: '👜' },
   { id: '32', name: '캐리어 내부 사진 찍기', nameEn: 'Take luggage photos', category: '기타', completed: false, icon: '📸' },
+  { id: '33', name: '목베개 / 안대', nameEn: 'Neck Pillow / Eye Mask', category: '기타', completed: false, icon: '💤' },
+  { id: '34', name: '셀카봉 / 삼각대', nameEn: 'Selfie Stick / Tripod', category: '기타', completed: false, icon: '📸' },
 ];
