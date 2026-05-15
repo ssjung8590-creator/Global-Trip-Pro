@@ -69,7 +69,7 @@ const translations = {
     europe: '유럽',
     northAmerica: '북미',
     oceania: '대양주',
-    regionPrompt: '위의 대륙 아이콘을 눌러\n여행지를 선택해보세요',
+    regionPrompt: '🌍 국가를 선택하면\n실시간 날씨 · 전압 · 통화를 알 수 있습니다',
     aiTitle: '최종 점검 & AI 조언',
     aiDescription: '짐을 다 싸셨나요? 사진 한 장이면 AI 전문가가 빠진 물건과 현지 팁을 조언해드립니다.',
     aiStart: 'AI 스마트 점검 시작',
@@ -125,7 +125,7 @@ const translations = {
     europe: 'Europe',
     northAmerica: 'N. America',
     oceania: 'Oceania',
-    regionPrompt: 'Select a region above\nto see destinations',
+    regionPrompt: '🌍 Select a country to see\nreal-time weather, voltage, and currency',
     aiTitle: 'Final Check & AI Advice',
     aiDescription: 'Packed everything? Take a photo and our AI will spot missing items and give local tips.',
     aiStart: 'Start AI Smart Check',
@@ -346,7 +346,7 @@ export default function App() {
                     >
                       <span className="text-2xl">{region.icon}</span>
                       <span className={`text-[9px] font-black uppercase tracking-tight ${
-                        selectedRegion === region.name ? 'text-white' : 'text-slate-900/30'
+                        selectedRegion === region.name ? 'text-white' : 'text-slate-900'
                       }`}>
                         {region.label}
                       </span>
@@ -362,9 +362,9 @@ export default function App() {
                         key="region-prompt"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-slate-50 rounded-[2rem] p-8 text-center border border-dashed border-slate-200"
+                        className="bg-white rounded-[2rem] p-8 text-center border-2 border-dashed border-slate-200 shadow-inner"
                       >
-                        <p className="text-xs font-bold text-slate-400 italic whitespace-pre-line">{t.regionPrompt}</p>
+                        <p className="text-[14px] font-black text-slate-800 whitespace-pre-line leading-relaxed">{t.regionPrompt}</p>
                       </motion.div>
                     ) : (
                       <motion.div 
