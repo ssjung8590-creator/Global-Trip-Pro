@@ -62,8 +62,8 @@ const translations = {
     localWeather: '현지 날씨',
     voltage: '사용 전압',
     currency: '현지 통화',
-    guide: '준비 가이드',
-    guideContent: '범용 멀티 어댑터와 현지 화폐 환전이 필요할 수 있습니다.',
+    entryProcedure: '입국 절차 방법',
+    officialSite: '공식 사이트 연결',
     all: '전체',
     asia: '아시아',
     europe: '유럽',
@@ -118,8 +118,8 @@ const translations = {
     localWeather: 'Local Weather',
     voltage: 'Voltage',
     currency: 'Currency',
-    guide: 'Prep Guide',
-    guideContent: 'Universal adapter and local currency exchange may be required.',
+    entryProcedure: 'Entry Procedures',
+    officialSite: 'Official Entry Site',
     all: 'All',
     asia: 'Asia',
     europe: 'Europe',
@@ -673,15 +673,33 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* 4. Prep Guide Card (Soft Violet) */}
-                <div className="bg-violet-50/70 p-6 rounded-[2.5rem] flex items-center gap-4 shadow-sm border border-violet-100/50">
-                  <div className="p-3 bg-white rounded-2xl shadow-sm shrink-0">
-                    <ShieldCheck size={28} className="text-violet-500" />
+                {/* 4. Entry Procedure Card (Soft Violet) */}
+                <div className="bg-violet-50/70 p-6 rounded-[2.5rem] flex flex-col gap-4 shadow-sm border border-violet-100/50">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-white rounded-2xl shadow-sm shrink-0">
+                      <ShieldCheck size={28} className="text-violet-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-widest text-violet-600/60 font-bold mb-1">{(translations[lang] as any).entryProcedure}</h4>
+                      <p className="text-xs font-bold text-violet-900 leading-relaxed">
+                        {lang === 'ko' 
+                          ? (selectedCountry.entryProcedure || "90일 이내 무비자 입국이 가능합니다. 유효기간 6개월 이상의 여권을 권장합니다.") 
+                          : (selectedCountry.entryProcedureEn || "Visa-free entry for up to 90 days. Passport with 6-month validity recommended.")}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-[10px] uppercase tracking-widest text-violet-600/60 font-bold mb-1">{t.guide}</h4>
-                    <p className="text-xs font-bold text-violet-900 leading-relaxed">{t.guideContent}</p>
-                  </div>
+                  
+                  {selectedCountry.entryUrl && (
+                    <a 
+                      href={selectedCountry.entryUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between px-5 py-4 bg-white/60 hover:bg-white rounded-2xl text-[11px] font-black text-violet-600 transition-all border border-violet-100 shadow-sm group"
+                    >
+                      {(translations[lang] as any).officialSite}
+                      <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  )}
                 </div>
               </div>
 

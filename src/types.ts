@@ -31,6 +31,9 @@ export interface CountryInfo {
     name: string;
     nameEn: string;
   };
+  entryProcedure?: string;
+  entryProcedureEn?: string;
+  entryUrl?: string;
 }
 
 export type AppView = 'countries' | 'details' | 'checklist' | 'settings';

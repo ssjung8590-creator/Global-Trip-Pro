@@ -19,7 +19,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "22°", condition: "☀️" },
     ],
     region: 'Asia',
-    currency: { symbol: "¥", code: "JPY", name: "엔", nameEn: "Yen" }
+    currency: { symbol: "¥", code: "JPY", name: "엔", nameEn: "Yen" },
+    entryProcedure: "Visit Japan Web을 통해 검역, 입국심사, 세관신고를 미리 등록하세요.",
+    entryProcedureEn: "Register quarantine, immigration, and customs in advance via Visit Japan Web.",
+    entryUrl: "https://vjw-lp.digital.go.jp/ko/"
   },
   {
     id: "us",
@@ -39,7 +42,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "20°", condition: "☁️" },
     ],
     region: 'North America',
-    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" }
+    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" },
+    entryProcedure: "전자여권 소지자는 ESTA(전자 여행 허가) 승인이 필수입니다. 최소 72시간 전 신청하세요.",
+    entryProcedureEn: "ESTA is mandatory for e-passport holders. Apply at least 72 hours before departure.",
+    entryUrl: "https://esta.cbp.dhs.gov/"
   },
   {
     id: "cn",
@@ -59,7 +65,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "26°", condition: "☀️" },
     ],
     region: 'Asia',
-    currency: { symbol: "¥", code: "CNY", name: "위안", nameEn: "Yuan" }
+    currency: { symbol: "¥", code: "CNY", name: "위안", nameEn: "Yuan" },
+    entryProcedure: "관광 비자 발급이 필요합니다. 여권 잔여 유효기간을 확인하고 비자를 미리 준비하세요.",
+    entryProcedureEn: "Tourism visa is required. Check passport validity and prepare visa in advance.",
+    entryUrl: "https://www.visaforchina.cn/SEL5_KO/"
   },
   {
     id: "sg",
@@ -79,7 +88,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "31°", condition: "⛈️" },
     ],
     region: 'Asia',
-    currency: { symbol: "$", code: "SGD", name: "달러", nameEn: "Dollar" }
+    currency: { symbol: "$", code: "SGD", name: "달러", nameEn: "Dollar" },
+    entryProcedure: "도착 전 3일 이내에 SG 도착카드(SG Arrival Card)를 온라인으로 작성해야 합니다.",
+    entryProcedureEn: "Submit SG Arrival Card (SGAC) online within 3 days prior to arrival.",
+    entryUrl: "https://eservices.ica.gov.sg/sgarrivalcard/"
   },
   {
     id: "uk",
@@ -99,7 +111,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "15°", condition: "☁️" },
     ],
     region: 'Europe',
-    currency: { symbol: "£", code: "GBP", name: "파운드", nameEn: "Pound" }
+    currency: { symbol: "£", code: "GBP", name: "파운드", nameEn: "Pound" },
+    entryProcedure: "무비자 입국이 가능하나, 입국 자동 게이트(ePassport gates) 이용 수칙을 확인하세요.",
+    entryProcedureEn: "Visa-free entry. Check rules for using ePassport gates.",
+    entryUrl: "https://www.gov.uk/check-uk-visa"
   },
   {
     id: "de",
@@ -119,7 +134,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "13°", condition: "🌧️" },
     ],
     region: 'Europe',
-    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" }
+    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" },
+    entryProcedure: "90일 이내 무비자 입국이 가능합니다. 유효기간 6개월 이상의 여권을 권장합니다.",
+    entryProcedureEn: "Visa-free for up to 90 days. Passport with 6-month validity recommended.",
+    entryUrl: "https://esp.consulate.go.kr/visual/index.do"
   },
   {
     id: "fr",
@@ -139,7 +157,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "21°", condition: "☀️" },
     ],
     region: 'Europe',
-    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" }
+    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" },
+    entryProcedure: "솅겐 협약국으로 90일간 무비자 입국이 가능합니다. 여권 만료일을 확인하세요.",
+    entryProcedureEn: "Visa-free for 90 days (Schengen). Check passport expiration date.",
+    entryUrl: "https://fra.consulate.go.kr/visual/index.do"
   },
   {
     id: "vn",
@@ -159,7 +180,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "32°", condition: "☀️" },
     ],
     region: 'Asia',
-    currency: { symbol: "₫", code: "VND", name: "동", nameEn: "Dong" }
+    currency: { symbol: "₫", code: "VND", name: "동", nameEn: "Dong" },
+    entryProcedure: "15일 이내 체류 시 무비자입니다. 초과 시 E-비자 발급이 필요합니다.",
+    entryProcedureEn: "Visa-free for up to 15 days. E-visa required for longer stays.",
+    entryUrl: "https://evisa.xuatnhapcanh.gov.vn/"
   },
   {
     id: "th",
@@ -179,7 +203,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "35°", condition: "☀️" },
     ],
     region: 'Asia',
-    currency: { symbol: "฿", code: "THB", name: "바트", nameEn: "Baht" }
+    currency: { symbol: "฿", code: "THB", name: "바트", nameEn: "Baht" },
+    entryProcedure: "30일 무비자 체류가 가능합니다. 귀국 항공권이나 제3국행 항공권이 필요할 수 있습니다.",
+    entryProcedureEn: "30 days visa-free. Return or onward flight ticket may be required.",
+    entryUrl: "https://www.mfa.go.th/"
   },
   {
     id: "tw",
@@ -319,7 +346,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "24°", condition: "☀️" },
     ],
     region: 'Europe',
-    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" }
+    currency: { symbol: "€", code: "EUR", name: "유로", nameEn: "Euro" },
+    entryProcedure: "솅겐 협약에 따라 90일 무비자 체류가 가능합니다. 귀국 항공권을 지참하세요.",
+    entryProcedureEn: "90 days visa-free under Schengen. Have your return ticket ready.",
+    entryUrl: "https://ita.consulate.go.kr/visual/index.do"
   },
   {
     id: "es",
@@ -599,7 +629,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "31°", condition: "☀️" },
     ],
     region: 'North America',
-    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" }
+    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" },
+    entryProcedure: "ESTA 승인이 필요하며, 비행기에서 배부되는 괌/사이판 전용 입국신고서를 작성하세요.",
+    entryProcedureEn: "ESTA required. Complete Guam/Saipan entry forms distributed on board.",
+    entryUrl: "https://esta.cbp.dhs.gov/"
   },
   {
     id: "mn",
@@ -699,7 +732,10 @@ export const COUNTRIES: CountryInfo[] = [
       { day: "일", temp: "30°", condition: "☀️" },
     ],
     region: 'North America',
-    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" }
+    currency: { symbol: "$", code: "USD", name: "달러", nameEn: "Dollar" },
+    entryProcedure: "ESTA 승인이 필요합니다. 면세 범위와 반입 금지 물품을 미리 체크하세요.",
+    entryProcedureEn: "ESTA required. Check duty-free limits and prohibited items.",
+    entryUrl: "https://esta.cbp.dhs.gov/"
   },
   {
     id: "mo",
