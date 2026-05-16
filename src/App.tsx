@@ -332,8 +332,8 @@ export default function App() {
   ];
 
   const renderChecklistUI = () => (
-    <div className="space-y-3">
-      <div className="bg-white px-4 py-3 rounded-[1.5rem] border border-slate-100 shadow-sm mt-2 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
+    <div className="space-y-2">
+      <div className="bg-white px-4 py-2.5 rounded-[1.2rem] border border-slate-100 shadow-sm mt-1 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-3 shrink-0">
           <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
             <Luggage size={22} className="text-blue-500" />
@@ -363,7 +363,7 @@ export default function App() {
           <button
             key={cat.id}
             onClick={() => setSelectedChecklistCategory(cat.id)}
-            className={`flex flex-col items-center gap-1 py-3 rounded-2xl border transition-all ${
+            className={`flex flex-col items-center gap-0.5 py-2 rounded-2xl border transition-all ${
               selectedChecklistCategory === cat.id
                 ? `${cat.active} ${cat.bg} ${cat.text}`
                 : `${cat.bg} ${cat.text} ${cat.border} shadow-sm active:scale-95`
@@ -609,13 +609,13 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
+              className="space-y-4"
             >
               {/* Destinations Section */}
               <section>
-                <div className="flex items-center justify-between mb-2 px-2">
-                  <h2 className="text-xl font-black text-slate-800 tracking-tight">{t.destinations}</h2>
-                  <Globe size={20} className="text-slate-300" />
+                <div className="flex items-center justify-between mb-1.5 px-2">
+                  <h2 className="text-lg font-black text-slate-800 tracking-tight">{t.destinations}</h2>
+                  <Globe size={18} className="text-slate-300" />
                 </div>
                 
                 {/* Region Icons Container */}
@@ -625,14 +625,14 @@ export default function App() {
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-2 py-3 rounded-3xl border-2 transition-all active:scale-95 ${region.pastel} ${
+                      className={`flex flex-col items-center gap-1 py-2 rounded-2xl border-2 transition-all active:scale-95 ${region.pastel} ${
                         selectedRegion === region.name
-                          ? 'shadow-lg -translate-y-1 border-slate-800'
+                          ? 'shadow-md -translate-y-0.5 border-slate-800'
                           : `${region.border} shadow-sm`
                       }`}
                     >
-                      <span className="text-2xl">{region.icon}</span>
-                      <span className={`text-[11px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
+                      <span className="text-xl">{region.icon}</span>
+                      <span className={`text-[10px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
                         {region.label}
                       </span>
                     </button>
@@ -640,31 +640,33 @@ export default function App() {
                 </div>
 
                 {/* Conditional Country Grid */}
-                <div className="mt-2 min-h-[60px]">
+                <div className="mt-2 min-h-[40px]">
                   <AnimatePresence mode="wait">
                     {selectedRegion === 'All' ? (
                       <motion.div
                         key="region-prompt"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-white rounded-[1.5rem] p-6 text-center border-2 border-dashed border-[#DEE5F5] shadow-inner flex flex-col items-center"
+                        className="bg-white rounded-[1.2rem] p-4 text-center border-2 border-dashed border-[#DEE5F5] shadow-inner flex flex-col items-center"
                       >
-                        <div className="w-12 h-12 bg-[#F0F4FF] rounded-full flex items-center justify-center mb-4">
-                          <Globe className="text-[#0088FF]" size={28} />
+                        <div className="flex items-center justify-center gap-2 mb-1">
+                          <div className="w-6 h-6 bg-[#F0F4FF] rounded-full flex items-center justify-center">
+                            <Globe className="text-[#0088FF]" size={16} />
+                          </div>
+                          <h3 className="text-[17px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
                         </div>
-                        <h3 className="text-[18px] font-black text-[#0A1F44] mb-1">국가를 선택하면</h3>
-                        <p className="text-[13px] font-bold text-slate-400 mb-6">실시간 정보를 바로 확인할 수 있어요</p>
+                        <p className="text-[12px] font-bold text-slate-400 mb-3">실시간 정보를 바로 확인할 수 있어요</p>
                         
-                        <div className="flex flex-wrap justify-center gap-2">
+                        <div className="flex flex-wrap justify-center gap-1.5">
                           {[
                             { label: '날씨', icon: '☀️', bg: 'bg-[#FFF9EB]' },
                             { label: '환율', icon: '💱', bg: 'bg-[#F0FFF4]' },
                             { label: '전압', icon: '🔌', bg: 'bg-[#F5F3FF]' },
                             { label: '입국절차', icon: '✈️', bg: 'bg-[#EFF6FF]' }
                           ].map(item => (
-                            <div key={item.label} className={`flex items-center gap-1.5 px-3 py-1.5 ${item.bg} rounded-full border border-white/50 shadow-sm`}>
-                              <span className="text-sm">{item.icon}</span>
-                              <span className="text-[11px] font-black text-slate-600 tracking-tight">{item.label}</span>
+                            <div key={item.label} className={`flex items-center gap-1 px-2 py-1 ${item.bg} rounded-full border border-white/50 shadow-sm`}>
+                              <span className="text-xs">{item.icon}</span>
+                              <span className="text-[10px] font-black text-slate-600 tracking-tight">{item.label}</span>
                             </div>
                           ))}
                         </div>
