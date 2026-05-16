@@ -329,233 +329,211 @@ export default function App() {
   };
 
   const checklistCategories = [
-    { id: '필수', label: t.catEssential, icon: '⭐', bg: 'bg-[#FFF0F5]', text: 'text-[#FF4D8D]', border: 'border-[#FFD1E1]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-pink-100' },
-    { id: '전자기기', label: t.catElectronics, icon: '🔌', bg: 'bg-[#F0F4FF]', text: 'text-[#4D7CFF]', border: 'border-[#D1E0FF]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-blue-100' },
-    { id: '의류', label: t.catClothes, icon: '👕', bg: 'bg-[#F0F9FF]', text: 'text-[#0091FF]', border: 'border-[#B3E1FF]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-sky-100' },
-    { id: '세면/위생', label: t.catToiletries, icon: '🧼', bg: 'bg-[#F0FFFA]', text: 'text-[#00C2A0]', border: 'border-[#B3F5E1]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-teal-100' },
-    { id: '식량/상비약', label: t.catFood, icon: '💊', bg: 'bg-[#FFF9F0]', text: 'text-[#FF9F00]', border: 'border-[#FFEBC2]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-orange-100' },
-    { id: '기타', label: t.catOthers, icon: '🎒', bg: 'bg-[#F8F9FA]', text: 'text-[#6C757D]', border: 'border-[#DEE2E6]', active: 'border-[#0A1F44] border-2 shadow-md', shadow: 'shadow-slate-100' }
+    { id: '필수', label: t.catEssential, icon: '⭐', color: '#FF3B30', bg: 'bg-[#FFF2F2]', activeBg: 'bg-[#FF3B30]', activeText: 'text-white' },
+    { id: '전자기기', label: t.catElectronics, icon: '🔌', color: '#5856D6', bg: 'bg-[#F2F2FF]', activeBg: 'bg-[#5856D6]', activeText: 'text-white' },
+    { id: '의류', label: t.catClothes, icon: '👕', color: '#007AFF', bg: 'bg-[#F2F8FF]', activeBg: 'bg-[#007AFF]', activeText: 'text-white' },
+    { id: '세면/위생', label: t.catToiletries, icon: '🧼', color: '#34C759', bg: 'bg-[#F2FFF5]', activeBg: 'bg-[#34C759]', activeText: 'text-white' },
+    { id: '식량/상비약', label: t.catFood, icon: '💊', color: '#FF9500', bg: 'bg-[#FFF9F2]', activeBg: 'bg-[#FF9500]', activeText: 'text-white' },
+    { id: '기타', label: t.catOthers, icon: '🎒', color: '#8E8E93', bg: 'bg-[#F2F2F7]', activeBg: 'bg-[#8E8E93]', activeText: 'text-white' }
   ];
 
-  const renderChecklistUI = () => (
-    <div className="space-y-2">
-      <div className="bg-white px-4 py-2.5 rounded-[1.2rem] border border-slate-100 shadow-sm mt-1 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="w-12 h-12 bg-[#F0F4FF] rounded-2xl flex items-center justify-center shadow-inner overflow-hidden">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Suitcase Body */}
-              <rect x="6" y="8" width="20" height="18" rx="3" fill="#0088FF" />
-              {/* Suitcase Top Handle */}
-              <path d="M12 8V6C12 5.44772 12.4477 5 13 5H19C19.5523 5 20 5.44772 20 6V8" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
-              {/* Suitcase Details/Lines */}
-              <rect x="8" y="10" width="16" height="14" rx="1.5" stroke="white" strokeOpacity="0.2" fill="white" fillOpacity="0.1" />
-              {/* Stickers */}
-              <circle cx="11" cy="14" r="2.5" fill="#FFD600" /> {/* Yellow Sticker */}
-              <circle cx="21" cy="19" r="2" fill="#00DDAA" /> {/* Green Sticker */}
-              <circle cx="14" cy="20" r="1.5" fill="#FF4D8D" /> {/* Pink Sticker */}
-              {/* Wheels */}
-              <rect x="8" y="26" width="3" height="2" rx="1" fill="#334155" />
-              <rect x="21" y="26" width="3" height="2" rx="1" fill="#334155" />
-            </svg>
-          </div>
-          <h2 className="text-[20px] font-black text-[#0A1F44] tracking-tight whitespace-nowrap">
-            {t.checklist}
-          </h2>
-        </div>
+  const renderChecklistUI = () => {
+    const completedCount = checklist.filter(i => i.completed).length;
+    const progress = (completedCount / checklist.length) * 100;
 
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="flex items-center gap-1 px-3 py-1.5 bg-[#EFF6FF] rounded-full shrink-0 whitespace-nowrap">
-            <span className="text-[#0055FF] font-black text-[13px]">
-              {checklist.filter(i => i.completed).length} / {checklist.length} 완료
-            </span>
-          </div>
-
-          <button 
-            onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
-          className="flex items-center gap-1 text-pink-500 transition-all active:scale-95 shrink-0 whitespace-nowrap"
-        >
-          <RotateCcw size={14} className="font-bold" />
-          <span className="text-[13px] font-black">{t.resetBtn}</span>
-        </button>
-      </div>
-    </div>
-
-      <div className="grid grid-cols-3 gap-2.5 px-1">
-        {checklistCategories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setSelectedChecklistCategory(cat.id)}
-            className={`flex flex-col items-center gap-1.5 py-4 rounded-2xl border transition-all ${
-              selectedChecklistCategory === cat.id
-                ? `${cat.active} ${cat.bg} ${cat.text}`
-                : `${cat.bg} ${cat.text} ${cat.border} shadow-sm active:scale-95`
-            }`}
-          >
-            <span className="text-2xl">{cat.icon}</span>
-            <span className={`text-[13px] font-black tracking-tight leading-none text-center`}>
-              {cat.label}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedChecklistCategory}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="space-y-3"
-          >
-            <div className="flex items-center gap-2 px-1 pt-2">
-              <div className="w-1.5 h-4.5 bg-[#0055FF] rounded-full" />
-              <h3 className="text-[17px] font-black text-[#0A1F44] tracking-tight">
-                {translations[lang][(Object.entries({
-                  '필수': 'catEssential',
-                  '전자기기': 'catElectronics',
-                  '의류': 'catClothes',
-                  '세면/위생': 'catToiletries',
-                  '식량/상비약': 'catFood',
-                  '기타': 'catOthers'
-                }) as [string, keyof typeof translations.ko][]).find(([k]) => k === selectedChecklistCategory)?.[1] || 'itemsIn']} {t.itemsIn}
-              </h3>
-            </div>
-
-            <div className="grid gap-2.5">
-              {checklist.filter(item => item.category === selectedChecklistCategory).length === 0 ? (
-                <div className="py-8 flex flex-col items-center gap-3 bg-white rounded-[1.5rem] border border-dashed border-slate-100">
-                  <span className="text-3xl opacity-20">📭</span>
-                  <p className="text-[10px] font-bold text-slate-300 tracking-tight">{t.noItemsInCategory}</p>
+    return (
+      <>
+        <div className="space-y-4">
+          {/* iOS Style Progress Card */}
+          <div className="bg-white p-6 rounded-[2rem] ios-shadow border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                  🧳
                 </div>
-              ) : (
-                checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
-                  <div key={item.id} className="group relative">
-                    <button
-                      onClick={() => toggleCheck(item.id)}
-                      className={`w-full flex items-center gap-3.5 py-4 px-5 rounded-[1.2rem] transition-all border ${
-                        item.completed 
-                        ? 'bg-[#F0F7FF] border-[#E0EFFF] shadow-none' 
-                        : 'bg-white border-white shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:border-blue-100 active:scale-[0.98]'
-                      }`}
-                    >
+                <div>
+                  <h2 className="text-[20px] font-bold text-gray-900 tracking-tight">{t.checklist}</h2>
+                  <p className="text-xs font-semibold text-gray-400">{completedCount} / {checklist.length} {t.done}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
+                className="px-3 py-1.5 bg-rose-50 text-rose-500 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1"
+              >
+                <RotateCcw size={12} /> {lang === 'ko' ? '초기화' : 'Reset'}
+              </button>
+            </div>
+            
+            <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                className="h-full bg-blue-500 rounded-full"
+              />
+            </div>
+          </div>
+
+          {/* Category Grid */}
+          <div className="grid grid-cols-3 gap-3">
+            {checklistCategories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedChecklistCategory(cat.id)}
+                className={`flex flex-col items-center gap-1.5 p-4 rounded-3xl transition-all duration-300 ${
+                  selectedChecklistCategory === cat.id
+                    ? `${cat.activeBg} ${cat.activeText} scale-105 ios-shadow-lg`
+                    : `${cat.bg} text-slate-900 border border-transparent`
+                }`}
+              >
+                <span className={`text-2xl ${selectedChecklistCategory === cat.id ? 'brightness-200' : ''}`}>{cat.icon}</span>
+                <div className="text-center">
+                  <span className="text-[14px] font-bold block">{cat.label}</span>
+                  <span className={`text-[10px] font-semibold opacity-60 ${selectedChecklistCategory === cat.id ? 'text-white' : 'text-slate-500'}`}>
+                    {checklist.filter(i => i.category === cat.id).length}개
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Items List */}
+          <div className="bg-white rounded-[2.5rem] ios-shadow border border-gray-100 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedChecklistCategory}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="divide-y divide-gray-50"
+              >
+                {checklist.filter(item => item.category === selectedChecklistCategory).length === 0 ? (
+                  <div className="py-12 text-center text-gray-300 font-bold text-sm">
+                    {t.noItemsInCategory}
+                  </div>
+                ) : (
+                  checklist.filter(item => item.category === selectedChecklistCategory).map(item => (
+                    <div key={item.id} className="flex items-center gap-4 py-4 px-6 active:bg-gray-50 transition-colors" onClick={() => toggleCheck(item.id)}>
                       <div className="shrink-0">
                         {item.completed ? (
-                          <div className="w-6 h-6 bg-[#0088FF] rounded-full flex items-center justify-center shadow-md shadow-blue-100 animate-in zoom-in duration-300">
-                            <CheckCircle2 size={16} className="text-white" />
+                          <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                            <CheckCircle2 size={18} strokeWidth={3} />
                           </div>
                         ) : (
-                          <div className="w-6 h-6 rounded-full border-2 border-[#D1E0FF] bg-white transition-colors group-hover:border-blue-200" />
+                          <div className="w-7 h-7 rounded-full border-2 border-gray-200 bg-white" />
                         )}
                       </div>
-                      <div className="flex items-center gap-3 flex-1 overflow-hidden">
-                        <span className={`text-xl ${item.completed ? 'opacity-30 grayscale' : ''}`}>
-                          {item.icon}
-                        </span>
-                        <span className={`text-[15px] text-left truncate font-bold ${item.completed ? 'line-through text-slate-300' : 'text-[#0A1F44]'}`}>
-                          {lang === 'ko' ? item.name : (item.nameEn || item.name)}
-                        </span>
-                      </div>
-                    </button>
-                    <button 
-                      onClick={(e) => removeItem(item.id, e)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-200 hover:text-rose-400 active:scale-90 transition-colors"
-                    >
-                      <Trash2 size={16} strokeWidth={2.5} />
-                    </button>
-                  </div>
-                ))
-              )}
+                      <span className={`text-[17px] font-medium flex-1 ${item.completed ? 'text-gray-300 line-through' : 'text-gray-900'}`}>
+                        {lang === 'ko' ? item.name : (item.nameEn || item.name)}
+                      </span>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); removeItem(item.id, e); }}
+                        className="text-gray-200 hover:text-rose-400 p-1"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </motion.div>
+            </AnimatePresence>
+            
+            <button 
+              onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
+              className="w-full py-5 bg-gray-50 text-blue-600 font-bold text-sm flex items-center justify-center gap-2 hover:bg-gray-100 transition-colors"
+            >
+              <Plus size={18} strokeWidth={3} /> {t.addItem}
+            </button>
+          </div>
 
-              <button 
-                onClick={() => setActiveCategoryInput(selectedChecklistCategory)}
-                className="w-full py-4 bg-[#4A90FF] text-white rounded-[1.2rem] flex items-center justify-center gap-2 shadow-lg shadow-blue-100 hover:opacity-90 transition-all active:scale-95 mt-1"
+          {activeCategoryInput === selectedChecklistCategory && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="bg-white w-full max-w-xs p-8 rounded-[3rem] shadow-2xl space-y-6"
               >
-                <Plus size={18} /> <span className="font-bold text-sm tracking-tight">{t.addItem}</span>
-              </button>
-
-
-              {activeCategoryInput === selectedChecklistCategory && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
-                  <motion.div 
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="bg-white w-full max-w-xs p-8 rounded-[3rem] shadow-2xl space-y-6"
-                  >
-                    <div className="text-center space-y-2">
-                      <h3 className="text-xl font-black text-slate-800">{t.addItem}</h3>
-                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{selectedChecklistCategory}</p>
-                    </div>
-                    <input 
-                      autoFocus
-                      className="w-full bg-slate-50 px-6 py-4 text-[15px] outline-none font-bold text-slate-800 rounded-2xl border border-slate-100 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
-                      placeholder={t.addPlaceholder}
-                      value={newItemName}
-                      onChange={(e) => setNewItemName(e.target.value)}
-                    />
-                    <div className="flex gap-3">
-                      <button 
-                        onClick={() => setActiveCategoryInput(null)}
-                        className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-2xl text-sm font-bold active:scale-95 transition-all"
-                      >
-                        {lang === 'ko' ? '취소' : 'Cancel'}
-                      </button>
-                      <button 
-                        onClick={() => {
-                          addItem(newItemName, selectedChecklistCategory);
-                          setNewItemName('');
-                          setActiveCategoryInput(null);
-                        }}
-                        className="flex-1 py-4 bg-blue-400 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
-                      >
-                        {t.add}
-                      </button>
-                    </div>
-                  </motion.div>
+                <div className="text-center space-y-2">
+                  <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
+                    📝
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">{t.addItem}</h3>
+                  <p className="text-xs font-semibold text-blue-500 uppercase tracking-widest">{selectedChecklistCategory}</p>
                 </div>
-              )}
+                <input 
+                  autoFocus
+                  className="w-full bg-gray-50 px-6 py-4 text-[15px] outline-none font-bold text-gray-900 rounded-2xl border border-gray-100 focus:ring-4 focus:ring-blue-100 transition-all text-center"
+                  placeholder={t.addPlaceholder}
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      addItem(newItemName, selectedChecklistCategory);
+                      setNewItemName('');
+                      setActiveCategoryInput(null);
+                    }
+                  }}
+                />
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setActiveCategoryInput(null)}
+                    className="flex-1 py-4 bg-gray-50 text-gray-500 rounded-2xl text-sm font-bold active:scale-95 transition-all"
+                  >
+                    {lang === 'ko' ? '취소' : 'Cancel'}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      addItem(newItemName, selectedChecklistCategory);
+                      setNewItemName('');
+                      setActiveCategoryInput(null);
+                    }}
+                    className="flex-1 py-4 bg-blue-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
+                  >
+                    {t.add}
+                  </button>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="pt-10 mb-12 px-2">
-        <div className="relative bg-white p-10 rounded-[3rem] border border-slate-100 flex flex-col items-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center overflow-hidden">
-          {/* Decorative gradients */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-purple-50/50 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2" />
-          
-          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center relative z-10 shadow-sm border border-slate-50">
-            <div className="w-16 h-16 rounded-full border-2 border-slate-50 flex items-center justify-center">
-              <Camera size={36} className="text-[#D946EF]" />
-            </div>
-          </div>
-          <div className="relative z-10 space-y-2">
-            <h4 className="text-[22px] font-black text-[#0A1F44] tracking-tight">{t.aiTitle}</h4>
-            <p className="text-[14px] text-slate-400 font-bold leading-relaxed px-4 break-keep">
-              {t.aiDescription}
-            </p>
-          </div>
-          <label className="w-full relative z-10 py-5 bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] text-white rounded-full text-[16px] font-black cursor-pointer transition-all hover:brightness-110 active:scale-95 shadow-xl shadow-purple-100 flex items-center justify-center gap-3 group">
-            <Zap size={20} className="fill-white" />
-            {t.aiStart}
-            <input 
-              type="file" 
-              accept="image/*" 
-              className="hidden" 
-              onChange={handlePhotoUpload} 
-            />
-          </label>
+          )}
         </div>
-      </div>
-    </div>
-  );
+
+        {/* AI Smart Check Section */}
+        <div className="pt-10 mb-12 px-2">
+          <div className="relative bg-white p-10 rounded-[3rem] border border-slate-100 flex flex-col items-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-50/50 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2" />
+            
+            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center relative z-10 shadow-sm border border-slate-50">
+              <div className="w-16 h-16 rounded-full border-2 border-slate-50 flex items-center justify-center">
+                <Camera size={36} className="text-[#D946EF]" />
+              </div>
+            </div>
+            <div className="relative z-10 space-y-2">
+              <h4 className="text-[22px] font-black text-[#0A1F44] tracking-tight">{t.aiTitle}</h4>
+              <p className="text-[14px] text-slate-400 font-bold leading-relaxed px-4 break-keep">
+                {t.aiDescription}
+              </p>
+            </div>
+            <label className="w-full relative z-10 py-5 bg-gradient-to-r from-[#D946EF] to-[#8B5CF6] text-white rounded-full text-[16px] font-black cursor-pointer transition-all hover:brightness-110 active:scale-95 shadow-xl shadow-purple-100 flex items-center justify-center gap-3 group">
+              <Zap size={20} className="fill-white" />
+              {t.aiStart}
+              <input 
+                type="file" 
+                accept="image/*" 
+                className="hidden" 
+                onChange={handlePhotoUpload} 
+              />
+            </label>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   const regionData = [
-    { name: 'All', icon: '🌎', label: t.all, color: 'bg-slate-900', textColor: 'text-slate-900', pastel: 'bg-slate-100', border: 'border-slate-200' },
-    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-amber-500', textColor: 'text-amber-700', pastel: 'bg-amber-50', border: 'border-amber-200' },
-    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', textColor: 'text-blue-700', pastel: 'bg-blue-50', border: 'border-blue-200' },
-    { name: 'North America', icon: '🗽', label: t.northAmerica, color: 'bg-rose-500', textColor: 'text-rose-700', pastel: 'bg-rose-50', border: 'border-rose-200' },
-    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-teal-500', textColor: 'text-teal-700', pastel: 'bg-teal-50', border: 'border-teal-200' }
+    { name: 'All', icon: '🌎', label: t.all, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
+    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
+    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
+    { name: 'North America', icon: '🗽', label: t.northAmerica, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
+    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' }
   ];
 
   return (
@@ -628,94 +606,80 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-4"
+              className="space-y-6"
             >
-              {/* Region Icons Container */}
-                <div className="grid grid-cols-5 gap-2 px-1 py-4">
+              {/* Premium Hero Card */}
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#0A1F44] to-[#1E3A8A] rounded-[2.5rem] p-8 text-white ios-shadow-lg">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10" 
+                  style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} 
+                />
+                
+                <div className="relative z-10 space-y-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 opacity-60">Next Trip</span>
+                  <h1 className="text-3xl font-bold leading-tight break-keep">
+                    {lang === 'ko' ? '어디로 떠나시나요?' : 'Where are you heading?'}
+                  </h1>
+                  
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {[
+                      { label: (t as any).weatherLabel, icon: '☀️' },
+                      { label: (t as any).ratesLabel, icon: '💱' },
+                      { label: (t as any).voltageLabel, icon: '🔌' },
+                      { label: (t as any).entryLabel, icon: '✈️' }
+                    ].map(item => (
+                      <div key={item.label} className="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
+                        <span className="text-xs">{item.icon}</span>
+                        <span className="text-[11px] font-bold text-blue-50/80">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Region Selection */}
+              <div className="space-y-3">
+                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-2">지역 선택</h3>
+                <div className="grid grid-cols-5 gap-2">
                   {regionData.map((region) => (
                     <button
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-2 py-4 rounded-[1.5rem] border-2 transition-all active:scale-95 ${region.pastel} ${
+                      className={`flex flex-col items-center gap-1.5 py-4 rounded-[1.5rem] border-2 transition-all active:scale-95 bg-white ${
                         selectedRegion === region.name
-                          ? 'shadow-lg -translate-y-1 border-[#0A1F44]'
-                          : `${region.border} shadow-sm`
+                          ? 'border-blue-500 shadow-md transform -translate-y-1'
+                          : 'border-transparent shadow-sm'
                       }`}
                     >
                       <span className="text-3xl">{region.icon}</span>
-                      <span className={`text-[12px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
+                      <span className={`text-[11px] font-bold ${selectedRegion === region.name ? 'text-blue-600' : 'text-slate-400'}`}>
                         {region.label}
                       </span>
                     </button>
                   ))}
                 </div>
+              </div>
 
-                {/* Conditional Country Grid */}
-                <div className="mt-8 min-h-[40px]">
-                  <AnimatePresence mode="wait">
-                    {selectedRegion === 'All' ? (
-                      <motion.div
-                        key="region-prompt"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="bg-white rounded-[1.2rem] p-5 text-center border-2 border-dashed border-[#DEE5F5] shadow-inner flex flex-col items-center"
-                      >
-                        <div className="flex items-center justify-center gap-1.5 mb-1">
-                          <div className="w-5 h-5 bg-[#F0F4FF] rounded-full flex items-center justify-center">
-                            <Globe className="text-[#0088FF]" size={12} />
-                          </div>
-                          <h3 className="text-[13px] font-black text-[#0A1F44] truncate">{(t as any).selectCountryNotice}</h3>
-                        </div>
-                        <p className="text-[12px] font-bold text-slate-400 mb-3">{(t as any).realtimeInfoNotice}</p>
-                        
-                        <div className="flex flex-wrap justify-center gap-1.5">
-                          {[
-                            { label: (t as any).weatherLabel, icon: '☀️', bg: 'bg-[#FFF9EB]' },
-                            { label: (t as any).ratesLabel, icon: '💱', bg: 'bg-[#F0FFF4]' },
-                            { label: (t as any).voltageLabel, icon: '🔌', bg: 'bg-[#F5F3FF]' },
-                            { label: (t as any).entryLabel, icon: '✈️', bg: 'bg-[#EFF6FF]' }
-                          ].map(item => (
-                            <div key={item.label} className={`flex items-center gap-1 px-2 py-1 ${item.bg} rounded-full border border-white/50 shadow-sm`}>
-                              <span className="text-xs">{item.icon}</span>
-                              <span className="text-[10px] font-black text-slate-600 tracking-tight">{item.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div 
-                        key={selectedRegion}
-                        initial={{ height: 0, opacity: 0, scale: 0.95 }}
-                        animate={{ height: 'auto', opacity: 1, scale: 1 }}
-                        exit={{ height: 0, opacity: 0, scale: 0.95 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="grid grid-cols-2 gap-3 pb-2 transition-all">
-                          {filteredCountries.map((country) => {
-                            const regionInfo = regionData.find(r => r.name === country.region) || regionData[0];
-                            
-                            return (
-                              <button
-                                key={country.id}
-                                type="button"
-                                onClick={() => handleCountrySelect(country)}
-                                className={`flex items-center gap-4 p-4 ${regionInfo.pastel} border-2 ${regionInfo.border} rounded-2xl shadow-sm text-left hover:brightness-95 transition-all active:scale-95 group`}
-                              >
-                                <span className="text-3xl shrink-0 group-hover:scale-110 transition-transform">{country.emoji}</span>
-                                <div className="min-w-0">
-                                  <p className="text-[15px] font-black text-slate-800 truncate">{lang === 'ko' ? country.name : country.nameEn}</p>
-                                </div>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+              {/* Country List if selected */}
+              {selectedRegion !== 'All' && (
+                <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-bottom-4">
+                  {filteredCountries.map((country) => (
+                    <button
+                      key={country.id}
+                      onClick={() => handleCountrySelect(country)}
+                      className="bg-white p-4 rounded-3xl border border-gray-100 ios-shadow flex items-center gap-3 text-left active:scale-95 transition-all"
+                    >
+                      <span className="text-2xl">{country.emoji}</span>
+                      <span className="text-sm font-bold text-gray-900 truncate">
+                        {lang === 'ko' ? country.name : country.nameEn}
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              {/* Checklist Section Integration */}
-              <div className="pt-6">
+              )}
+               
+              <div className="pt-2">
                 {renderChecklistUI()}
               </div>
             </motion.div>
@@ -790,10 +754,12 @@ export default function App() {
                         {exchangeRates[selectedCountry.currency.code] ? (
                           <div className="mt-2 pt-2 border-t border-emerald-100/50">
                             <p className="text-[10px] font-black text-emerald-600 leading-none mb-1">
-                              {lang === 'ko' ? '현지 환율 (1단위 기준)' : 'Exchange Rate (per 1 unit)'}
+                              {lang === 'ko' 
+                                ? (selectedCountry.currency.code === 'JPY' ? '현지 환율 (1000단위 기준)' : '현지 환율 (1단위 기준)') 
+                                : (selectedCountry.currency.code === 'JPY' ? 'Exchange Rate (per 1000 units)' : 'Exchange Rate (per 1 unit)')}
                             </p>
                             <p className="text-sm font-black text-emerald-900 flex items-center gap-1">
-                              {selectedCountry.currency.symbol} 1 = {(1 / exchangeRates[selectedCountry.currency.code]).toLocaleString(undefined, { maximumFractionDigits: 1 })}{lang === 'ko' ? '원' : ' KRW'}
+                              {selectedCountry.currency.symbol} {selectedCountry.currency.code === 'JPY' ? '1000' : '1'} = {((selectedCountry.currency.code === 'JPY' ? 1000 : 1) / exchangeRates[selectedCountry.currency.code]).toLocaleString(undefined, { maximumFractionDigits: 1 })}{lang === 'ko' ? '원' : ' KRW'}
                             </p>
                             {lastRateUpdate && (
                               <p className="text-[9px] text-emerald-400 font-medium mt-1">
@@ -1052,10 +1018,30 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <style>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+      {/* Blur Style Navigation Bar */}
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] glass ios-shadow-lg rounded-[2.5rem] px-8 py-4 z-50 flex justify-around items-center">
+        <button 
+          onClick={() => setView('countries')}
+          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'countries' || view === 'details' ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
+        >
+          <Globe size={20} strokeWidth={view === 'countries' || view === 'details' ? 3 : 2} />
+          <span className="text-[10px] font-bold tracking-tight">{t.navDest}</span>
+        </button>
+        <button 
+          onClick={() => setView('settings')}
+          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'settings' ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
+        >
+          <Info size={20} strokeWidth={view === 'settings' ? 3 : 2} />
+          <span className="text-[10px] font-bold tracking-tight">{t.navInfo}</span>
+        </button>
+        <button 
+          onClick={() => setView('checklist')}
+          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'checklist' ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
+        >
+          <ShieldCheck size={20} strokeWidth={view === 'checklist' ? 3 : 2} />
+          <span className="text-[10px] font-bold tracking-tight">{t.navCheck}</span>
+        </button>
+      </nav>
     </div>
   );
 }
