@@ -633,9 +633,7 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-4"
             >
-              {/* Destinations Section */}
-              <section>
-                {/* Region Icons Container */}
+              {/* Region Icons Container */}
                 <div className="grid grid-cols-5 gap-2 px-1 py-4">
                   {regionData.map((region) => (
                     <button
@@ -719,10 +717,8 @@ export default function App() {
                     )}
                   </AnimatePresence>
                 </div>
-              </section>
-
-              {/* Checklist Section */}
-              <div className="pt-2">
+              {/* Checklist Section Integration */}
+              <div className="pt-6">
                 {renderChecklistUI()}
               </div>
             </motion.div>
@@ -850,12 +846,11 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Integrated Checklist Section */}
-              <div className="mt-6">
-                {renderChecklistUI()}
-              </div>
-            </motion.div>
-          )}
+                <div className="mt-8">
+                  {renderChecklistUI()}
+                </div>
+              </motion.div>
+            )}
 
           {view === 'checklist' && (
             <motion.div
@@ -964,7 +959,11 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+
+                <div className="mt-8">
+                  {renderChecklistUI()}
+                </div>
+              </motion.div>
           )}
         </AnimatePresence>
       </main>
