@@ -599,9 +599,6 @@ export default function App() {
                 <span className="font-display text-[20px] font-[900] tracking-tight text-[#0A1F44] leading-none">
                   TripReady
                 </span>
-                <span className="text-[20px] font-[900] text-[#2DD4BF] italic tracking-tight drop-shadow-sm">
-                  Pro
-                </span>
               </div>
             </div>
           )}
