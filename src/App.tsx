@@ -465,7 +465,7 @@ export default function App() {
                     </button>
                     <button 
                       onClick={(e) => removeItem(item.id, e)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-200 hover:text-rose-500 active:scale-90 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-rose-200 hover:text-rose-400 active:scale-90 transition-colors"
                     >
                       <Trash2 size={16} strokeWidth={2.5} />
                     </button>
