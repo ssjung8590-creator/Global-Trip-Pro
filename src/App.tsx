@@ -26,7 +26,8 @@ import {
   Trash2,
   X,
   Plus,
-  Coins
+  Coins,
+  Plane
 } from 'lucide-react';
 import { COUNTRIES, INITIAL_CHECKLIST } from './constants';
 import { Language, AppView, CountryInfo, ChecklistItem } from './types';
@@ -559,7 +560,36 @@ export default function App() {
               <ArrowLeft size={24} />
             </button>
           ) : (
-            <h1 className="font-display text-3xl font-bold tracking-tight text-slate-800">GlobalTrip</h1>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-tr from-[#0055FF] via-[#00A2FF] to-[#00E5BC] rounded-[1.2rem] flex items-center justify-center shadow-lg shadow-blue-200/50 relative overflow-hidden shrink-0">
+                {/* Globe Line */}
+                <div className="absolute inset-0 border-[1.5px] border-white/20 rounded-full scale-75 rotate-[-20deg]" />
+                <div className="absolute inset-0 border-[1px] border-white/10 rounded-full scale-50 rotate-[45deg]" />
+                
+                {/* Airplane Trail */}
+                <div className="absolute w-[120%] h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent rotate-[-30deg] translate-y-1" />
+                
+                <div className="relative z-10 flex items-center justify-center">
+                  <Globe className="text-white" size={20} strokeWidth={2.5} />
+                  {/* Pin Dot */}
+                  <div className="absolute w-1.5 h-1.5 bg-white rounded-full translate-y-1 translate-x-1 shadow-sm" />
+                </div>
+                
+                {/* Shiny Plane */}
+                <div className="absolute top-1.5 right-1.5">
+                  <Plane size={10} className="text-white fill-white transform rotate-[-45deg]" />
+                </div>
+              </div>
+              
+              <div className="flex items-baseline gap-1">
+                <span className="font-display text-[22px] font-[900] tracking-tight text-[#0A1F44] leading-none">
+                  TripReady
+                </span>
+                <span className="text-[22px] font-[800] bg-gradient-to-r from-[#0088FF] to-[#00DDAA] bg-clip-text text-transparent italic tracking-tight">
+                  Pro
+                </span>
+              </div>
+            </div>
           )}
         </div>
         <div className="flex gap-2">
