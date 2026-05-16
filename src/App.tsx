@@ -358,19 +358,19 @@ export default function App() {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 px-1">
+      <div className="grid grid-cols-3 gap-2.5 px-1">
         {checklistCategories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setSelectedChecklistCategory(cat.id)}
-            className={`flex flex-col items-center gap-0.5 py-2 rounded-2xl border transition-all ${
+            className={`flex flex-col items-center gap-1.5 py-4 rounded-2xl border transition-all ${
               selectedChecklistCategory === cat.id
                 ? `${cat.active} ${cat.bg} ${cat.text}`
                 : `${cat.bg} ${cat.text} ${cat.border} shadow-sm active:scale-95`
             }`}
           >
             <span className="text-2xl">{cat.icon}</span>
-            <span className={`text-[12px] font-black tracking-tight leading-none text-center`}>
+            <span className={`text-[13px] font-black tracking-tight leading-none text-center`}>
               {cat.label}
             </span>
           </button>
@@ -640,20 +640,20 @@ export default function App() {
                 </div>
 
                 {/* Conditional Country Grid */}
-                <div className="mt-2 min-h-[40px]">
+                <div className="mt-8 min-h-[40px]">
                   <AnimatePresence mode="wait">
                     {selectedRegion === 'All' ? (
                       <motion.div
                         key="region-prompt"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-white rounded-[1.2rem] p-4 text-center border-2 border-dashed border-[#DEE5F5] shadow-inner flex flex-col items-center"
+                        className="bg-white rounded-[1.2rem] p-5 text-center border-2 border-dashed border-[#DEE5F5] shadow-inner flex flex-col items-center"
                       >
-                        <div className="flex items-center justify-center gap-2 mb-1">
-                          <div className="w-6 h-6 bg-[#F0F4FF] rounded-full flex items-center justify-center">
-                            <Globe className="text-[#0088FF]" size={16} />
+                        <div className="flex items-center justify-center gap-1.5 mb-1">
+                          <div className="w-5 h-5 bg-[#F0F4FF] rounded-full flex items-center justify-center">
+                            <Globe className="text-[#0088FF]" size={12} />
                           </div>
-                          <h3 className="text-[17px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
+                          <h3 className="text-[14px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
                         </div>
                         <p className="text-[12px] font-bold text-slate-400 mb-3">실시간 정보를 바로 확인할 수 있어요</p>
                         
