@@ -84,9 +84,6 @@ const translations = {
     aiDescription: '짐을 다 싸셨나요? 사진 한 장이면 AI 전문가가 빠진 물건과 현지 팁을 조언해드립니다.',
     aiStart: 'AI 스마트 점검 시작',
     analysisError: '분석 중 오류가 발생했습니다. 네트워크 상태를 확인 후 다시 시도해주세요.',
-    navDest: '여행지',
-    navInfo: '정보',
-    navCheck: '준비물',
     catEssential: '필수',
     catElectronics: '전자기기',
     catClothes: '의류',
@@ -146,9 +143,6 @@ const translations = {
     aiDescription: 'Packed everything? Take a photo and our AI will spot missing items and give local tips.',
     aiStart: 'Start AI Smart Check',
     analysisError: 'Analysis failed. Please check connection and try again.',
-    navDest: 'Dest',
-    navInfo: 'Info',
-    navCheck: 'List',
     catEssential: 'Essential',
     catElectronics: 'Electronics',
     catClothes: 'Clothes',
@@ -629,7 +623,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="relative z-10 flex-1 px-4 pb-20 text-slate-800">
+      <main className="relative z-10 flex-1 px-4 pb-12 text-slate-800">
         <AnimatePresence mode="wait">
           {view === 'countries' && (
             <motion.div
@@ -1061,34 +1055,6 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Navigation Rail / Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 w-full bg-white/70 backdrop-blur-xl border-t border-slate-50 px-8 py-5 z-50 flex justify-around items-center shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)]">
-        <button 
-          onClick={() => setView('countries')}
-          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'countries' ? 'text-slate-900 scale-110' : 'text-slate-300'}`}
-          id="nav-countries"
-        >
-          <Globe size={22} strokeWidth={view === 'countries' ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">{t.navDest}</span>
-        </button>
-        <button 
-          onClick={() => setView(selectedCountry ? 'details' : 'settings')}
-          className={`flex flex-col items-center gap-1.5 transition-all ${(view === 'details' || view === 'settings') ? 'text-slate-900 scale-110' : 'text-slate-300'}`}
-          id="nav-info"
-        >
-          <Briefcase size={22} strokeWidth={(view === 'details' || view === 'settings') ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">{t.navInfo}</span>
-        </button>
-        <button 
-          onClick={() => setView('checklist')}
-          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'checklist' ? 'text-slate-900 scale-110' : 'text-slate-300'}`}
-          id="nav-checklist"
-        >
-          <ShieldCheck size={22} strokeWidth={view === 'checklist' ? 2.5 : 2} />
-          <span className="text-[9px] font-black uppercase tracking-widest">{t.navCheck}</span>
-        </button>
-      </nav>
 
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
