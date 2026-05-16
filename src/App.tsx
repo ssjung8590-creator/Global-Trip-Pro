@@ -627,26 +627,21 @@ export default function App() {
             >
               {/* Destinations Section */}
               <section>
-                <div className="flex items-center justify-between mb-1.5 px-2">
-                  <h2 className="text-lg font-black text-slate-800 tracking-tight">{t.destinations}</h2>
-                  <Globe size={18} className="text-slate-300" />
-                </div>
-                
                 {/* Region Icons Container */}
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-2 px-1 py-4">
                   {regionData.map((region) => (
                     <button
                       key={region.name}
                       type="button"
                       onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-1 py-2 rounded-2xl border-2 transition-all active:scale-95 ${region.pastel} ${
+                      className={`flex flex-col items-center gap-2 py-4 rounded-[1.5rem] border-2 transition-all active:scale-95 ${region.pastel} ${
                         selectedRegion === region.name
-                          ? 'shadow-md -translate-y-0.5 border-slate-800'
+                          ? 'shadow-lg -translate-y-1 border-[#0A1F44]'
                           : `${region.border} shadow-sm`
                       }`}
                     >
-                      <span className="text-xl">{region.icon}</span>
-                      <span className={`text-[10px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
+                      <span className="text-3xl">{region.icon}</span>
+                      <span className={`text-[12px] font-black uppercase tracking-tight ${region.textColor} opacity-100`}>
                         {region.label}
                       </span>
                     </button>
@@ -667,7 +662,7 @@ export default function App() {
                           <div className="w-5 h-5 bg-[#F0F4FF] rounded-full flex items-center justify-center">
                             <Globe className="text-[#0088FF]" size={12} />
                           </div>
-                          <h3 className="text-[14px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
+                          <h3 className="text-[13px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
                         </div>
                         <p className="text-[12px] font-bold text-slate-400 mb-3">실시간 정보를 바로 확인할 수 있어요</p>
                         
