@@ -74,6 +74,12 @@ const translations = {
     northAmerica: '북미',
     oceania: '대양주',
     regionPrompt: '🌍 국가를 선택하면\n실시간 날씨 · 환율 · 전압 · 입국 절차를 알 수 있어요',
+    selectCountryNotice: '국가를 선택하면',
+    realtimeInfoNotice: '실시간 정보를 바로 확인할 수 있어요',
+    weatherLabel: '날씨',
+    ratesLabel: '환율',
+    voltageLabel: '전압',
+    entryLabel: '입국절차',
     aiTitle: '최종 점검 & AI 조언',
     aiDescription: '짐을 다 싸셨나요? 사진 한 장이면 AI 전문가가 빠진 물건과 현지 팁을 조언해드립니다.',
     aiStart: 'AI 스마트 점검 시작',
@@ -130,6 +136,12 @@ const translations = {
     northAmerica: 'N. America',
     oceania: 'Oceania',
     regionPrompt: '🌍 Select a country to see\nweather, rates, voltage, and entry procedures',
+    selectCountryNotice: 'Select a country',
+    realtimeInfoNotice: 'to see real-time information',
+    weatherLabel: 'Weather',
+    ratesLabel: 'Rates',
+    voltageLabel: 'Voltage',
+    entryLabel: 'Entry',
     aiTitle: 'Final Check & AI Advice',
     aiDescription: 'Packed everything? Take a photo and our AI will spot missing items and give local tips.',
     aiStart: 'Start AI Smart Check',
@@ -664,16 +676,16 @@ export default function App() {
                           <div className="w-5 h-5 bg-[#F0F4FF] rounded-full flex items-center justify-center">
                             <Globe className="text-[#0088FF]" size={12} />
                           </div>
-                          <h3 className="text-[13px] font-black text-[#0A1F44] truncate">국가를 선택하면</h3>
+                          <h3 className="text-[13px] font-black text-[#0A1F44] truncate">{(t as any).selectCountryNotice}</h3>
                         </div>
-                        <p className="text-[12px] font-bold text-slate-400 mb-3">실시간 정보를 바로 확인할 수 있어요</p>
+                        <p className="text-[12px] font-bold text-slate-400 mb-3">{(t as any).realtimeInfoNotice}</p>
                         
                         <div className="flex flex-wrap justify-center gap-1.5">
                           {[
-                            { label: '날씨', icon: '☀️', bg: 'bg-[#FFF9EB]' },
-                            { label: '환율', icon: '💱', bg: 'bg-[#F0FFF4]' },
-                            { label: '전압', icon: '🔌', bg: 'bg-[#F5F3FF]' },
-                            { label: '입국절차', icon: '✈️', bg: 'bg-[#EFF6FF]' }
+                            { label: (t as any).weatherLabel, icon: '☀️', bg: 'bg-[#FFF9EB]' },
+                            { label: (t as any).ratesLabel, icon: '💱', bg: 'bg-[#F0FFF4]' },
+                            { label: (t as any).voltageLabel, icon: '🔌', bg: 'bg-[#F5F3FF]' },
+                            { label: (t as any).entryLabel, icon: '✈️', bg: 'bg-[#EFF6FF]' }
                           ].map(item => (
                             <div key={item.label} className={`flex items-center gap-1 px-2 py-1 ${item.bg} rounded-full border border-white/50 shadow-sm`}>
                               <span className="text-xs">{item.icon}</span>
