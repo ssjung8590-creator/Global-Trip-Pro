@@ -355,22 +355,24 @@ export default function App() {
           <h2 className="text-[20px] font-black text-[#0A1F44] tracking-tight whitespace-nowrap">
             {t.checklist}
           </h2>
+        </div>
 
+        <div className="flex items-center gap-3 shrink-0">
           <div className="flex items-center gap-1 px-3 py-1.5 bg-[#EFF6FF] rounded-full shrink-0 whitespace-nowrap">
             <span className="text-[#0055FF] font-black text-[13px]">
               {checklist.filter(i => i.completed).length} / {checklist.length} 완료
             </span>
           </div>
-        </div>
 
-        <button 
-          onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
+          <button 
+            onClick={() => setChecklist(INITIAL_CHECKLIST.map(item => ({ ...item })))}
           className="flex items-center gap-1 text-pink-500 transition-all active:scale-95 shrink-0 whitespace-nowrap"
         >
           <RotateCcw size={14} className="font-bold" />
           <span className="text-[13px] font-black">{t.resetBtn}</span>
         </button>
       </div>
+    </div>
 
       <div className="grid grid-cols-3 gap-2.5 px-1">
         {checklistCategories.map((cat) => (
@@ -592,7 +594,7 @@ export default function App() {
                   TripReady
                 </span>
                 <span className="text-[20px] font-[900] text-[#2DD4BF] italic tracking-tight drop-shadow-sm">
-                  AI
+                  Pro
                 </span>
               </div>
             </div>
