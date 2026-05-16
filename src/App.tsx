@@ -335,14 +335,28 @@ export default function App() {
     <div className="space-y-2">
       <div className="bg-white px-4 py-2.5 rounded-[1.2rem] border border-slate-100 shadow-sm mt-1 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
-            <Luggage size={22} className="text-blue-500" />
+          <div className="w-12 h-12 bg-[#F0F4FF] rounded-2xl flex items-center justify-center shadow-inner overflow-hidden">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Suitcase Body */}
+              <rect x="6" y="8" width="20" height="18" rx="3" fill="#0088FF" />
+              {/* Suitcase Top Handle */}
+              <path d="M12 8V6C12 5.44772 12.4477 5 13 5H19C19.5523 5 20 5.44772 20 6V8" stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
+              {/* Suitcase Details/Lines */}
+              <rect x="8" y="10" width="16" height="14" rx="1.5" stroke="white" strokeOpacity="0.2" fill="white" fillOpacity="0.1" />
+              {/* Stickers */}
+              <circle cx="11" cy="14" r="2.5" fill="#FFD600" /> {/* Yellow Sticker */}
+              <circle cx="21" cy="19" r="2" fill="#00DDAA" /> {/* Green Sticker */}
+              <circle cx="14" cy="20" r="1.5" fill="#FF4D8D" /> {/* Pink Sticker */}
+              {/* Wheels */}
+              <rect x="8" y="26" width="3" height="2" rx="1" fill="#334155" />
+              <rect x="21" y="26" width="3" height="2" rx="1" fill="#334155" />
+            </svg>
           </div>
-          <h2 className="text-[17px] font-black text-[#0A1F44] tracking-tight whitespace-nowrap">
+          <h2 className="text-[20px] font-black text-[#0A1F44] tracking-tight whitespace-nowrap">
             {t.checklist}
           </h2>
 
-          <div className="flex items-center gap-1 px-3 py-1 bg-[#F0F4FF] rounded-full shrink-0 whitespace-nowrap">
+          <div className="flex items-center gap-1 px-3 py-1.5 bg-[#EFF6FF] rounded-full shrink-0 whitespace-nowrap">
             <span className="text-[#0055FF] font-black text-[13px]">
               {checklist.filter(i => i.completed).length} / {checklist.length} 완료
             </span>
