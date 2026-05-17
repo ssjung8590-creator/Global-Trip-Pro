@@ -346,9 +346,9 @@ export const COUNTRIES = [
     currencyEn: "New Taiwan Dollar", 
     currencySymbol: "NT$", 
     currencyCode: "TWD", 
-    entry: "한국 여권 소지자는 90일 무비자 입국 가능. 입국 시 세관 신고(e-Gate)를 미리 준비하세요.", 
-    entryEn: "90 days visa-free. Prepare e-Gate customs declaration online.", 
-    entryUrl: "https://overseas.mofa.go.kr/tw-ko/index.do",
+    entry: "한국 여권 소지자는 90일 무비자 입국이 가능합니다. 입국 전 '온라인 입국신고서(Arrival Card)'를 미리 작성하면 입국 심사가 훨씬 빠르고 간편합니다. (여권 잔여 유효기간 6개월 이상 필수)", 
+    entryEn: "90 days visa-free for Korean passport holders. Filling out the 'Online Arrival Card' before arrival makes immigration much faster. (Passport must be valid for at least 6 months)", 
+    entryUrl: "https://niaspeedy.immigration.gov.tw/web_msess/",
     visaFree: true, 
     visaDays: "90일", 
     visaDaysEn: "90 Days" 
