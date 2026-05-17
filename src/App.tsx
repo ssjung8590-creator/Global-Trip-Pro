@@ -910,17 +910,17 @@ function SettingsScreen({ lang, setLang, theme, setTheme, visitedCount }: { lang
       <Sec title={t.appInfo || "앱 정보"}>
         {[
           { icon: "ℹ️", ac: "#3B82F6", label: t.version || "버전 정보", val: "v2.0.5" },
-          { icon: "👥", ac: "#10B981", label: t.developer || "함께하는 사람들", val: "TripReady Team" },
+          { icon: "👥", ac: "#10B981", label: t.developer || "함께하는 사람들", val: "정성순" },
           { icon: "📧", ac: "#F97316", label: t.contact || "문의하기", val: "support@tripready.app" }
         ].map(({ icon, ac, label, val }, i, arr) => (
           <React.Fragment key={label}>
-            <Row icon={icon} ac={ac} label={label} right={<span className="text-[13px] font-bold text-white/20">{val}</span>} />
+            <Row icon={icon} ac={ac} label={label} right={<span className="text-[13px] font-bold text-white/70">{val}</span>} />
             {i < arr.length - 1 && <Sep />}
           </React.Fragment>
         ))}
       </Sec>
       
-      <p className="text-center text-[12px] font-bold text-white/20 mt-8 mb-4 tracking-widest uppercase">TripReady · Made with ❤️</p>
+      <p className="text-center text-[12px] font-bold text-white/40 mt-8 mb-4 tracking-widest uppercase">TripReady · Made with ❤️</p>
     </div>
   );
 }
