@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Globe, 
+  Home,
   CloudSun, 
   Zap, 
   ShieldCheck, 
@@ -71,7 +72,7 @@ const translations = {
     all: '전체',
     asia: '아시아',
     europe: '유럽',
-    northAmerica: '북미',
+    northAmerica: '미주',
     oceania: '대양주',
     regionPrompt: '🌍 국가를 선택하면\n실시간 날씨 · 환율 · 전압 · 입국 절차를 알 수 있어요',
     selectCountryNotice: '국가를 선택하면',
@@ -91,7 +92,10 @@ const translations = {
     catFood: '식량/상비약',
     catOthers: '기타',
     itemsIn: '내역',
-    addItem: '항목 추가'
+    navHome: '홈',
+    navDest: '나라 정보',
+    navInfo: '정보',
+    navCheck: '체크리스트'
   },
   en: {
     destinations: 'Destinations',
@@ -130,7 +134,7 @@ const translations = {
     all: 'All',
     asia: 'Asia',
     europe: 'Europe',
-    northAmerica: 'N. America',
+    americas: 'Americas',
     oceania: 'Oceania',
     regionPrompt: '🌍 Select a country to see\nweather, rates, voltage, and entry procedures',
     selectCountryNotice: 'Select a country',
@@ -150,12 +154,15 @@ const translations = {
     catFood: 'Food/Med',
     catOthers: 'Others',
     itemsIn: 'Items',
-    addItem: 'Add Item'
+    addItem: 'Add Item',
+    navDest: 'Explore',
+    navInfo: 'Info',
+    navCheck: 'Checklist'
   }
 };
 
 export default function App() {
-  const [view, setView] = useState<AppView>('countries');
+  const [view, setView] = useState<AppView>('home');
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo | null>(null);
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('appLang');
@@ -285,13 +292,13 @@ export default function App() {
   const [newItemName, setNewItemName] = useState('');
   const [activeCategoryInput, setActiveCategoryInput] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('All');
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [selectedChecklistCategory, setSelectedChecklistCategory] = useState<string>('필수');
 
   const filteredCountries = COUNTRIES.filter(c => {
     const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          c.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
+    const matchesRegion = !selectedRegion || c.region === selectedRegion;
     return matchesSearch && matchesRegion;
   });
 
@@ -529,11 +536,38 @@ export default function App() {
   };
 
   const regionData = [
-    { name: 'All', icon: '🌎', label: t.all, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
-    { name: 'Asia', icon: '🏯', label: t.asia, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
-    { name: 'Europe', icon: '🏰', label: t.europe, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
-    { name: 'North America', icon: '🗽', label: t.northAmerica, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' },
-    { name: 'Oceania', icon: '🏝️', label: t.oceania, color: 'bg-blue-500', textColor: 'text-blue-600', pastel: 'bg-white', border: 'border-blue-100' }
+    { 
+      name: 'Asia', 
+      label: t.asia, 
+      count: 12, 
+      icon: '⛩️', 
+      gradient: 'from-[#4C1D95] via-[#7C3AED] to-[#DB2777]', 
+      shadow: 'shadow-purple-200/50' 
+    },
+    { 
+      name: 'Europe', 
+      label: t.europe, 
+      count: 17, 
+      icon: '🏰', 
+      gradient: 'from-[#1E1B4B] via-[#312E81] to-[#4F46E5]', 
+      shadow: 'shadow-indigo-300/50' 
+    },
+    { 
+      name: 'Americas', 
+      label: (t as any).americas || (lang === 'ko' ? '미주' : 'Americas'), 
+      count: 5, 
+      icon: '🗽', 
+      gradient: 'from-[#0F172A] via-[#1E3A8A] to-[#2563EB]', 
+      shadow: 'shadow-blue-200/50' 
+    },
+    { 
+      name: 'Oceania', 
+      label: t.oceania, 
+      count: 2, 
+      icon: '🦘', 
+      gradient: 'from-[#064E3B] via-[#065F46] to-[#0D9488]', 
+      shadow: 'shadow-teal-200/50' 
+    }
   ];
 
   return (
@@ -543,42 +577,24 @@ export default function App() {
       {/* Header */}
       <header className="relative z-10 px-4 py-2 flex justify-between items-center text-slate-800">
         <div>
-          {view !== 'countries' ? (
+          {view !== 'home' ? (
             <button 
-              onClick={() => setView('countries')}
+              onClick={() => setView('home')}
               className="p-2 -ml-2 text-slate-400 hover:text-slate-800 transition-colors"
               id="back-button"
             >
               <ArrowLeft size={24} />
             </button>
           ) : (
-            <div className="flex items-center gap-2.5">
+            <button 
+              onClick={() => setView('home')}
+              className="flex items-center gap-2.5 text-left"
+            >
               <div className="w-9 h-9 bg-gradient-to-tr from-[#0055FF] via-[#00A2FF] to-[#00E5BC] rounded-[1rem] flex items-center justify-center shadow-lg shadow-blue-200/50 relative overflow-hidden shrink-0">
-                {/* Globe Line */}
-                <div className="absolute inset-0 border-[1.5px] border-white/20 rounded-full scale-75 rotate-[-20deg]" />
-                <div className="absolute inset-0 border-[1px] border-white/10 rounded-full scale-50 rotate-[45deg]" />
-                
-                {/* Airplane Trail */}
-                <div className="absolute w-[120%] h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent rotate-[-30deg] translate-y-1" />
-                
-                <div className="relative z-10 flex items-center justify-center">
-                  <Globe className="text-white" size={18} strokeWidth={2.5} />
-                  {/* Pin Dot */}
-                  <div className="absolute w-1 h-1 bg-white rounded-full translate-y-1 translate-x-1 shadow-sm" />
-                </div>
-                
-                {/* Shiny Plane */}
-                <div className="absolute top-1 right-1">
-                  <Plane size={9} className="text-white fill-white transform rotate-[-45deg]" />
-                </div>
+                <Globe className="text-white" size={18} strokeWidth={2.5} />
               </div>
-              
-              <div className="flex items-baseline gap-1">
-                <span className="font-display text-[20px] font-[900] tracking-tight text-[#0A1F44] leading-none">
-                  TripReady
-                </span>
-              </div>
-            </div>
+              <span className="font-display text-[20px] font-[900] tracking-tight text-[#0A1F44]">TripReady</span>
+            </button>
           )}
         </div>
         <div className="flex gap-2">
@@ -600,6 +616,77 @@ export default function App() {
 
       <main className="relative z-10 flex-1 px-4 pb-12 text-slate-800">
         <AnimatePresence mode="wait">
+          {view === 'home' && (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              {/* Premium Hero Card */}
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#0A1F44] to-[#1E3A8A] rounded-[2.5rem] p-8 text-white ios-shadow-lg">
+                <div className="absolute inset-0 opacity-10" 
+                  style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} 
+                />
+                <div className="relative z-10 space-y-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 opacity-60">Next Trip</span>
+                  <h1 className="text-3xl font-bold leading-tight break-keep">
+                    {lang === 'ko' ? '어디로 떠나시나요?' : 'Where are you heading?'}
+                  </h1>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {['☀️', '💱', '🔌', '✈️'].map((icon, i) => (
+                      <div key={i} className="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
+                        <span className="text-xs">{icon}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex flex-col gap-1 pl-2">
+                  <h2 className="text-2xl font-black text-[#0A1F44] tracking-tight">어디로 떠나시나요?</h2>
+                  <p className="text-[13px] font-bold text-slate-400">지역을 선택하면 나라 목록이 나와요</p>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {regionData.map((region) => (
+                    <button
+                      key={region.name}
+                      onClick={() => {
+                        setSelectedRegion(region.name === 'Americas' ? 'North America' : region.name);
+                        setView('countries');
+                      }}
+                      className={`relative overflow-hidden aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br ${region.gradient} p-6 flex flex-col justify-between text-white active:scale-95 transition-all text-left shadow-xl ${region.shadow}`}
+                    >
+                      <div className="relative z-10 flex flex-col gap-1">
+                        <span className="text-[11px] font-black opacity-60 tracking-wider">
+                          {region.count}{lang === 'ko' ? '개국' : ' Countries'}
+                        </span>
+                        <span className="text-2xl font-black tracking-tight">{region.label}</span>
+                      </div>
+                      
+                      <div className="absolute top-6 right-6 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                        <ChevronRight size={14} className="text-white" strokeWidth={3} />
+                      </div>
+                      
+                      <div className="absolute bottom-[-10px] right-[-10px] scale-[2.2] opacity-20 pointer-events-none grayscale brightness-150">
+                        <span className="text-6xl">{region.icon}</span>
+                      </div>
+
+                      {/* Accent highlight */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Main Checklist */}
+              {renderChecklistUI()}
+            </motion.div>
+          )}
+
           {view === 'countries' && (
             <motion.div
               key="countries"
@@ -608,80 +695,89 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-6"
             >
-              {/* Premium Hero Card */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#0A1F44] to-[#1E3A8A] rounded-[2.5rem] p-8 text-white ios-shadow-lg">
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-10" 
-                  style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} 
-                />
-                
-                <div className="relative z-10 space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 opacity-60">Next Trip</span>
-                  <h1 className="text-3xl font-bold leading-tight break-keep">
-                    {lang === 'ko' ? '어디로 떠나시나요?' : 'Where are you heading?'}
-                  </h1>
+              {!selectedRegion ? (
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-1 pl-2">
+                    <h2 className="text-2xl font-black text-[#0A1F44] tracking-tight">{lang === 'ko' ? '어디로 떠나시나요?' : 'Where are you heading?'}</h2>
+                    <p className="text-[13px] font-bold text-slate-400">{lang === 'ko' ? '지역을 선택하면 나라 목록이 나와요' : 'Select a region to see countries'}</p>
+                  </div>
                   
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {[
-                      { label: (t as any).weatherLabel, icon: '☀️' },
-                      { label: (t as any).ratesLabel, icon: '💱' },
-                      { label: (t as any).voltageLabel, icon: '🔌' },
-                      { label: (t as any).entryLabel, icon: '✈️' }
-                    ].map(item => (
-                      <div key={item.label} className="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
-                        <span className="text-xs">{item.icon}</span>
-                        <span className="text-[11px] font-bold text-blue-50/80">{item.label}</span>
-                      </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    {regionData.map((region) => (
+                      <button
+                        key={region.name}
+                        onClick={() => {
+                          setSelectedRegion(region.name === 'Americas' ? 'North America' : region.name);
+                        }}
+                        className={`relative overflow-hidden aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br ${region.gradient} p-6 flex flex-col justify-between text-white active:scale-95 transition-all text-left shadow-xl ${region.shadow}`}
+                      >
+                        <div className="relative z-10 flex flex-col gap-1">
+                          <span className="text-[11px] font-black opacity-60 tracking-wider">
+                            {region.count}{lang === 'ko' ? '개국' : ' Countries'}
+                          </span>
+                          <span className="text-2xl font-black tracking-tight">{region.label}</span>
+                        </div>
+                        <div className="absolute top-6 right-6 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                          <ChevronRight size={14} className="text-white" strokeWidth={3} />
+                        </div>
+                        <div className="absolute bottom-[-10px] right-[-10px] scale-[2.2] opacity-20 pointer-events-none grayscale brightness-150">
+                          <span className="text-6xl">{region.icon}</span>
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                      </button>
                     ))}
                   </div>
                 </div>
-              </div>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    <div className="flex flex-col gap-1 pl-2">
+                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest uppercase tracking-[0.2em]">{lang === 'ko' ? '🌍 지역별 탐색' : '🌍 Explore by Region'}</h3>
+                    </div>
+                    <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar">
+                      {[
+                        { name: null, label: lang === 'ko' ? '전체 지역' : 'All Regions', icon: '🌎' },
+                        ...regionData.map(r => ({ name: r.name === 'Americas' ? 'North America' : r.name, label: r.label, icon: r.icon }))
+                      ].map((region) => (
+                        <button
+                          key={region.name || 'null'}
+                          type="button"
+                          onClick={() => setSelectedRegion(region.name)}
+                          className={`flex items-center gap-2 px-6 py-3 rounded-full border-2 transition-all active:scale-95 shrink-0 whitespace-nowrap ${
+                            selectedRegion === region.name
+                              ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100'
+                              : 'bg-white border-gray-100 text-slate-400'
+                          }`}
+                        >
+                          <span className="text-lg">{region.icon}</span>
+                          <span className="text-[13px] font-bold">{region.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Region Selection */}
-              <div className="space-y-3">
-                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-2">지역 선택</h3>
-                <div className="grid grid-cols-5 gap-2">
-                  {regionData.map((region) => (
-                    <button
-                      key={region.name}
-                      type="button"
-                      onClick={() => setSelectedRegion(selectedRegion === region.name ? 'All' : region.name)}
-                      className={`flex flex-col items-center gap-1.5 py-4 rounded-[1.5rem] border-2 transition-all active:scale-95 bg-white ${
-                        selectedRegion === region.name
-                          ? 'border-blue-500 shadow-md transform -translate-y-1'
-                          : 'border-transparent shadow-sm'
-                      }`}
-                    >
-                      <span className="text-3xl">{region.icon}</span>
-                      <span className={`text-[11px] font-bold ${selectedRegion === region.name ? 'text-blue-600' : 'text-slate-400'}`}>
-                        {region.label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Country List if selected */}
-              {selectedRegion !== 'All' && (
-                <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-bottom-4">
-                  {filteredCountries.map((country) => (
-                    <button
-                      key={country.id}
-                      onClick={() => handleCountrySelect(country)}
-                      className="bg-white p-4 rounded-3xl border border-gray-100 ios-shadow flex items-center gap-3 text-left active:scale-95 transition-all"
-                    >
-                      <span className="text-2xl">{country.emoji}</span>
-                      <span className="text-sm font-bold text-gray-900 truncate">
-                        {lang === 'ko' ? country.name : country.nameEn}
-                      </span>
-                    </button>
-                  ))}
-                </div>
+                  <div className="grid grid-cols-2 gap-3 min-h-[300px]">
+                    {filteredCountries.length === 0 ? (
+                      <div className="col-span-2 py-20 text-center text-slate-300 font-bold">
+                          {lang === 'ko' ? '검색 결과가 없습니다' : 'No results found'}
+                      </div>
+                    ) : (
+                      filteredCountries.map((country) => (
+                        <button
+                          key={country.id}
+                          onClick={() => handleCountrySelect(country)}
+                          className="bg-white p-4 rounded-3xl border border-gray-100 ios-shadow flex items-center gap-3 text-left active:scale-95 transition-all h-fit"
+                        >
+                          <span className="text-2xl">{country.emoji}</span>
+                          <span className="text-sm font-bold text-gray-900 truncate">
+                            {lang === 'ko' ? country.name : country.nameEn}
+                          </span>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </>
               )}
-               
-              <div className="pt-2">
-                {renderChecklistUI()}
-              </div>
             </motion.div>
           )}
 
@@ -809,11 +905,8 @@ export default function App() {
                 </div>
               </div>
 
-                <div className="mt-8">
-                  {renderChecklistUI()}
-                </div>
-              </motion.div>
-            )}
+            </motion.div>
+          )}
 
           {view === 'checklist' && (
             <motion.div
@@ -922,11 +1015,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
-                <div className="mt-8">
-                  {renderChecklistUI()}
-                </div>
-              </motion.div>
+            </motion.div>
           )}
         </AnimatePresence>
       </main>
@@ -1021,8 +1110,21 @@ export default function App() {
       {/* Blur Style Navigation Bar */}
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] glass ios-shadow-lg rounded-[2.5rem] px-8 py-4 z-50 flex justify-around items-center">
         <button 
-          onClick={() => setView('countries')}
-          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'countries' || view === 'details' ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
+          onClick={() => {
+            setSelectedRegion(null);
+            setView('home');
+          }}
+          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'home' ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
+        >
+          <Home size={20} strokeWidth={view === 'home' ? 3 : 2} />
+          <span className="text-[10px] font-bold tracking-tight">{(t as any).navHome}</span>
+        </button>
+        <button 
+          onClick={() => {
+            setSelectedRegion(null);
+            setView('countries');
+          }}
+          className={`flex flex-col items-center gap-1.5 transition-all ${view === 'countries' || (view === 'details' && selectedCountry) ? 'text-blue-600 scale-110' : 'text-gray-400'}`}
         >
           <Globe size={20} strokeWidth={view === 'countries' || view === 'details' ? 3 : 2} />
           <span className="text-[10px] font-bold tracking-tight">{t.navDest}</span>
