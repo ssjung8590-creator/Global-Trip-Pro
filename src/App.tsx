@@ -442,13 +442,21 @@ function ChecklistScreen({ lang }: { lang: string }) {
   
   const toggle = (k: string) => setChecked(p => ({ ...p, [k]: !p[k] }));
   
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (adding) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [adding]);
+
   const addItem = () => {
     const trimmed = newItem.trim();
     if (!trimmed) return;
     const catLabel = CHECKLIST[activeCat].label;
     setCustomItems(p => {
       const current = p[catLabel] || [];
-      if (current.includes(trimmed)) return p; // Prevent duplicates
+      if (current.includes(trimmed)) return p; 
       return { ...p, [catLabel]: [...current, trimmed] };
     });
     setNewItem("");
@@ -573,27 +581,36 @@ function ChecklistScreen({ lang }: { lang: string }) {
 
         <div className="p-4 border-t border-gray-50 bg-gray-50/30">
           {adding ? (
-            <div className="flex gap-2">
+            <form 
+              onSubmit={(e) => { e.preventDefault(); addItem(); }}
+              className="flex gap-2"
+            >
               <input 
-                autoFocus 
+                ref={inputRef}
+                type="text"
                 value={newItem} 
                 onChange={e => setNewItem(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && addItem()}
                 placeholder={t.enterItem}
-                className="flex-1 bg-white border border-gray-100 rounded-[16px] px-4 py-3 text-[14px] outline-none font-bold"
+                className="flex-1 bg-white border border-gray-200 rounded-[16px] px-4 py-3 text-[14px] outline-none font-bold text-gray-900 placeholder:text-gray-300"
               />
               <button 
-                onClick={addItem} 
-                className="bg-[#FFB000] rounded-[16px] px-5 py-3 text-white text-[13px] font-black cursor-pointer shadow-lg shadow-orange-500/20"
+                type="submit"
+                className="bg-[#FFB000] rounded-[16px] px-5 py-3 text-white text-[13px] font-black cursor-pointer shadow-lg shadow-orange-500/10 active:scale-95 transition-all"
               >
                 {t.add}
               </button>
-              <button onClick={() => { setAdding(false); setNewItem(""); }} className="p-3 text-gray-400">✕</button>
-            </div>
+              <button 
+                type="button"
+                onClick={() => { setAdding(false); setNewItem(""); }} 
+                className="p-3 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                ✕
+              </button>
+            </form>
           ) : (
             <button 
               onClick={() => setAdding(true)}
-              className="w-full text-center py-2 text-[14px] font-black text-[#FFB000] cursor-pointer"
+              className="w-full text-center py-2 text-[14px] font-black text-[#FFB000] cursor-pointer active:opacity-60 transition-all"
             >
               + {t.addCategoryItem}
             </button>
