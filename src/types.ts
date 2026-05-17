@@ -36,4 +36,4 @@ export interface CountryInfo {
   entryUrl?: string;
 }
 
-export type AppView = 'home' | 'countries' | 'details' | 'checklist' | 'settings';
+export type AppView = 'home' | 'check' | 'settings' | 'list' | 'detail';
