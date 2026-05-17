@@ -591,7 +591,7 @@ function ChecklistScreen({ lang }: { lang: string }) {
                 value={newItem} 
                 onChange={e => setNewItem(e.target.value)}
                 placeholder={t.enterItem}
-                className="flex-1 bg-white border border-gray-200 rounded-[16px] px-4 py-3 text-[14px] outline-none font-bold text-gray-900 placeholder:text-gray-300"
+                className="flex-1 bg-white border border-gray-300 rounded-[16px] px-4 py-3 text-[14px] outline-none font-bold text-gray-900 placeholder:text-gray-500"
               />
               <button 
                 type="submit"
