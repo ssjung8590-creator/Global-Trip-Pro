@@ -188,14 +188,13 @@ function CountryListScreen({ region, onSelectCountry, lang }: { region: any; onS
 
 /* ── COUNTRY DETAIL ─────────────────────────────────── */
 function CountryDetailScreen({ country: c, lang }: { country: any; lang: string }) {
-  const [subTab, setSubTab] = useState<'weather' | 'info'>('weather');
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
 
   return (
     <div className="animate-slide-right font-sans pb-12">
       {/* Hero */}
       <div 
-        className="mx-4 mt-2 mb-6 h-[240px] rounded-[36px] overflow-hidden relative border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] group"
+        className="mx-4 mt-2 mb-6 h-[200px] rounded-[32px] overflow-hidden relative border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] group"
       >
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] group-hover:scale-105"
@@ -203,64 +202,50 @@ function CountryDetailScreen({ country: c, lang }: { country: any; lang: string 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         
-        <div className="absolute bottom-7 left-8 right-8">
-          <h2 className="font-display text-[38px] font-black tracking-[-1.5px] text-white leading-tight drop-shadow-[0_4px_15px_rgba(0,0,0,1)]">
-            {c.name} <span className="text-white/60 font-medium text-[24px] ml-1">({c.nameEn})</span>
+        <div className="absolute bottom-6 left-7 right-7">
+          <h2 className="font-display text-[34px] font-black tracking-[-1.5px] text-white leading-tight drop-shadow-[0_4px_15px_rgba(0,0,0,1)]">
+            {c.name} <span className="text-white/60 font-medium text-[22px] ml-1">({c.nameEn})</span>
           </h2>
         </div>
       </div>
 
-      {/* Sub-tabs Navigation */}
-      <div className="px-5 mb-8 flex gap-3">
-        <button 
-          onClick={() => setSubTab('weather')}
-          className={`flex-[0.8] flex items-center gap-2.5 h-[52px] px-5 rounded-[22px] border transition-all duration-500 font-bold text-[15px] ${
-            subTab === 'weather' 
-            ? 'bg-blue-50 border-blue-200 text-blue-600 shadow-[0_8px_20px_rgba(59,130,246,0.12)] ring-4 ring-blue-500/5' 
-            : 'bg-white border-gray-100 text-gray-400 hover:bg-gray-50'
-          }`}
-        >
-          <span className="text-[17px] -ml-1">☀️</span> {t.weather}
-        </button>
-        <button 
-          onClick={() => setSubTab('info')}
-          className={`flex-[1.2] flex items-center gap-2 h-[52px] px-4 rounded-[22px] border transition-all duration-500 font-bold text-[14px] md:text-[15px] whitespace-nowrap overflow-hidden ${
-            subTab === 'info' 
-            ? 'bg-indigo-50 border-indigo-200 text-indigo-600 shadow-[0_8px_20px_rgba(99,102,241,0.12)] ring-4 ring-indigo-500/5' 
-            : 'bg-white border-gray-100 text-gray-400 hover:bg-gray-50'
-          }`}
-        >
-          <span className="text-[17px]">🛡️</span> {lang === 'ko' ? "환율·전압·입국절차" : "Info·Rate·Entry"}
-        </button>
+      {/* Bento Section Title */}
+      <div className="flex items-center gap-2.5 px-6 mb-5">
+        <Sparkles size={18} className="text-amber-400 fill-amber-400/20" />
+        <h3 className="font-black text-[18px] text-white/90">
+          {lang === 'ko' ? `한눈에 보는 ${c.name}` : `Overview of ${c.nameEn}`}
+        </h3>
       </div>
 
-      {/* Content based on subTab */}
-      <div className="px-4 pb-12 overflow-hidden">
-        {subTab === 'weather' ? (
-          <div className="flex flex-col gap-4 animate-slide-up">
-            <WeatherPanel c={c} lang={lang} />
-            <div className="bg-white rounded-[32px] p-7 shadow-2xl">
-              <p className="text-[11px] font-black text-gray-400 tracking-[1.5px] uppercase mb-6">{t.weeklyForecast}</p>
-              <div className="flex justify-between items-end gap-1">
-                {c.week.map((day: any, i: number) => (
-                  <div key={i} className="flex flex-col items-center gap-3 flex-1">
-                    <span className="text-[11px] font-bold text-gray-400">{day.d}</span>
-                    <span className="text-[28px] pointer-events-none drop-shadow-sm">{day.i}</span>
-                    <span className="text-[16px] font-black text-gray-900">{day.t}°</span>
-                  </div>
-                ))}
-              </div>
+      {/* Continuous Content Flow */}
+      <div className="px-4 flex flex-col gap-4">
+        {/* Weather Section */}
+        <div className="flex flex-col gap-4 animate-slide-up">
+          <WeatherPanel c={c} lang={lang} />
+          <div className="bg-white rounded-[32px] p-7 shadow-2xl border border-gray-50">
+            <p className="text-[14px] font-black text-gray-400 tracking-[1.5px] uppercase mb-6">{t.weeklyForecast}</p>
+            <div className="flex justify-between items-end gap-1">
+              {c.week.map((day: any, i: number) => (
+                <div key={i} className="flex flex-col items-center gap-3 flex-1">
+                  <span className="text-[11px] font-bold text-gray-400">{day.d}</span>
+                  <span className="text-[28px] pointer-events-none drop-shadow-sm">{day.i}</span>
+                  <span className="text-[16px] font-black text-gray-900">{day.t}°</span>
+                </div>
+              ))}
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col gap-4 animate-slide-up">
-            <div className="grid grid-cols-2 gap-4">
-              <VoltageCard c={c} lang={lang} />
-              <CurrencyCard c={c} lang={lang} />
-            </div>
-            <EntryPanel c={c} lang={lang} />
-          </div>
-        )}
+        </div>
+
+        {/* Info Section (Voltage & Currency) */}
+        <div className="grid grid-cols-2 gap-4 animate-slide-up">
+          <VoltageCard c={c} lang={lang} />
+          <CurrencyCard c={c} lang={lang} />
+        </div>
+        
+        {/* Entry Procedure Section */}
+        <div className="animate-slide-up">
+          <EntryPanel c={c} lang={lang} />
+        </div>
       </div>
     </div>
   );
@@ -270,18 +255,18 @@ function WeatherPanel({ c, lang }: { c: any; lang: string }) {
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
   
   return (
-    <div className="bg-white rounded-[32px] p-7 shadow-2xl relative overflow-hidden group">
+    <div className="bg-white rounded-[28px] p-5 shadow-2xl relative overflow-hidden group">
       <div className="absolute top-0 right-0 w-48 h-48 bg-gray-50 blur-[60px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      <div className="flex gap-6 items-start relative z-10">
+      <div className="flex gap-5 items-start relative z-10">
         <div 
-          className="w-18 h-18 rounded-[24px] flex-shrink-0 flex items-center justify-center text-[36px] shadow-lg border"
+          className="w-16 h-16 rounded-[22px] flex-shrink-0 flex items-center justify-center text-[32px] shadow-lg border"
           style={{ background: `${c.accent}10`, borderColor: `${c.accent}20` }}
         >
           {c.weatherIcon}
         </div>
-        <div className="pt-2">
-          <p className="text-[14px] font-black tracking-[1.5px] uppercase mb-2 text-gray-400">{t.currentWeather}</p>
-          <p className="text-[20px] font-bold text-gray-900 leading-[1.4] tracking-tight break-keep text-left">
+        <div className="pt-1.5">
+          <p className="text-[13px] font-black tracking-[1.5px] uppercase mb-1.5 text-gray-400">{t.currentWeather}</p>
+          <p className="text-[18px] font-bold text-gray-900 leading-[1.4] tracking-tight break-keep text-left">
             {lang === 'ko' ? c.weatherSummary : c.weatherSummaryEn}
           </p>
         </div>
