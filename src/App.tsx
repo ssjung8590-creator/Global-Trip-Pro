@@ -255,18 +255,18 @@ function WeatherPanel({ c, lang }: { c: any; lang: string }) {
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
   
   return (
-    <div className="bg-white rounded-[28px] p-5 shadow-2xl relative overflow-hidden group">
-      <div className="absolute top-0 right-0 w-48 h-48 bg-gray-50 blur-[60px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      <div className="flex gap-5 items-start relative z-10">
+    <div className="bg-white rounded-[24px] px-5 py-3.5 shadow-xl relative overflow-hidden group border border-gray-50">
+      <div className="absolute top-0 right-0 w-40 h-40 bg-gray-50 blur-[50px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="flex gap-4 items-center relative z-10">
         <div 
-          className="w-16 h-16 rounded-[22px] flex-shrink-0 flex items-center justify-center text-[32px] shadow-lg border"
+          className="w-12 h-12 rounded-[16px] flex-shrink-0 flex items-center justify-center text-[26px] shadow-sm border"
           style={{ background: `${c.accent}10`, borderColor: `${c.accent}20` }}
         >
           {c.weatherIcon}
         </div>
-        <div className="pt-1.5">
-          <p className="text-[13px] font-black tracking-[1.5px] uppercase mb-1.5 text-gray-400">{t.currentWeather}</p>
-          <p className="text-[18px] font-bold text-gray-900 leading-[1.4] tracking-tight break-keep text-left">
+        <div className="flex-1">
+          <p className="text-[11px] font-black tracking-[1.5px] uppercase mb-0.5 text-gray-400">{t.currentWeather}</p>
+          <p className="text-[16px] font-bold text-gray-900 leading-[1.3] tracking-tight break-keep text-left">
             {lang === 'ko' ? c.weatherSummary : c.weatherSummaryEn}
           </p>
         </div>
