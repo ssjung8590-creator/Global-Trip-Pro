@@ -76,11 +76,11 @@ function HomeScreen({ onSelectRegion, lang }: { onSelectRegion: (region: any) =>
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
   return (
     <div className="animate-slide-up font-sans pb-2">
-      <div className="px-5 pt-2.5 pb-7">
-        <h1 className="font-display text-[32px] md:text-[44px] font-extrabold tracking-[-0.04em] leading-[1.1] mb-4 bg-gradient-to-br from-white via-white/80 to-white/60 bg-clip-text text-transparent">
+      <div className="px-5 pt-1 pb-4">
+        <h1 className="font-display text-[26px] md:text-[28px] font-extrabold tracking-[-0.04em] leading-[1.1] mb-2 bg-gradient-to-br from-white via-white/80 to-white/60 bg-clip-text text-transparent">
           {t.whereTo}
         </h1>
-        <p className="text-[15px] md:text-[18px] text-white/50 font-medium tracking-tight leading-relaxed max-w-[90%] md:max-w-[70%]">{t.regionSelectDesc}</p>
+        <p className="text-[13px] md:text-[14px] text-white/50 font-medium tracking-tight leading-relaxed max-w-[90%]">{t.regionSelectDesc}</p>
       </div>
       
       <div className="px-4 grid grid-cols-2 gap-4">
@@ -1008,7 +1008,7 @@ export default function App() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-[24px] border-b border-white/5 pt-6 md:pt-10 px-6 pb-4 md:pb-6 flex items-center justify-between transition-all duration-300" style={{ opacity: ready ? 1 : 0 }}>
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-[24px] border-b border-white/5 pt-5 md:pt-6 px-6 pb-3 md:pb-4 flex items-center justify-between transition-all duration-300" style={{ opacity: ready ? 1 : 0 }}>
         <div className="flex items-center gap-3">
           {showBack ? (
             <button 
