@@ -21,7 +21,8 @@ import {
   Sparkles,
   Camera,
   Loader2,
-  ArrowDown
+  ArrowDown,
+  TrendingUp
 } from 'lucide-react';
 import { REGIONS, COUNTRIES, CHECKLIST, UI_STRINGS } from './constants';
 import { Language, AppView } from './types';
@@ -76,21 +77,20 @@ function HomeScreen({ onSelectRegion, lang }: { onSelectRegion: (region: any) =>
   return (
     <div className="animate-slide-up font-sans pb-2">
       <div className="px-5 pt-2.5 pb-7">
-        <h1 className="font-display text-[32px] font-extrabold tracking-[-0.7px] leading-[1.15] mb-3 bg-gradient-to-br from-foreground via-foreground/50 to-foreground/50 bg-clip-text text-transparent">
+        <h1 className="font-display text-[32px] md:text-[44px] font-extrabold tracking-[-0.04em] leading-[1.1] mb-4 bg-gradient-to-br from-white via-white/80 to-white/60 bg-clip-text text-transparent">
           {t.whereTo}
         </h1>
-        <p className="text-[15px] text-foreground/65 font-medium tracking-tight leading-relaxed max-w-[90%]">{t.regionSelectDesc}</p>
+        <p className="text-[15px] md:text-[18px] text-white/50 font-medium tracking-tight leading-relaxed max-w-[90%] md:max-w-[70%]">{t.regionSelectDesc}</p>
       </div>
       
-      <div className="px-4 grid grid-cols-2 gap-3">
+      <div className="px-4 grid grid-cols-2 gap-4">
         {REGIONS.map((r, i) => (
           <div 
             key={r.id} 
             onClick={() => onSelectRegion(r)}
-            className="relative overflow-hidden cursor-pointer border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5)] active:scale-95 transition-all animate-scale-in"
+            className="relative overflow-hidden cursor-pointer border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5)] active:scale-95 transition-all animate-scale-in h-[165px]"
             style={{ 
-              height: 165, 
-              borderRadius: 28, 
+              borderRadius: 32, 
               animationDelay: `${i * 0.07}s`
             }}
           >
@@ -132,11 +132,11 @@ function CountryListScreen({ region, onSelectCountry, lang }: { region: any; onS
   const rest = countries.slice(1);
 
   return (
-    <div className="animate-slide-right font-sans px-4 pt-2 pb-7">
+    <div className="animate-slide-right font-sans px-4 pt-2 pb-10">
       {featured && (
         <div 
           onClick={() => onSelectCountry(featured)}
-          className="relative h-[210px] rounded-[32px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_16px_48px_rgba(0,0,0,0.6)] mb-5 animate-scale-in transition-all active:scale-[0.98] group"
+          className="relative h-[240px] rounded-[32px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.6)] mb-6 animate-scale-in transition-all active:scale-[0.99] group"
         >
           {/* Background Image */}
           <div 
@@ -154,12 +154,12 @@ function CountryListScreen({ region, onSelectCountry, lang }: { region: any; onS
         </div>
       )}
       
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-4">
         {rest.map((c, i) => (
           <div 
             key={c.id} 
             onClick={() => onSelectCountry(c)}
-            className="relative h-[110px] rounded-[24px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.4)] animate-slide-up transition-all active:scale-[0.97] group"
+            className="relative h-[120px] rounded-[24px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.4)] animate-slide-up transition-all active:scale-[0.97] group"
             style={{ animationDelay: `${i * 0.04}s` }}
           >
             {/* Background Image */}
@@ -192,17 +192,15 @@ function CountryDetailScreen({ country: c, lang }: { country: any; lang: string 
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
 
   return (
-    <div className="animate-slide-right font-sans">
+    <div className="animate-slide-right font-sans pb-12">
       {/* Hero */}
       <div 
         className="mx-4 mt-2 mb-6 h-[240px] rounded-[36px] overflow-hidden relative border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] group"
       >
-        {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] group-hover:scale-105"
           style={{ backgroundImage: `url(${c.imageUrl})` }}
         />
-        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         
         <div className="absolute bottom-7 left-8 right-8">
@@ -312,7 +310,7 @@ function WeatherPanel({ c, lang }: { c: any; lang: string }) {
         </div>
         <div className="pt-1">
           <p className="text-[11px] font-black tracking-[1.5px] uppercase mb-1.5" style={{ color: c.accent }}>{t.currentWeather}</p>
-          <p className="text-[17px] font-bold text-foreground leading-[1.35] tracking-tight break-keep">
+          <p className="text-[17px] font-bold text-foreground leading-[1.35] tracking-tight break-keep text-left">
             {lang === 'ko' ? c.weatherSummary : c.weatherSummaryEn}
           </p>
         </div>
@@ -396,6 +394,7 @@ function EntryPanel({ c, lang, isCompact }: { c: any; lang: string; isCompact?: 
     </div>
   );
 }
+
 
 
 /* ── CHECKLIST ──────────────────────────────────────── */
@@ -1001,37 +1000,37 @@ export default function App() {
   ];
 
   return (
-    <div className="font-sans bg-background min-h-screen max-w-[390px] mx-auto text-foreground relative overflow-x-hidden">
+    <div className="font-sans bg-[#080810] min-h-screen max-w-[430px] mx-auto text-white relative shadow-[0_0_100px_rgba(0,0,0,1)] ring-1 ring-white/10 transition-all duration-500 overflow-x-hidden">
       {/* 앰비언트 */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute w-[280px] h-[280px] rounded-full top-[-70px] right-[-50px] filter blur-[40px]" style={{ background: "radial-gradient(circle,rgba(168,85,247,0.09) 0%,transparent 70%)" }} />
-        <div className="absolute w-[240px] h-[240px] rounded-full bottom-[220px] left-[-55px] filter blur-[38px]" style={{ background: "radial-gradient(circle,rgba(59,158,247,0.07) 0%,transparent 70%)" }} />
+      <div className="fixed inset-0 z-0 pointer-events-none max-w-[430px] mx-auto overflow-hidden">
+        <div className="absolute w-[400px] h-[400px] rounded-full top-[-100px] right-[-100px] filter blur-[80px]" style={{ background: "radial-gradient(circle,rgba(168,85,247,0.15) 0%,transparent 70%)" }} />
+        <div className="absolute w-[360px] h-[360px] rounded-full bottom-[100px] left-[-80px] filter blur-[70px]" style={{ background: "radial-gradient(circle,rgba(59,158,247,0.12) 0%,transparent 70%)" }} />
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/82 backdrop-blur-[24px] border-b border-foreground/6 pt-[50px] px-5 pb-[13px] flex items-center justify-between" style={{ opacity: ready ? 1 : 0 }}>
-        <div className="flex items-center gap-2.5">
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-[24px] border-b border-white/5 pt-6 md:pt-10 px-6 pb-4 md:pb-6 flex items-center justify-between transition-all duration-300" style={{ opacity: ready ? 1 : 0 }}>
+        <div className="flex items-center gap-3">
           {showBack ? (
             <button 
               onClick={goBack} 
-              className="bg-foreground/5 border border-foreground/10 rounded-[20px] px-3.75 py-1.75 text-foreground/80 text-[13px] font-semibold cursor-pointer flex items-center gap-1.25 transition-all active:scale-95"
+              className="bg-foreground/5 border border-foreground/10 rounded-[20px] px-4 py-2 text-foreground/90 text-[14px] font-bold cursor-pointer flex items-center gap-2 transition-all active:scale-95 hover:bg-foreground/10"
             >
-              <ArrowLeft size={16} /> {t.back}
+              <ArrowLeft size={18} /> {t.back}
             </button>
           ) : (
-            <div className="w-[34px] h-[34px] rounded-[10px] bg-gradient-to-br from-purple-500/30 to-blue-500/30 border border-purple-500/40 flex items-center justify-center text-[18px] shadow-[0_0_18px_rgba(168,85,247,0.2)]">
-              <Globe size={18} className="text-foreground" />
+            <div className="w-[38px] h-[38px] rounded-[12px] bg-gradient-to-br from-purple-500/40 to-blue-500/40 border border-white/10 flex items-center justify-center text-[20px] shadow-[0_4px_20px_rgba(168,85,247,0.25)]">
+              <Globe size={20} className="text-white" />
             </div>
           )}
-          <span className="font-display text-[19px] font-extrabold tracking-[-0.5px] bg-gradient-to-r from-foreground to-[#A855F7]/85 bg-clip-text text-transparent">
+          <span className="font-display text-[22px] font-black tracking-[-0.03em] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             {headerTitle}
           </span>
         </div>
         <button 
           onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
-          className="bg-[#A855F7]/15 border border-[#A855F7]/35 rounded-[18px] px-3.5 py-1.5 text-[#A855F7] text-[13px] font-bold cursor-pointer active:scale-95 transition-all"
+          className="bg-white/10 border border-white/10 rounded-[22px] px-5 py-2 text-white text-[14px] font-black cursor-pointer active:scale-95 transition-all hover:bg-white/15 shadow-sm"
         >
-          {lang === 'ko' ? 'EN' : '한'}
+          {lang === 'ko' ? 'EN' : 'KO'}
         </button>
       </header>
 
@@ -1046,7 +1045,7 @@ export default function App() {
       </div>
 
       {/* Tab bar */}
-      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-background/95 backdrop-blur-[32px] border-t border-foreground/10 pt-3 px-2 pb-[24px] flex justify-around z-[100] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#080810]/95 backdrop-blur-[32px] border-t border-white/10 pt-3 px-6 pb-[34px] flex justify-around z-[120] shadow-[0_-10px_40px_rgba(0,0,0,0.8)]">
         {NAV.map(n => {
           const on = tab === n.key;
           return (
