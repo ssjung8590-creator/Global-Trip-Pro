@@ -1,6 +1,6 @@
 export const UI_STRINGS = {
   ko: {
-    home: "나라 정보",
+    home: "국가",
     checklist: "체크리스트",
     ai: "짐싸기 AI",
     settings: "설정",
