@@ -222,14 +222,14 @@ function CountryDetailScreen({ country: c, lang }: { country: any; lang: string 
         {/* Weather Section */}
         <div className="flex flex-col gap-4 animate-slide-up">
           <WeatherPanel c={c} lang={lang} />
-          <div className="bg-white rounded-[32px] p-7 shadow-2xl border border-gray-50">
-            <p className="text-[14px] font-black text-gray-400 tracking-[1.5px] uppercase mb-6">{t.weeklyForecast}</p>
+          <div className="bg-white rounded-[24px] p-4 shadow-xl border border-gray-50">
+            <p className="text-[12px] font-black text-gray-400 tracking-[1.5px] uppercase mb-4">{t.weeklyForecast}</p>
             <div className="flex justify-between items-end gap-1">
               {c.week.map((day: any, i: number) => (
-                <div key={i} className="flex flex-col items-center gap-3 flex-1">
-                  <span className="text-[11px] font-bold text-gray-400">{day.d}</span>
-                  <span className="text-[28px] pointer-events-none drop-shadow-sm">{day.i}</span>
-                  <span className="text-[16px] font-black text-gray-900">{day.t}°</span>
+                <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                  <span className="text-[9px] font-bold text-gray-400">{day.d}</span>
+                  <span className="text-[22px] pointer-events-none drop-shadow-sm">{day.i}</span>
+                  <span className="text-[14px] font-black text-gray-900">{day.t}°</span>
                 </div>
               ))}
             </div>
@@ -278,24 +278,24 @@ function WeatherPanel({ c, lang }: { c: any; lang: string }) {
 function VoltageCard({ c, lang }: { c: any; lang: string }) {
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
   return (
-    <div className="bg-white rounded-[32px] p-5 flex flex-col justify-between min-h-[165px] shadow-xl border border-gray-50 relative overflow-hidden">
+    <div className="bg-white rounded-[24px] p-4.5 flex flex-col justify-between min-h-[145px] shadow-xl border border-gray-50 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute -right-4 -bottom-2 opacity-5 text-gray-900 rotate-12">
-        <Zap size={100} strokeWidth={1} />
+        <Zap size={90} strokeWidth={1} />
       </div>
       
-      <div className="flex items-center gap-2.5 relative z-10">
-        <div className="w-10 h-10 rounded-[14px] bg-red-50 border border-red-100 flex items-center justify-center">
-          <Zap size={22} className="text-red-400 fill-red-400/20" />
+      <div className="flex items-center gap-2 relative z-10">
+        <div className="w-9 h-9 rounded-[12px] bg-red-50 border border-red-100 flex items-center justify-center">
+          <Zap size={20} className="text-red-400 fill-red-400/20" />
         </div>
-        <p className="text-[14px] font-black text-red-400 tracking-[1px] uppercase">{t.voltageLabel}</p>
+        <p className="text-[13px] font-black text-red-400 tracking-[1px] uppercase">{t.voltageLabel}</p>
       </div>
 
       <div className="relative z-10">
-        <p className="text-[28px] font-black text-gray-900 tracking-tighter leading-none mb-1.5">
+        <p className="text-[24px] font-black text-gray-900 tracking-tighter leading-none mb-1.5">
           {c.voltage} / {lang === 'ko' ? c.voltageType : c.voltageTypeEn || c.voltageType}
         </p>
-        <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[85%] break-keep">
+        <p className="text-[10px] text-gray-400 font-bold leading-tight max-w-[90%] break-keep">
           {lang === 'ko' 
             ? `${c.name}의 전압은 ${c.voltage}이며, 플러그는 ${c.voltageType}입니다.` 
             : `${c.nameEn} uses ${c.voltage}, ${c.voltageType} plugin.`}
@@ -308,31 +308,27 @@ function VoltageCard({ c, lang }: { c: any; lang: string }) {
 function CurrencyCard({ c, lang }: { c: any; lang: string }) {
   const t = UI_STRINGS[lang as keyof typeof UI_STRINGS] || UI_STRINGS.ko;
   return (
-    <div className="bg-[#F8FFF9] rounded-[32px] p-5 flex flex-col justify-between min-h-[165px] shadow-xl border border-emerald-500/5 relative overflow-hidden">
+    <div className="bg-[#F8FFF9] rounded-[24px] p-4.5 flex flex-col justify-between min-h-[145px] shadow-xl border border-emerald-500/5 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute right-4 bottom-8 flex items-center justify-center">
-         <div className="w-14 h-14 rounded-full bg-emerald-500/5 flex items-center justify-center">
-            <TrendingUp size={28} className="text-emerald-500/20" />
+         <div className="w-12 h-12 rounded-full bg-emerald-500/5 flex items-center justify-center">
+            <TrendingUp size={24} className="text-emerald-500/20" />
          </div>
       </div>
 
-      <div className="flex items-center gap-2.5 relative z-10">
-        <div className="w-10 h-10 rounded-[14px] bg-white border border-emerald-100 flex items-center justify-center text-xl font-bold">
-          <span className="text-emerald-500 text-[20px]">￥</span>
+      <div className="flex items-center gap-2 relative z-10">
+        <div className="w-9 h-9 rounded-[12px] bg-white border border-emerald-100 flex items-center justify-center text-lg font-bold">
+          <span className="text-emerald-500 text-[18px]">￥</span>
         </div>
-        <p className="text-[14px] font-black text-emerald-600 tracking-[1px] uppercase">{t.currencyLabel}</p>
+        <p className="text-[13px] font-black text-emerald-600 tracking-[1px] uppercase">{t.currencyLabel}</p>
       </div>
 
       <div className="relative z-10">
-        <p className="text-[28px] font-black text-gray-900 tracking-tight leading-none mb-1.5">
+        <p className="text-[24px] font-black text-gray-900 tracking-tight leading-none mb-1.5">
           {lang === 'ko' ? c.currency : c.currencyEn} / {c.currencyCode}
         </p>
         <div className="flex flex-col gap-0.5">
-          <p className="text-[14px] font-bold text-gray-400">1 {c.currencyCode} = {c.id === 'jp' ? "약 9.2 KRW" : "약 1,350 KRW"}</p>
-          <div className="flex items-center gap-1.5">
-            <p className="text-[10px] text-gray-300 font-bold">(2024.05.18 기준)</p>
-            <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-          </div>
+          <p className="text-[13px] font-bold text-gray-400">1 {c.currencyCode} = {c.id === 'jp' ? "약 9.2 KRW" : "약 1,350 KRW"}</p>
         </div>
       </div>
     </div>
@@ -344,29 +340,29 @@ function EntryPanel({ c, lang }: { c: any; lang: string }) {
   
   return (
     <div className="flex flex-col gap-4 animate-fade-in">
-      <div className="rounded-[32px] p-7 md:p-8 shadow-2xl flex flex-col gap-6 transition-all duration-300 bg-white border border-gray-50">
-        <div className="flex gap-5 md:gap-6 items-start">
-          <div className="w-15 h-15 rounded-[22px] flex-shrink-0 bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[30px] shadow-sm">
+      <div className="rounded-[24px] p-5 md:p-6 shadow-2xl flex flex-col gap-4 transition-all duration-300 bg-white border border-gray-50">
+        <div className="flex gap-4 items-start">
+          <div className="w-12 h-12 rounded-[18px] flex-shrink-0 bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[24px] shadow-sm">
             🛡️
           </div>
-          <div className="pt-1 flex-1">
-            <div className="flex items-center gap-2 mb-3">
-              <p className="text-[14px] font-black text-gray-400 tracking-[1.5px] uppercase leading-none">{t.entryProcedure}</p>
-              <div className="px-2.5 py-1 bg-emerald-50 rounded-full border border-emerald-100">
-                <span className="text-[11px] font-bold text-emerald-600 leading-none">{t.visaFree} {c.visaDays}</span>
+          <div className="pt-0.5 flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-[12px] font-black text-gray-400 tracking-[1.5px] uppercase leading-none">{t.entryProcedure}</p>
+              <div className="px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-100">
+                <span className="text-[9px] font-bold text-emerald-600 leading-none">{t.visaFree} {c.visaDays}</span>
               </div>
             </div>
             
-            <p className="text-[17px] md:text-[18px] font-extrabold text-gray-800 leading-[1.6] tracking-tight break-keep text-left mb-6">
+            <p className="text-[15px] md:text-[16px] font-extrabold text-gray-800 leading-[1.5] tracking-tight break-keep text-left mb-5">
               {lang === 'ko' ? c.entry : c.entryEn}
             </p>
             
             <button 
               onClick={() => { if(c.entryUrl) window.open(c.entryUrl, "_blank"); }}
-              className="w-full h-15 active:scale-[0.98] transition-all rounded-[22px] flex items-center justify-center gap-3 font-black text-[16px] bg-gray-50 border border-gray-100 text-indigo-600 shadow-sm hover:bg-white hover:shadow-md group"
+              className="w-full h-12 active:scale-[0.98] transition-all rounded-[18px] flex items-center justify-center gap-2.5 font-black text-[14px] bg-gray-50 border border-gray-100 text-indigo-600 shadow-sm hover:bg-white hover:shadow-md group"
             >
               <span>{t.officialSite}</span>
-              <ExternalLink size={19} className="text-indigo-400" />
+              <ExternalLink size={16} className="text-indigo-400" />
             </button>
           </div>
         </div>
