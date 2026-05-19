@@ -840,12 +840,12 @@ function SettingsScreen({ lang, setLang, theme, setTheme, visitedCount }: { lang
       <Sec title={t.language || "언어"}>
         <Row icon="🌐" ac="#3B82F6" label={t.language || "언어"} sub={t.languageDesc || "표시 언어를 선택하세요"} 
           right={
-            <div className="flex gap-1.5 p-1 bg-black/40 rounded-[14px]">
+            <div className="flex p-1 bg-black/40 rounded-full border border-white/5">
               {["KO", "EN"].map(l => (
                 <button 
                   key={l} 
                   onClick={() => setLang(l.toLowerCase())}
-                  className={`px-3 py-1.5 rounded-[10px] text-[11px] font-black cursor-pointer transition-all ${lang.toUpperCase() === l ? "bg-[#3B82F6] text-white shadow-lg shadow-blue-500/20" : "text-white/30 hover:text-white/50"}`}
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-black cursor-pointer transition-all duration-300 ${lang.toUpperCase() === l ? "bg-white text-gray-900 shadow-[0_4px_12px_rgba(255,255,255,0.2)] scale-[1.02]" : "text-white/30 hover:text-white/60"}`}
                 >
                   {l}
                 </button>
@@ -1004,9 +1004,10 @@ export default function App() {
         </div>
         <button 
           onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
-          className="bg-white/10 border border-white/10 rounded-[22px] px-5 py-2 text-white text-[14px] font-black cursor-pointer active:scale-95 transition-all hover:bg-white/15 shadow-sm"
+          className="bg-white/10 backdrop-blur-md border border-purple-400/30 rounded-full px-5 py-2 text-white text-[13px] font-black cursor-pointer active:scale-95 transition-all hover:bg-purple-500/10 hover:border-purple-400/50 shadow-[0_0_15px_rgba(168,85,247,0.15)] flex items-center gap-2 group"
         >
-          {lang === 'ko' ? 'EN' : 'KO'}
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 group-hover:scale-125 transition-transform shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+          <span className="tracking-widest">{lang === 'ko' ? 'EN' : 'KO'}</span>
         </button>
       </header>
 
