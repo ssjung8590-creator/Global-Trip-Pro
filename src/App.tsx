@@ -357,13 +357,15 @@ function EntryPanel({ c, lang }: { c: any; lang: string }) {
               {lang === 'ko' ? c.entry : c.entryEn}
             </p>
             
-            <button 
-              onClick={() => { if(c.entryUrl) window.open(c.entryUrl, "_blank"); }}
+            <a 
+              href={c.entryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full h-12 active:scale-[0.98] transition-all rounded-[18px] flex items-center justify-center gap-2.5 font-black text-[14px] bg-gray-50 border border-gray-100 text-indigo-600 shadow-sm hover:bg-white hover:shadow-md group"
             >
               <span>{t.officialSite}</span>
               <ExternalLink size={16} className="text-indigo-400" />
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -535,7 +537,7 @@ function ChecklistScreen({ lang }: { lang: string }) {
                 style={{ opacity: isDone ? 0.45 : 1 }}
               >
                 <div 
-                  className={`w-6 h-6 rounded-full border-[2px] flex items-center justify-center transition-all ${isDone ? "bg-[#FFB000] border-[#FFB000]" : "border-gray-200"}`}
+                  className={`w-6 h-6 rounded-full border-[2px] flex items-center justify-center transition-all ${isDone ? "bg-[#FFB000] border-[#FFB000]" : "border-gray-400 hover:border-gray-600 bg-gray-50/30"}`}
                 >
                   {isDone && <span className="text-white text-[12px] font-black">✓</span>}
                 </div>
@@ -862,9 +864,11 @@ function SettingsScreen({ lang, setLang, theme, setTheme, visitedCount }: { lang
           { label: "세계 기상 기구", url: "https://worldweather.wmo.int/en/home.html", icon: "🌤️", ac: "#F97316" }
         ].map((item, i, arr) => (
           <React.Fragment key={item.label}>
-            <div 
-              onClick={() => window.open(item.url, '_blank')}
-              className="cursor-pointer active:opacity-60 transition-opacity"
+            <a 
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block cursor-pointer active:opacity-60 transition-opacity"
             >
               <Row 
                 icon={item.icon} 
@@ -872,7 +876,7 @@ function SettingsScreen({ lang, setLang, theme, setTheme, visitedCount }: { lang
                 label={item.label} 
                 right={<ChevronRight size={18} className="text-white/20" />} 
               />
-            </div>
+            </a>
             {i < arr.length - 1 && <Sep />}
           </React.Fragment>
         ))}
