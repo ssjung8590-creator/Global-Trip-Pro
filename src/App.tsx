@@ -890,7 +890,7 @@ function SettingsScreen({ lang, setLang, theme, setTheme, visitedCount }: { lang
         {[
           { icon: "ℹ️", ac: "#3B82F6", label: t.version || "버전 정보", val: "v2.0.5" },
           { icon: "👥", ac: "#10B981", label: t.developer || "함께하는 사람들", val: "정성순" },
-          { icon: "📧", ac: "#F97316", label: t.contact || "문의하기", val: "support@tripready.app" }
+          { icon: "📧", ac: "#F97316", label: t.contact || "문의하기", val: "ssjung8590@gmail.com" }
         ].map(({ icon, ac, label, val }, i, arr) => (
           <React.Fragment key={label}>
             <Row icon={icon} ac={ac} label={label} right={<span className="text-[13px] font-bold text-white/70">{val}</span>} />

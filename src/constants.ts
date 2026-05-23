@@ -823,7 +823,7 @@ export const COUNTRIES = [
     nameEn: "Canada", 
     region: "na", 
     accent: "#FF3333", 
-    imageUrl: "https://images.unsplash.com/photo-1481819613568-3701ccd2f2ce?q=80&w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1503614472-8c9377619280?q=80&w=800&auto=format&fit=crop",
     capital: "오타와", 
     capitalEn: "Ottawa", 
     timezone: "UTC-5", 
