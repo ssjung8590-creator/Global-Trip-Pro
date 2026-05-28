@@ -5,5 +5,4 @@ Allow: /
 User-agent: Yeti
 Allow: /
 
-# Sitemap
 Sitemap: https://naha.today/sitemap.xml
